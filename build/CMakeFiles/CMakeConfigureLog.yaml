@@ -24,7 +24,7 @@ events:
       The output was:
       0
       閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
-      鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:44:59銆?
+      鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:06銆?
       
       鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCXX\\CompilerIdCXX.vcxproj鈥?榛樿鐩爣)銆?
       PrepareForBuild:
@@ -53,7 +53,7 @@ events:
           0 涓鍛?
           0 涓敊璇?
       
-      宸茬敤鏃堕棿 00:00:00.76
+      宸茬敤鏃堕棿 00:00:00.77
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -72,8 +72,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tmyrri"
-      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tmyrri"
+      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-fhshn5"
+      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-fhshn5"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
       CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
@@ -82,49 +82,222 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tmyrri'
+        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-fhshn5'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_48117.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_aa05b.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
-        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:45:00銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:07銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tmyrri\\cmTC_48117.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fhshn5\\cmTC_aa05b.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_48117.dir\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_aa05b.dir\\Debug\\鈥濄€?
           宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
-          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tmyrri\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_48117.dir\\Debug\\cmTC_48117.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fhshn5\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_aa05b.dir\\Debug\\cmTC_aa05b.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_48117.dir\\Debug\\cmTC_48117.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_48117.dir\\Debug\\cmTC_48117.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_aa05b.dir\\Debug\\cmTC_aa05b.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_aa05b.dir\\Debug\\cmTC_aa05b.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_48117.dir\\Debug\\\\" /Fd"cmTC_48117.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_aa05b.dir\\Debug\\\\" /Fd"cmTC_aa05b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCXXCompilerABI.cpp"
           鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35215 鐗?
           鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
-          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_48117.dir\\Debug\\\\" /Fd"cmTC_48117.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_aa05b.dir\\Debug\\\\" /Fd"cmTC_aa05b.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCXXCompilerABI.cpp"
           CMakeCXXCompilerABI.cpp
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tmyrri\\Debug\\cmTC_48117.exe" /INCREMENTAL /ILK:"cmTC_48117.dir\\Debug\\cmTC_48117.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tmyrri/Debug/cmTC_48117.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tmyrri/Debug/cmTC_48117.lib" /MACHINE:X64  /machine:x64 cmTC_48117.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_48117.vcxproj -> F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tmyrri\\Debug\\cmTC_48117.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fhshn5\\Debug\\cmTC_aa05b.exe" /INCREMENTAL /ILK:"cmTC_aa05b.dir\\Debug\\cmTC_aa05b.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-fhshn5/Debug/cmTC_aa05b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-fhshn5/Debug/cmTC_aa05b.lib" /MACHINE:X64  /machine:x64 cmTC_aa05b.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_aa05b.vcxproj -> F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fhshn5\\Debug\\cmTC_aa05b.exe
         FinalizeBuildStatus:
-          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_48117.dir\\Debug\\cmTC_48117.tlog\\unsuccessfulbuild鈥濄€?
-          姝ｅ湪瀵光€渃mTC_48117.dir\\Debug\\cmTC_48117.tlog\\cmTC_48117.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
-        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tmyrri\\cmTC_48117.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_aa05b.dir\\Debug\\cmTC_aa05b.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_aa05b.dir\\Debug\\cmTC_aa05b.tlog\\cmTC_aa05b.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-fhshn5\\cmTC_aa05b.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
         
         宸叉垚鍔熺敓鎴愩€?
             0 涓鍛?
             0 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:00.74
+        宸茬敤鏃堕棿 00:00:00.78
         
       exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/FindThreads.cmake:99 (CHECK_CXX_SOURCE_COMPILES)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "CMakeLists.txt:26 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-1skj4h"
+      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-1skj4h"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-1skj4h'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_07bc0.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
+        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:08銆?
+        
+        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\cmTC_07bc0.vcxproj鈥?榛樿鐩爣)銆?
+        PrepareForBuild:
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_07bc0.dir\\Debug\\鈥濄€?
+          宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
+          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_07bc0.dir\\Debug\\cmTC_07bc0.tlog\\鈥濄€?
+        InitializeBuildStatus:
+          姝ｅ湪鍒涘缓鈥渃mTC_07bc0.dir\\Debug\\cmTC_07bc0.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_07bc0.dir\\Debug\\cmTC_07bc0.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_07bc0.dir\\Debug\\\\" /Fd"cmTC_07bc0.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\src.cxx"
+          鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35215 鐗?
+          鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_07bc0.dir\\Debug\\\\" /Fd"cmTC_07bc0.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\src.cxx"
+          src.cxx
+        F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\src.cxx(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\cmTC_07bc0.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\cmTC_07bc0.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+        
+        鐢熸垚澶辫触銆?
+        
+        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\cmTC_07bc0.vcxproj鈥?榛樿鐩爣) (1) ->
+        (ClCompile 鐩爣) -> 
+          F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\src.cxx(1,10): error C1083: 鏃犳硶鎵撳紑鍖呮嫭鏂囦欢: 鈥減thread.h鈥? No such file or directory [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-1skj4h\\cmTC_07bc0.vcxproj]
+        
+            0 涓鍛?
+            1 涓敊璇?
+        
+        宸茬敤鏃堕棿 00:00:00.44
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "CMakeLists.txt:26 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-yu4q5j"
+      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-yu4q5j"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-yu4q5j'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_24959.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
+        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:09銆?
+        
+        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\cmTC_24959.vcxproj鈥?榛樿鐩爣)銆?
+        PrepareForBuild:
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_24959.dir\\Debug\\鈥濄€?
+          宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
+          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_24959.dir\\Debug\\cmTC_24959.tlog\\鈥濄€?
+        InitializeBuildStatus:
+          姝ｅ湪鍒涘缓鈥渃mTC_24959.dir\\Debug\\cmTC_24959.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_24959.dir\\Debug\\cmTC_24959.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_24959.dir\\Debug\\\\" /Fd"cmTC_24959.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\CheckFunctionExists.cxx"
+          鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35215 鐗?
+          鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_24959.dir\\Debug\\\\" /Fd"cmTC_24959.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\Debug\\cmTC_24959.exe" /INCREMENTAL /ILK:"cmTC_24959.dir\\Debug\\cmTC_24959.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-yu4q5j/Debug/cmTC_24959.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-yu4q5j/Debug/cmTC_24959.lib" /MACHINE:X64  /machine:x64 cmTC_24959.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\cmTC_24959.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\cmTC_24959.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+        
+        鐢熸垚澶辫触銆?
+        
+        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\cmTC_24959.vcxproj鈥?榛樿鐩爣) (1) ->
+        (Link 鐩爣) -> 
+          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減threads.lib鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-yu4q5j\\cmTC_24959.vcxproj]
+        
+            0 涓鍛?
+            1 涓敊璇?
+        
+        宸茬敤鏃堕棿 00:00:00.59
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "F:/CMake_3.28/share/cmake-3.28/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "CMakeLists.txt:26 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-5i1ya0"
+      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-5i1ya0"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-5i1ya0'
+        
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_11660.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
+        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:10銆?
+        
+        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\cmTC_11660.vcxproj鈥?榛樿鐩爣)銆?
+        PrepareForBuild:
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_11660.dir\\Debug\\鈥濄€?
+          宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
+          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_11660.dir\\Debug\\cmTC_11660.tlog\\鈥濄€?
+        InitializeBuildStatus:
+          姝ｅ湪鍒涘缓鈥渃mTC_11660.dir\\Debug\\cmTC_11660.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_11660.dir\\Debug\\cmTC_11660.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+        ClCompile:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_11660.dir\\Debug\\\\" /Fd"cmTC_11660.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\CheckFunctionExists.cxx"
+          鐢ㄤ簬 x64 鐨?Microsoft (R) C/C++ 浼樺寲缂栬瘧鍣?19.44.35215 鐗?
+          鐗堟潈鎵€鏈?C) Microsoft Corporation銆備繚鐣欐墍鏈夋潈鍒┿€?
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_11660.dir\\Debug\\\\" /Fd"cmTC_11660.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\CheckFunctionExists.cxx"
+          CheckFunctionExists.cxx
+        Link:
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\Debug\\cmTC_11660.exe" /INCREMENTAL /ILK:"cmTC_11660.dir\\Debug\\cmTC_11660.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-5i1ya0/Debug/cmTC_11660.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-5i1ya0/Debug/cmTC_11660.lib" /MACHINE:X64  /machine:x64 cmTC_11660.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\cmTC_11660.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\cmTC_11660.vcxproj鈥?榛樿鐩爣)鐨勬搷浣?- 澶辫触銆?
+        
+        鐢熸垚澶辫触銆?
+        
+        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\cmTC_11660.vcxproj鈥?榛樿鐩爣) (1) ->
+        (Link 鐩爣) -> 
+          LINK : fatal error LNK1104: 鏃犳硶鎵撳紑鏂囦欢鈥減thread.lib鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-5i1ya0\\cmTC_11660.vcxproj]
+        
+            0 涓鍛?
+            1 涓敊璇?
+        
+        宸茬敤鏃堕棿 00:00:00.59
+        
+      exitCode: 1
   -
     kind: "message-v1"
     backtrace:
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:53 (__determine_compiler_id_test)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCUDACompiler.cmake:135 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:35 (enable_language)"
+      - "CMakeLists.txt:40 (enable_language)"
     message: |
       Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" succeeded.
       Compiler:  
@@ -134,7 +307,7 @@ events:
       The output was:
       0
       閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
-      鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:45:01銆?
+      鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:11銆?
       
       鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj鈥?榛樿鐩爣)銆?
       PrepareForBuild:
@@ -150,7 +323,7 @@ events:
       CudaBuildCore:
         Compiling CUDA source file CMakeCUDACompilerId.cu...
         姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug鈥濄€?
-        cmd.exe /C "C:\\WINDOWS\\TEMP\\tmpd52f3d2d22ac4a8caa8afda4e80ba182.cmd"
+        cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp628978dde84540deb75b08aa41c247d9.cmd"
         "F:\\CUDA_12.8\\bin\\nvcc.exe" -gencode=arch=compute_52,code=\\"sm_52,compute_52\\" --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu   -IF:\\CUDA_12.8\\include -IF:\\CUDA_12.8\\include  -G   --keep-dir CompilerIdCUDA\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static -v -g  -D_MBCS -Xcompiler "/EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdDebug\\vc143.pdb" -o F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu"
         
         F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA>"F:\\CUDA_12.8\\bin\\nvcc.exe" -gencode=arch=compute_52,code=\\"sm_52,compute_52\\" --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu   -IF:\\CUDA_12.8\\include -IF:\\CUDA_12.8\\include  -G   --keep-dir CompilerIdCUDA\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static -v -g  -D_MBCS -Xcompiler "/EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdDebug\\vc143.pdb" -o F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" 
@@ -173,23 +346,23 @@ events:
         #$ CUDAFE_FLAGS=--sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"
         #$ PTXAS_FLAGS=
         CMakeCUDACompilerId.cu
-        #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res: [-D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]
-        #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res" > "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-6_CMakeCUDACompilerId.cpp4.ii" 
+        #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res: [-D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]
+        #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res" > "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-6_CMakeCUDACompilerId.cpp4.ii" 
         CMakeCUDACompilerId.cu
-        #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res
-        #$ cudafe++ --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10" --m64 --parse_templates --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-5_CMakeCUDACompilerId.module_id" "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-6_CMakeCUDACompilerId.cpp4.ii" 
-        #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]
-        #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res" > "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-9_CMakeCUDACompilerId.cpp1.ii" 
+        #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res
+        #$ cudafe++ --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10" --m64 --parse_templates --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-5_CMakeCUDACompilerId.module_id" "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-6_CMakeCUDACompilerId.cpp4.ii" 
+        #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]
+        #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res" > "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-9_CMakeCUDACompilerId.cpp1.ii" 
         CMakeCUDACompilerId.cu
-        #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res
-        #$ ""%CICC_PATH%\\cicc" --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"  -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin.c" -g -O0 -tused --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-5_CMakeCUDACompilerId.module_id" --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.c" --stub_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.gpu"  "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-9_CMakeCUDACompilerId.cpp1.ii" -o "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx""
-        #$ ptxas -arch=sm_52 -m64 -g --dont-merge-basicblocks --return-at-end "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx"  -o "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-11_CMakeCUDACompilerId.sm_52.cubin" 
-        #$ fatbinary -64 --ident="F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --cmdline="-g --dont-merge-basicblocks --return-at-end " --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -g "--image3=kind=elf,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-11_CMakeCUDACompilerId.sm_52.cubin" "--image3=kind=ptx,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx" --embedded-fatbin="C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin.c" 
-        #$ erase C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin
-        #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"   -Zi "C:\\WINDOWS\\TEMP\\tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" ]
-        #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res" -Fo"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CompilerIdCUDA/x64/Debug/CMakeCUDACompilerId.cu.obj" 
-        tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp
-        #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res
+        #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res
+        #$ ""%CICC_PATH%\\cicc" --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"  -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin.c" -g -O0 -tused --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-5_CMakeCUDACompilerId.module_id" --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.c" --stub_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.gpu"  "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-9_CMakeCUDACompilerId.cpp1.ii" -o "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx""
+        #$ ptxas -arch=sm_52 -m64 -g --dont-merge-basicblocks --return-at-end "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx"  -o "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-11_CMakeCUDACompilerId.sm_52.cubin" 
+        #$ fatbinary -64 --ident="F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --cmdline="-g --dont-merge-basicblocks --return-at-end " --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -g "--image3=kind=elf,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-11_CMakeCUDACompilerId.sm_52.cubin" "--image3=kind=ptx,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx" --embedded-fatbin="C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin.c" 
+        #$ erase C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin
+        #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"   -Zi "C:\\WINDOWS\\TEMP\\tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" ]
+        #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res" -Fo"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CompilerIdCUDA/x64/Debug/CMakeCUDACompilerId.cu.obj" 
+        tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp
+        #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res
       宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?
       Link:
         C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCUDA.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCUDA.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCUDA.lib" /MACHINE:X64 F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj
@@ -220,7 +393,7 @@ events:
           2 涓鍛?
           0 涓敊璇?
       
-      宸茬敤鏃堕棿 00:00:02.95
+      宸茬敤鏃堕棿 00:00:03.24
       
       
       Compilation of the CUDA compiler identification source "CMakeCUDACompilerId.cu" produced "CompilerIdCUDA.exe"
@@ -239,14 +412,14 @@ events:
     backtrace:
       - "F:/CMake_3.28/share/cmake-3.28/Modules/Internal/CMakeNVCCParseImplicitInfo.cmake:128 (message)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCUDACompiler.cmake:246 (cmake_nvcc_parse_implicit_info)"
-      - "CMakeLists.txt:35 (enable_language)"
+      - "CMakeLists.txt:40 (enable_language)"
     message: |
       Parsed CUDA nvcc implicit link information:
         found 'PATH=' string: [F:\\CUDA_12.8\\bin/../nvvm/bin;F:\\CUDA_12.8\\bin;F:\\CUDA_12.8\\bin/../lib;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64;;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x86;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\tools;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\ide;C:\\Program Files (x86)\\HTML Help Workshop;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64;C:\\WINDOWS\\Microsoft.NET\\Framework64\\v4.0.30319\\;C:\\WINDOWS\\Microsoft.NET\\Framework\\v4.0.30319\\;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin;C:\\WINDOWS\\Microsoft.NET\\Framework\\v4.0.30319\\;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\VCPackages;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\bin\\Roslyn;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\\\MSBuild\\Current\\Bin\\amd64;C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\;F:\\CUDA_12.8\\bin;F:\\CUDA_12.8\\libnvvp;;;C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\windows\\system32;C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\redist\\intel64\\compiler;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files (x86)\\EasyShare\\x86\\;C:\\Program Files (x86)\\EasyShare\\x64\\;E:\\texlive\\2024\\bin\\windows;C:\\Program Files\\Java\\jdk-1.8\\bin;C:\\Program Files\\Java\\jdk-1.8\\jre\\bin;C:\\Program Files\\Tailscale\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git LFS;C:\\Program Files\\ffmpeg-7.1.1-essentials_build\\bin;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;G:\\Android_SDK\\platform-tools\\;F:\\CMake_3.28\\bin;C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2025.1.0\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python312\\;C:\\Users\\??\\.cargo\\bin;C:\\Program Files\\MySQL\\MySQL Shell 8.0\\bin\\;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python310\\;C:\\Users\\??\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\Hostx64\\x64\\cl.exe;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\Hostx64\\x64;C:\\msys64\\mingw64\\bin;C:\\Program Files\\ffmpeg-7.1.1-essentials_build\\bin;C:\\Users\\??\\AppData\\Local\\Pandoc\\;C:\\Users\\??\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;F:\\Desktop\\Study\\???楗艰皪??榻杙rometheus-3.5.0.windows-amd64;C:\\Program Files\\PostgreSQL\\18\\bin;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe;]
         found 'LIBRARIES=' string: ["/LIBPATH:F:\\CUDA_12.8\\bin/../lib/x64"]
         found 'INCLUDES=' string: ["-IF:\\CUDA_12.8\\bin/../include"  ]
         considering line: [閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434]
-        considering line: [鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:45:01銆?]
+        considering line: [鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:11銆?]
         considering line: [鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj鈥?榛樿鐩爣)銆?]
         considering line: [PrepareForBuild:]
         considering line: [  姝ｅ湪鍒涘缓鐩綍鈥淒ebug\\鈥濄€?]
@@ -261,29 +434,29 @@ events:
         considering line: [CudaBuildCore:]
         considering line: [  Compiling CUDA source file CMakeCUDACompilerId.cu...]
         considering line: [  姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug鈥濄€?]
-        considering line: [  cmd.exe /C "C:\\WINDOWS\\TEMP\\tmpd52f3d2d22ac4a8caa8afda4e80ba182.cmd"]
+        considering line: [  cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp628978dde84540deb75b08aa41c247d9.cmd"]
         considering line: [  "F:\\CUDA_12.8\\bin\\nvcc.exe" -gencode=arch=compute_52,code=\\"sm_52,compute_52\\" --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu   -IF:\\CUDA_12.8\\include -IF:\\CUDA_12.8\\include  -G   --keep-dir CompilerIdCUDA\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static -v -g  -D_MBCS -Xcompiler "/EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdDebug\\vc143.pdb" -o F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu"]
         considering line: [  ]
         considering line: [  F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA>"F:\\CUDA_12.8\\bin\\nvcc.exe" -gencode=arch=compute_52,code=\\"sm_52,compute_52\\" --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu   -IF:\\CUDA_12.8\\include -IF:\\CUDA_12.8\\include  -G   --keep-dir CompilerIdCUDA\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static -v -g  -D_MBCS -Xcompiler "/EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdDebug\\vc143.pdb" -o F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]
         considering line: [CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj]]
         considering line: [                                    CMakeCUDACompilerId.cu]
-        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res: [-D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
-        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res" > "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res: [-D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
+        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res" > "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
         considering line: [  CMakeCUDACompilerId.cu]
-        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res]
-        considering line: [  #$ cudafe++ --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10" --m64 --parse_templates --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-5_CMakeCUDACompilerId.module_id" "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
-        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
-        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res" > "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-9_CMakeCUDACompilerId.cpp1.ii" ]
+        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res]
+        considering line: [  #$ cudafe++ --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10" --m64 --parse_templates --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-5_CMakeCUDACompilerId.module_id" "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
+        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res" > "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-9_CMakeCUDACompilerId.cpp1.ii" ]
         considering line: [  CMakeCUDACompilerId.cu]
-        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res]
-        considering line: [  #$ ""%CICC_PATH%\\cicc" --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"  -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin.c" -g -O0 -tused --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-5_CMakeCUDACompilerId.module_id" --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.c" --stub_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.gpu"  "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-9_CMakeCUDACompilerId.cpp1.ii" -o "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx""]
-        considering line: [  #$ ptxas -arch=sm_52 -m64 -g --dont-merge-basicblocks --return-at-end "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx"  -o "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-11_CMakeCUDACompilerId.sm_52.cubin" ]
-        considering line: [  #$ fatbinary -64 --ident="F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --cmdline="-g --dont-merge-basicblocks --return-at-end " --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -g "--image3=kind=elf,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-11_CMakeCUDACompilerId.sm_52.cubin" "--image3=kind=ptx,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx" --embedded-fatbin="C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin.c" ]
-        considering line: [  #$ erase C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin]
-        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"   -Zi "C:\\WINDOWS\\TEMP\\tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" ]]
-        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res" -Fo"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CompilerIdCUDA/x64/Debug/CMakeCUDACompilerId.cu.obj" ]
-        considering line: [  tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp]
-        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res]
+        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res]
+        considering line: [  #$ ""%CICC_PATH%\\cicc" --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"  -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin.c" -g -O0 -tused --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-5_CMakeCUDACompilerId.module_id" --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.c" --stub_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.gpu"  "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-9_CMakeCUDACompilerId.cpp1.ii" -o "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx""]
+        considering line: [  #$ ptxas -arch=sm_52 -m64 -g --dont-merge-basicblocks --return-at-end "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx"  -o "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-11_CMakeCUDACompilerId.sm_52.cubin" ]
+        considering line: [  #$ fatbinary -64 --ident="F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --cmdline="-g --dont-merge-basicblocks --return-at-end " --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -g "--image3=kind=elf,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-11_CMakeCUDACompilerId.sm_52.cubin" "--image3=kind=ptx,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx" --embedded-fatbin="C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin.c" ]
+        considering line: [  #$ erase C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin]
+        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"   -Zi "C:\\WINDOWS\\TEMP\\tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" ]]
+        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res" -Fo"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CompilerIdCUDA/x64/Debug/CMakeCUDACompilerId.cu.obj" ]
+        considering line: [  tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp]
+        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res]
         considering line: [宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?]
         considering line: [Link:]
         considering line: [  C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCUDA.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCUDA.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCUDA.lib" /MACHINE:X64 F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj]
@@ -309,7 +482,7 @@ events:
         considering line: [  LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj]]
         considering line: [    2 涓鍛?]
         considering line: [    0 涓敊璇?]
-        considering line: [宸茬敤鏃堕棿 00:00:02.95]
+        considering line: [宸茬敤鏃堕棿 00:00:03.24]
         considering line: []
       
         link line regex: [^( *|.*[/\\])(link\\.exe|link\\.exe|lld-link|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
@@ -345,14 +518,14 @@ events:
     backtrace:
       - "F:/CMake_3.28/share/cmake-3.28/Modules/Internal/CMakeNVCCParseImplicitInfo.cmake:146 (message)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCUDACompiler.cmake:246 (cmake_nvcc_parse_implicit_info)"
-      - "CMakeLists.txt:35 (enable_language)"
+      - "CMakeLists.txt:40 (enable_language)"
     message: |
       Parsed CUDA nvcc include information:
         found 'PATH=' string: [F:\\CUDA_12.8\\bin/../nvvm/bin;F:\\CUDA_12.8\\bin;F:\\CUDA_12.8\\bin/../lib;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x64;;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\x86;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\tools;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\ide;C:\\Program Files (x86)\\HTML Help Workshop;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64;C:\\WINDOWS\\Microsoft.NET\\Framework64\\v4.0.30319\\;C:\\WINDOWS\\Microsoft.NET\\Framework\\v4.0.30319\\;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin;C:\\WINDOWS\\Microsoft.NET\\Framework\\v4.0.30319\\;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\VCPackages;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\bin\\Roslyn;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Team Tools\\DiagnosticsHub\\Collector;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\\\MSBuild\\Current\\Bin\\amd64;C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\;F:\\CUDA_12.8\\bin;F:\\CUDA_12.8\\libnvvp;;;C:\\Program Files (x86)\\VMware\\VMware Workstation\\bin\\;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\java8path;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\windows\\system32;C:\\Program Files (x86)\\Common Files\\Intel\\Shared Libraries\\redist\\intel64\\compiler;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files (x86)\\EasyShare\\x86\\;C:\\Program Files (x86)\\EasyShare\\x64\\;E:\\texlive\\2024\\bin\\windows;C:\\Program Files\\Java\\jdk-1.8\\bin;C:\\Program Files\\Java\\jdk-1.8\\jre\\bin;C:\\Program Files\\Tailscale\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Git LFS;C:\\Program Files\\ffmpeg-7.1.1-essentials_build\\bin;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;G:\\Android_SDK\\platform-tools\\;F:\\CMake_3.28\\bin;C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2025.1.0\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python312\\;C:\\Users\\??\\.cargo\\bin;C:\\Program Files\\MySQL\\MySQL Shell 8.0\\bin\\;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\;C:\\Users\\??\\AppData\\Local\\Programs\\Python\\Python310\\;C:\\Users\\??\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\Hostx64\\x64\\cl.exe;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.35.32215\\bin\\Hostx64\\x64;C:\\msys64\\mingw64\\bin;C:\\Program Files\\ffmpeg-7.1.1-essentials_build\\bin;C:\\Users\\??\\AppData\\Local\\Pandoc\\;C:\\Users\\??\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;F:\\Desktop\\Study\\???楗艰皪??榻杙rometheus-3.5.0.windows-amd64;C:\\Program Files\\PostgreSQL\\18\\bin;;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja;C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe;]
         found 'LIBRARIES=' string: ["/LIBPATH:F:\\CUDA_12.8\\bin/../lib/x64"]
         found 'INCLUDES=' string: ["-IF:\\CUDA_12.8\\bin/../include"  ]
         considering line: [閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434]
-        considering line: [鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:45:01銆?]
+        considering line: [鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:11銆?]
         considering line: [鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj鈥?榛樿鐩爣)銆?]
         considering line: [PrepareForBuild:]
         considering line: [  姝ｅ湪鍒涘缓鐩綍鈥淒ebug\\鈥濄€?]
@@ -367,29 +540,29 @@ events:
         considering line: [CudaBuildCore:]
         considering line: [  Compiling CUDA source file CMakeCUDACompilerId.cu...]
         considering line: [  姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug鈥濄€?]
-        considering line: [  cmd.exe /C "C:\\WINDOWS\\TEMP\\tmpd52f3d2d22ac4a8caa8afda4e80ba182.cmd"]
+        considering line: [  cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp628978dde84540deb75b08aa41c247d9.cmd"]
         considering line: [  "F:\\CUDA_12.8\\bin\\nvcc.exe" -gencode=arch=compute_52,code=\\"sm_52,compute_52\\" --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu   -IF:\\CUDA_12.8\\include -IF:\\CUDA_12.8\\include  -G   --keep-dir CompilerIdCUDA\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static -v -g  -D_MBCS -Xcompiler "/EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdDebug\\vc143.pdb" -o F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu"]
         considering line: [  ]
         considering line: [  F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA>"F:\\CUDA_12.8\\bin\\nvcc.exe" -gencode=arch=compute_52,code=\\"sm_52,compute_52\\" --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu   -IF:\\CUDA_12.8\\include -IF:\\CUDA_12.8\\include  -G   --keep-dir CompilerIdCUDA\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static -v -g  -D_MBCS -Xcompiler "/EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdDebug\\vc143.pdb" -o F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]
         considering line: [CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj]]
         considering line: [                                    CMakeCUDACompilerId.cu]
-        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res: [-D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
-        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res" > "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res: [-D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
+        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res" > "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
         considering line: [  CMakeCUDACompilerId.cu]
-        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-8.res]
-        considering line: [  #$ cudafe++ --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10" --m64 --parse_templates --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-5_CMakeCUDACompilerId.module_id" "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
-        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
-        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res" > "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-9_CMakeCUDACompilerId.cpp1.ii" ]
+        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-8.res]
+        considering line: [  #$ cudafe++ --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10" --m64 --parse_templates --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-5_CMakeCUDACompilerId.module_id" "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-6_CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__ -D__CUDACC_DEBUG__  /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"    -D "_MBCS" -D__CUDACC_VER_MAJOR__=12 -D__CUDACC_VER_MINOR__=8 -D__CUDACC_VER_BUILD__=61 -D__CUDA_API_VER_MAJOR__=12 -D__CUDA_API_VER_MINOR__=8 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" -Zi "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" ]]
+        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res" > "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-9_CMakeCUDACompilerId.cpp1.ii" ]
         considering line: [  CMakeCUDACompilerId.cu]
-        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-10.res]
-        considering line: [  #$ ""%CICC_PATH%\\cicc" --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"  -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin.c" -g -O0 -tused --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-5_CMakeCUDACompilerId.module_id" --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.c" --stub_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.gpu"  "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-9_CMakeCUDACompilerId.cpp1.ii" -o "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx""]
-        considering line: [  #$ ptxas -arch=sm_52 -m64 -g --dont-merge-basicblocks --return-at-end "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx"  -o "C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-11_CMakeCUDACompilerId.sm_52.cubin" ]
-        considering line: [  #$ fatbinary -64 --ident="F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --cmdline="-g --dont-merge-basicblocks --return-at-end " --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -g "--image3=kind=elf,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-11_CMakeCUDACompilerId.sm_52.cubin" "--image3=kind=ptx,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.ptx" --embedded-fatbin="C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin.c" ]
-        considering line: [  #$ erase C:/WINDOWS/TEMP/tmpxft_00006acc_00000000-4_CMakeCUDACompilerId.fatbin]
-        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"   -Zi "C:\\WINDOWS\\TEMP\\tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" ]]
-        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res" -Fo"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CompilerIdCUDA/x64/Debug/CMakeCUDACompilerId.cu.obj" ]
-        considering line: [  tmpxft_00006acc_00000000-7_CMakeCUDACompilerId.cudafe1.cpp]
-        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00006acc_00000000-12.res]
+        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-10.res]
+        considering line: [  #$ ""%CICC_PATH%\\cicc" --ms_c++14 --microsoft_version=1944 --msvc_target_version=1944 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --orig_src_path_name "F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --debug_mode --sdk_dir "C:\\Program Files (x86)\\Windows Kits\\10"  -arch compute_52 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin.c" -g -O0 -tused --module_id_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-5_CMakeCUDACompilerId.module_id" --gen_c_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.c" --stub_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.gpu"  "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-9_CMakeCUDACompilerId.cpp1.ii" -o "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx""]
+        considering line: [  #$ ptxas -arch=sm_52 -m64 -g --dont-merge-basicblocks --return-at-end "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx"  -o "C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-11_CMakeCUDACompilerId.sm_52.cubin" ]
+        considering line: [  #$ fatbinary -64 --ident="F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CMakeCUDACompilerId.cu" --cmdline="-g --dont-merge-basicblocks --return-at-end " --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -g "--image3=kind=elf,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-11_CMakeCUDACompilerId.sm_52.cubin" "--image3=kind=ptx,sm=52,file=C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.ptx" --embedded-fatbin="C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin.c" ]
+        considering line: [  #$ erase C:/WINDOWS/TEMP/tmpxft_00001ec8_00000000-4_CMakeCUDACompilerId.fatbin]
+        considering line: [  #$ resource file C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res: [-D__CUDA_ARCH__=520 -D__CUDA_ARCH_LIST__=520 -D__NV_LEGACY_LAUNCH -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc /EHsc /W0 /nologo /Od /FS /Zi /RTC1 /MDd /FdDebug\\vc143.pdb -I"F:/CUDA_12.8/include" -I"F:/CUDA_12.8/include" "-IF:\\CUDA_12.8\\bin/../include"   -Zi "C:\\WINDOWS\\TEMP\\tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp" ]]
+        considering line: [  #$ cl.exe @"C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res" -Fo"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/3.28.2/CompilerIdCUDA/CompilerIdCUDA/x64/Debug/CMakeCUDACompilerId.cu.obj" ]
+        considering line: [  tmpxft_00001ec8_00000000-7_CMakeCUDACompilerId.cudafe1.cpp]
+        considering line: [  #$ erase C:\\WINDOWS\\TEMP/tmpxft_00001ec8_00000000-12.res]
         considering line: [宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?]
         considering line: [Link:]
         considering line: [  C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCUDA.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCUDA.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCUDA.lib" /MACHINE:X64 F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA\\x64\\Debug\\CMakeCUDACompilerId.cu.obj]
@@ -415,7 +588,7 @@ events:
         considering line: [  LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\3.28.2\\CompilerIdCUDA\\CompilerIdCUDA.vcxproj]]
         considering line: [    2 涓鍛?]
         considering line: [    0 涓敊璇?]
-        considering line: [宸茬敤鏃堕棿 00:00:02.95]
+        considering line: [宸茬敤鏃堕棿 00:00:03.24]
         considering line: []
       
         link line regex: [^( *|.*[/\\])(link\\.exe|link\\.exe|lld-link|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
@@ -451,12 +624,12 @@ events:
     backtrace:
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:35 (enable_language)"
+      - "CMakeLists.txt:40 (enable_language)"
     checks:
       - "Detecting CUDA compiler ABI info"
     directories:
-      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw"
-      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw"
+      source: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b"
+      binary: "F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b"
     cmakeVariables:
       CMAKE_CUDA_ARCHITECTURES: "52"
       CMAKE_CUDA_FLAGS: "-D_WINDOWS -Xcompiler=\" /EHsc\""
@@ -467,72 +640,72 @@ events:
       variable: "CMAKE_CUDA_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw'
+        Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b'
         
-        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e5770.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_9613c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
         閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434
-        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:45:05銆?
+        鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:15銆?
         
-        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣)銆?
+        鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣)銆?
         PrepareForBuild:
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_e5770.dir\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_9613c.dir\\Debug\\鈥濄€?
           宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?
-          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\Debug\\鈥濄€?
-          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\Debug\\鈥濄€?
+          姝ｅ湪鍒涘缓鐩綍鈥渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\鈥濄€?
         InitializeBuildStatus:
-          姝ｅ湪鍒涘缓鈥渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
-          姝ｅ湪瀵光€渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
+          姝ｅ湪鍒涘缓鈥渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?
+          姝ｅ湪瀵光€渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?
         AddCudaCompileDeps:
           C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /D__CUDACC_VER_MAJOR__=12 /D__CUDACC_VER_MINOR__=8 /D_WINDOWS /DCMAKE_INTDIR="Debug" /D_MBCS /DCMAKE_INTDIR="Debug" /IF:\\CUDA_12.8\\bin /IF:\\CUDA_12.8\\include /I. /FIcuda_runtime.h /c F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu 
-        椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?1)姝ｅ湪鑺傜偣 1 涓婄敓鎴愨€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?1:2) (CudaBuildCore 涓洰鏍?銆?
+        椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?1)姝ｅ湪鑺傜偣 1 涓婄敓鎴愨€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?1:2) (CudaBuildCore 涓洰鏍?銆?
         CudaBuildCore:
           Compiling CUDA source file ..\\..\\..\\..\\..\\..\\..\\..\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu...
-          cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp45d9687bba254e08ad08af2d182d8356.cmd"
-          "F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_e5770\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52,code=[compute_52,sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_e5770.dir\\Debug\\vc143.pdb" -o cmTC_e5770.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu"
+          cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp6b83038f7105497f80d5127e3d3b3e05.cmd"
+          "F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_9613c\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52,code=[compute_52,sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_9613c.dir\\Debug\\vc143.pdb" -o cmTC_9613c.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu"
           
-          F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw>"F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_e5770\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52,code=[compute_52,sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_e5770.dir\\Debug\\vc143.pdb" -o cmTC_e5770.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu" 
-        cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
+          F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b>"F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_9613c\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52,code=[compute_52,sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_9613c.dir\\Debug\\vc143.pdb" -o cmTC_9613c.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu" 
+        cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
           CMakeCUDACompilerABI.cu
-        cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
+        cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
           CMakeCUDACompilerABI.cu
-        CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
+        CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
           CMakeCUDACompilerABI.cu
-        cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          tmpxft_0000389c_00000000-7_CMakeCUDACompilerABI.cudafe1.cpp
-        F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?
+        cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          tmpxft_00003778_00000000-7_CMakeCUDACompilerABI.cudafe1.cpp
+        F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\Debug\\cmTC_e5770.exe" /INCREMENTAL /ILK:"cmTC_e5770.dir\\Debug\\cmTC_e5770.ilk" /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudadevrt.lib cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.lib" /MACHINE:X64  /machine:x64 -v cmTC_e5770.dir\\Debug\\CMakeCUDACompilerABI.obj
-        LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-            姝ｅ湪鍒涘缓搴?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.lib 鍜屽璞?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.exp
-        LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          cmTC_e5770.vcxproj -> F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\Debug\\cmTC_e5770.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\Debug\\cmTC_9613c.exe" /INCREMENTAL /ILK:"cmTC_9613c.dir\\Debug\\cmTC_9613c.ilk" /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudadevrt.lib cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.lib" /MACHINE:X64  /machine:x64 -v cmTC_9613c.dir\\Debug\\CMakeCUDACompilerABI.obj
+        LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+            姝ｅ湪鍒涘缓搴?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.lib 鍜屽璞?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.exp
+        LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          cmTC_9613c.vcxproj -> F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\Debug\\cmTC_9613c.exe
         FinalizeBuildStatus:
-          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\unsuccessfulbuild鈥濄€?
-          姝ｅ湪瀵光€渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\cmTC_e5770.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
-        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
+          姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\unsuccessfulbuild鈥濄€?
+          姝ｅ湪瀵光€渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\cmTC_9613c.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?
+        宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?
         
         宸叉垚鍔熺敓鎴愩€?
         
-        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣) (1) ->
-        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?CudaBuildCore 鐩爣) (1:2) ->
+        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?CudaBuildCore 鐩爣) (1:2) ->
         (CudaBuildCore 鐩爣) -> 
-          cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
+          cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
         
         
-        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣) (1) ->
+        鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣) (1) ->
         (Link 鐩爣) -> 
-          LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
-          LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]
+          LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
+          LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]
         
             7 涓鍛?
             0 涓敊璇?
         
-        宸茬敤鏃堕棿 00:00:02.99
+        宸茬敤鏃堕棿 00:00:02.96
         
       exitCode: 0
   -
@@ -540,7 +713,7 @@ events:
     backtrace:
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:35 (enable_language)"
+      - "CMakeLists.txt:40 (enable_language)"
     message: |
       Parsed CUDA implicit include dir info: rv=start
         warn: unable to parse implicit include dirs!
@@ -551,76 +724,76 @@ events:
     backtrace:
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
       - "F:/CMake_3.28/share/cmake-3.28/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:35 (enable_language)"
+      - "CMakeLists.txt:40 (enable_language)"
     message: |
       Parsed CUDA implicit link information:
         link line regex: [^( *|.*[/\\])(link\\.exe|link\\.exe|lld-link|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
-        ignore line: [Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw']
+        ignore line: [Change Dir: 'F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b']
         ignore line: []
-        ignore line: [Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_e5770.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n]
+        ignore line: [Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" cmTC_9613c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n]
         ignore line: [閫傜敤浜?.NET Framework MSBuild 鐗堟湰 17.14.19+164abd434]
-        ignore line: [鐢熸垚鍚姩鏃堕棿涓?2026/1/20 15:45:05銆?]
+        ignore line: [鐢熸垚鍚姩鏃堕棿涓?2026/1/20 17:12:15銆?]
         ignore line: []
-        ignore line: [鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣)銆?]
+        ignore line: [鑺傜偣 1 涓婄殑椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣)銆?]
         ignore line: [PrepareForBuild:]
-        ignore line: [  姝ｅ湪鍒涘缓鐩綍鈥渃mTC_e5770.dir\\Debug\\鈥濄€?]
+        ignore line: [  姝ｅ湪鍒涘缓鐩綍鈥渃mTC_9613c.dir\\Debug\\鈥濄€?]
         ignore line: [  宸插惎鐢ㄧ粨鏋勫寲杈撳嚭銆傜紪璇戝櫒璇婃柇鐨勬牸寮忚缃皢鍙嶆槧閿欒灞傛缁撴瀯銆傛湁鍏宠缁嗕俊鎭紝璇峰弬闃?https://aka.ms/cpp/structured-output銆?]
-        ignore line: [  姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\Debug\\鈥濄€?]
-        ignore line: [  姝ｅ湪鍒涘缓鐩綍鈥渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\鈥濄€?]
+        ignore line: [  姝ｅ湪鍒涘缓鐩綍鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\Debug\\鈥濄€?]
+        ignore line: [  姝ｅ湪鍒涘缓鐩綍鈥渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\鈥濄€?]
         ignore line: [InitializeBuildStatus:]
-        ignore line: [  姝ｅ湪鍒涘缓鈥渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?]
-        ignore line: [  姝ｅ湪瀵光€渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?]
+        ignore line: [  姝ｅ湪鍒涘缓鈥渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\unsuccessfulbuild鈥濓紝鍥犱负宸叉寚瀹氣€淎lwaysCreate鈥濄€?]
+        ignore line: [  姝ｅ湪瀵光€渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\unsuccessfulbuild鈥濇墽琛?Touch 浠诲姟銆?]
         ignore line: [AddCudaCompileDeps:]
         ignore line: [  C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /D__CUDACC_VER_MAJOR__=12 /D__CUDACC_VER_MINOR__=8 /D_WINDOWS /DCMAKE_INTDIR="Debug" /D_MBCS /DCMAKE_INTDIR="Debug" /IF:\\CUDA_12.8\\bin /IF:\\CUDA_12.8\\include /I. /FIcuda_runtime.h /c F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu ]
-        ignore line: [椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?1)姝ｅ湪鑺傜偣 1 涓婄敓鎴愨€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?1:2) (CudaBuildCore 涓洰鏍?銆?]
+        ignore line: [椤圭洰鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?1)姝ｅ湪鑺傜偣 1 涓婄敓鎴愨€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?1:2) (CudaBuildCore 涓洰鏍?銆?]
         ignore line: [CudaBuildCore:]
         ignore line: [  Compiling CUDA source file ..\\..\\..\\..\\..\\..\\..\\..\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu...]
-        ignore line: [  cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp45d9687bba254e08ad08af2d182d8356.cmd"]
-        ignore line: [  "F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_e5770\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52 code=[compute_52 sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_e5770.dir\\Debug\\vc143.pdb" -o cmTC_e5770.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu"]
+        ignore line: [  cmd.exe /C "C:\\WINDOWS\\TEMP\\tmp6b83038f7105497f80d5127e3d3b3e05.cmd"]
+        ignore line: [  "F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_9613c\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52 code=[compute_52 sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_9613c.dir\\Debug\\vc143.pdb" -o cmTC_9613c.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu"]
         ignore line: [  ]
-        ignore line: [  F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw>"F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_e5770\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52 code=[compute_52 sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_e5770.dir\\Debug\\vc143.pdb" -o cmTC_e5770.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu" ]
-        ignore line: [cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
+        ignore line: [  F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b>"F:\\CUDA_12.8\\bin\\nvcc.exe"  --use-local-env -ccbin "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64" -x cu    -IF:\\CUDA_12.8\\include     --keep-dir cmTC_9613c\\x64\\Debug  -maxrregcount=0    --machine 64 --compile -cudart static --generate-code=arch=compute_52 code=[compute_52 sm_52] -Xcompiler="/EHsc -Zi -Ob0 -v" -g  -D_WINDOWS -D"CMAKE_INTDIR=\\"Debug\\"" -D_MBCS -D"CMAKE_INTDIR=\\"Debug\\"" -Xcompiler "/EHsc /W1 /nologo /Od /FS /Zi /RTC1 /MDd " -Xcompiler "/FdcmTC_9613c.dir\\Debug\\vc143.pdb" -o cmTC_9613c.dir\\Debug\\CMakeCUDACompilerABI.obj "F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCUDACompilerABI.cu" ]
+        ignore line: [cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
         ignore line: [  CMakeCUDACompilerABI.cu]
-        ignore line: [cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
+        ignore line: [cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
         ignore line: [  CMakeCUDACompilerABI.cu]
-        ignore line: [CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
+        ignore line: [CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
         ignore line: [  CMakeCUDACompilerABI.cu]
-        ignore line: [cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  tmpxft_0000389c_00000000-7_CMakeCUDACompilerABI.cudafe1.cpp]
-        ignore line: [F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?]
+        ignore line: [cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  tmpxft_00003778_00000000-7_CMakeCUDACompilerABI.cudafe1.cpp]
+        ignore line: [F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?CudaBuildCore 涓洰鏍?鐨勬搷浣溿€?]
         ignore line: [Link:]
-        ignore line: [  C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\Debug\\cmTC_e5770.exe" /INCREMENTAL /ILK:"cmTC_e5770.dir\\Debug\\cmTC_e5770.ilk" /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudadevrt.lib cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.lib" /MACHINE:X64  /machine:x64 -v cmTC_e5770.dir\\Debug\\CMakeCUDACompilerABI.obj]
-        ignore line: [LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [    姝ｅ湪鍒涘缓搴?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.lib 鍜屽璞?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-sx8plw/Debug/cmTC_e5770.exp]
-        ignore line: [LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  cmTC_e5770.vcxproj -> F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\Debug\\cmTC_e5770.exe]
+        ignore line: [  C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.44.35207\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\Debug\\cmTC_9613c.exe" /INCREMENTAL /ILK:"cmTC_9613c.dir\\Debug\\cmTC_9613c.ilk" /NOLOGO /LIBPATH:F:\\CUDA_12.8\\lib\\x64 cudadevrt.lib cudart_static.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.lib" /MACHINE:X64  /machine:x64 -v cmTC_9613c.dir\\Debug\\CMakeCUDACompilerABI.obj]
+        ignore line: [LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [    姝ｅ湪鍒涘缓搴?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.lib 鍜屽璞?F:/Desktop/Study/Undergraduate/HwLoad/build/CMakeFiles/CMakeScratch/TryCompile-tzvh3b/Debug/cmTC_9613c.exp]
+        ignore line: [LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  cmTC_9613c.vcxproj -> F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\Debug\\cmTC_9613c.exe]
         ignore line: [FinalizeBuildStatus:]
-        ignore line: [  姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\unsuccessfulbuild鈥濄€?]
-        ignore line: [  姝ｅ湪瀵光€渃mTC_e5770.dir\\Debug\\cmTC_e5770.tlog\\cmTC_e5770.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?]
-        ignore line: [宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?]
+        ignore line: [  姝ｅ湪鍒犻櫎鏂囦欢鈥渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\unsuccessfulbuild鈥濄€?]
+        ignore line: [  姝ｅ湪瀵光€渃mTC_9613c.dir\\Debug\\cmTC_9613c.tlog\\cmTC_9613c.lastbuildstate鈥濇墽琛?Touch 浠诲姟銆?]
+        ignore line: [宸插畬鎴愮敓鎴愰」鐩€淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣)鐨勬搷浣溿€?]
         ignore line: []
         ignore line: [宸叉垚鍔熺敓鎴愩€?]
         ignore line: []
-        ignore line: [鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣) (1) ->]
-        ignore line: [鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?CudaBuildCore 鐩爣) (1:2) ->]
+        ignore line: [鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣) (1) ->]
+        ignore line: [鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?CudaBuildCore 鐩爣) (1:2) ->]
         ignore line: [(CudaBuildCore 鐩爣) -> ]
-        ignore line: [  cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
+        ignore line: [  cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  CUDACOMPILE : nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning). [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  cl : 鍛戒护琛?warning D9002: 蹇界暐鏈煡閫夐」鈥?v鈥?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  F:\\CMake_3.28\\share\\cmake-3.28\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 鈥渞eturn鈥? 浠庘€渋nt鈥濆埌鈥渂ool鈥濇埅鏂?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
         ignore line: []
         ignore line: []
-        ignore line: [鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj鈥?榛樿鐩爣) (1) ->]
+        ignore line: [鈥淔:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj鈥?榛樿鐩爣) (1) ->]
         ignore line: [(Link 鐩爣) -> ]
-        ignore line: [  LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
-        ignore line: [  LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-sx8plw\\cmTC_e5770.vcxproj]]
+        ignore line: [  LINK : warning LNK4044: 鏃犳硶璇嗗埆鐨勯€夐」鈥?v鈥濓紱宸插拷鐣?[F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
+        ignore line: [  LINK : warning LNK4098: 榛樿搴撯€淟IBCMT鈥濅笌鍏朵粬搴撶殑浣跨敤鍐茬獊锛涜浣跨敤 /NODEFAULTLIB:library [F:\\Desktop\\Study\\Undergraduate\\HwLoad\\build\\CMakeFiles\\CMakeScratch\\TryCompile-tzvh3b\\cmTC_9613c.vcxproj]]
         ignore line: []
         ignore line: [    7 涓鍛?]
         ignore line: [    0 涓敊璇?]
         ignore line: []
-        ignore line: [宸茬敤鏃堕棿 00:00:02.99]
+        ignore line: [宸茬敤鏃堕棿 00:00:02.96]
         ignore line: []
         ignore line: []
         implicit libs: []

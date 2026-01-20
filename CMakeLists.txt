@@ -21,6 +21,11 @@ target_include_directories(loadgen
         ${PROJECT_SOURCE_DIR}
 )
 
+# ===== Thread =====
+set(THREADS_PREFER_PTHREAD_FLAG ON)  
+find_package(Threads REQUIRED) 
+target_link_libraries(loadgen PRIVATE Threads::Threads)
+
 # ===== CPU =====
 if (HWLOAD_USE_CPU)
     message(STATUS "CPU load generator enabled")

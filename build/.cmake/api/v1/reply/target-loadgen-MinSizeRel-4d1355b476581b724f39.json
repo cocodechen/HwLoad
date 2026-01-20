@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "RelWithDebInfo/loadgen.exe"
+			"path" : "MinSizeRel/loadgen.exe"
 		},
 		{
-			"path" : "RelWithDebInfo/loadgen.pdb"
+			"path" : "MinSizeRel/loadgen.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -38,25 +38,25 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 48,
+				"line" : 53,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 28,
+				"line" : 33,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 41,
+				"line" : 46,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 58,
+				"line" : 63,
 				"parent" : 0
 			},
 			{
@@ -68,19 +68,19 @@
 			{
 				"command" : 4,
 				"file" : 0,
-				"line" : 43,
+				"line" : 48,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 0,
-				"line" : 27,
+				"line" : 32,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 0,
-				"line" : 39,
+				"line" : 44,
 				"parent" : 0
 			}
 		]
@@ -91,7 +91,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -std:c++17 -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O1 /Ob1 /DNDEBUG -std:c++17 -MD"
 				}
 			],
 			"defines" : 
@@ -140,7 +140,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-D_WINDOWS -Xcompiler=\" /EHsc\" -Xcompiler=\" -Zi -O2 -Ob1\" -DNDEBUG -std=c++17 -arch=native -Xcompiler=-MD"
+					"fragment" : "-D_WINDOWS -Xcompiler=\" /EHsc\" -Xcompiler=\"-O1 -Ob1\" -DNDEBUG -std=c++17 -arch=native -Xcompiler=-MD"
 				}
 			],
 			"defines" : 
@@ -197,11 +197,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD",
+				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O1 /Ob1 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
+				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console",
 				"role" : "flags"
 			},
 			{

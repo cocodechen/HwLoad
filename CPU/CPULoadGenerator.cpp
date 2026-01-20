@@ -10,6 +10,8 @@
 #ifdef __linux__
     #include <unistd.h>
     #include <fcntl.h>
+    #include <sys/mman.h>   
+    #include <sys/stat.h>
 #endif
 
 CPULoadGenerator::CPULoadGenerator(): running(false){}
@@ -43,155 +45,197 @@ void CPULoadGenerator::stop()
     if (worker.joinable())worker.join();
 }
 
-/*busy loop + sleep*/
 void CPULoadGenerator::runCompute()
 {
-    using namespace std::chrono;
+    const unsigned cores = std::max(1u, std::thread::hardware_concurrency());
 
-    auto busy_idle = [&](milliseconds busy, milliseconds idle) {
+    static std::atomic<uint64_t> sink{0};
+
+    auto worker = [&](int intensity) {
+        double x = 1.0;
         while (running) {
-            auto start = steady_clock::now();
-            while (steady_clock::now() - start < busy) {
-                volatile double x = 0;
-                for (int i = 0; i < 10000; ++i)
-                    x += std::sin(i);
+            for (int i = 0; i < intensity; ++i) {
+                x = x * 1.0000001
+                + std::sin(x)
+                - std::log(x + 1.0)
+                + std::sqrt(x + 0.5);
+
+                if ((i & 15) == 0)
+                    x *= 0.999;
             }
-            if (idle.count() > 0)
-                std::this_thread::sleep_for(idle);
+            // 防止编译器消除整个循环
+            sink.fetch_add(static_cast<uint64_t>(x),std::memory_order_relaxed);
         }
     };
 
-    switch (cur_level)
-    {
-        case LoadLevel::Idle:
-            busy_idle(0ms, 100ms);
-            break;
-        case LoadLevel::Low:
-            busy_idle(10ms, 90ms);
-            break;
-        case LoadLevel::Medium:
-            busy_idle(40ms, 60ms);
-            break;
-        case LoadLevel::High:
-            busy_idle(80ms, 20ms);
-            break;
-        case LoadLevel::Saturated:
-            while (running)
-            {
-                volatile double x = 0;
-                for (int i = 0; i < 100000; ++i)
-                    x += std::sqrt(i);
-            }
-            break;
+    int intensity = 0;
+    switch (cur_level) {
+    case LoadLevel::Idle:      intensity = 0; break;
+    case LoadLevel::Low:       intensity = 2'000; break;
+    case LoadLevel::Medium:    intensity = 10'000; break;
+    case LoadLevel::High:      intensity = 50'000; break;
+    case LoadLevel::Saturated: intensity = 200'000; break;
     }
+
+    if (intensity == 0) {
+        while (running)
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return;
+    }
+
+    std::vector<std::thread> threads;
+    for (unsigned i = 0; i < cores; ++i)
+        threads.emplace_back(worker, intensity);
+
+    for (auto& t : threads)
+        t.join();
 }
 
 void CPULoadGenerator::runMemory()
 {
-    constexpr size_t BUF_SIZE = 256 * 1024 * 1024; // 256MB
-    std::vector<char> buffer(BUF_SIZE);
+    const unsigned threads = std::max(1u, std::thread::hardware_concurrency());
 
-    auto touch = [&](size_t stride) {
-        for (size_t i = 0; i < BUF_SIZE; i += stride) {
-            buffer[i]++;
+    const size_t total_size =
+        (cur_level == LoadLevel::Low)       ? 32  * 1024 * 1024 :
+        (cur_level == LoadLevel::Medium)    ? 128 * 1024 * 1024 :
+        (cur_level == LoadLevel::High)      ? 512 * 1024 * 1024 :
+        (cur_level == LoadLevel::Saturated) ? 1024 * 1024 * 1024 :
+                                              0;
+
+    if (total_size == 0) {
+        while (running)
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return;
+    }
+
+    std::vector<char> buffer(total_size);
+    const size_t chunk = total_size / threads;
+
+    const size_t seq_stride = 64;
+    const size_t rnd_stride = 4096; // page 粒度扰动
+
+    auto worker = [&](size_t begin, size_t end) {
+        while (running) {
+            // 顺序访问（主体）
+            for (size_t i = begin; i < end; i += seq_stride)
+                buffer[i]++;
+
+            // 固定比例随机扰动（不 shuffle）
+            for (size_t i = begin; i < end; i += rnd_stride)
+                buffer[i ^ 0x5a5a]++;
         }
     };
 
-    size_t stride = 64; // cache line
-    while (running)
-    {
-        switch (cur_level)
-        {
-        case LoadLevel::Idle:
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            break;
-        case LoadLevel::Low:
-            touch(512);
-            break;
-        case LoadLevel::Medium:
-            touch(256);
-            break;
-        case LoadLevel::High:
-            touch(128);
-            break;
-        case LoadLevel::Saturated:
-            touch(64);
-            break;
-        }
+    std::vector<std::thread> ts;
+    for (unsigned i = 0; i < threads; ++i) {
+        size_t b = i * chunk;
+        size_t e = (i == threads - 1) ? total_size : b + chunk;
+        ts.emplace_back(worker, b, e);
     }
+
+    for (auto& t : ts)
+        t.join();
 }
 
 void CPULoadGenerator::runData()
 {
-    constexpr size_t N = 64 * 1024 * 1024; // 64M ints
-    std::vector<int> data(N, 1);
+    const size_t N =
+        (cur_level == LoadLevel::Low)       ? 1  * 1024 * 1024 :
+        (cur_level == LoadLevel::Medium)    ? 8  * 1024 * 1024 :
+        (cur_level == LoadLevel::High)      ? 32 * 1024 * 1024 :
+        (cur_level == LoadLevel::Saturated) ? 128 * 1024 * 1024 :
+                                              0;
 
-    auto process = [&](size_t step)
-    {
-        for (size_t i = 0; i < N; i += step) {
-            data[i] = (data[i] * 31 + 7) % 1000003;
-        }
+    if (N == 0) {
+        while (running)
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return;
+    }
+
+    struct Node {
+        int value;
+        int next;
+        char pad[64 - 8]; // cache line sized
     };
 
-    while (running)
-    {
-        switch (cur_level)
-        {
-        case LoadLevel::Idle:
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            break;
-        case LoadLevel::Low:
-            process(1024);
-            break;
-        case LoadLevel::Medium:
-            process(256);
-            break;
-        case LoadLevel::High:
-            process(64);
-            break;
-        case LoadLevel::Saturated:
-            process(1);
-            break;
+    std::vector<Node> data(N);
+    for (size_t i = 0; i < N; ++i) {
+        data[i].value = static_cast<int>(i);
+        data[i].next  = (i * 1315423911u) % N; // pseudo-random chain
+    }
+
+    int idx = 0;
+    volatile int sink = 0;
+
+    using clock = std::chrono::steady_clock;
+
+    while (running) {
+        auto start = clock::now();
+
+        while (clock::now() - start < std::chrono::milliseconds(20)) {
+            Node& n = data[idx];
+
+            // -------- memory part --------
+            int v = n.value;
+
+            // -------- compute part --------
+            // 小 compute kernel，防止被优化掉
+            for (int k = 0; k < 8; ++k) {
+                v = v * 31 + (v >> 3) + k;
+                v ^= (v << 7);
+            }
+
+            // -------- write-back --------
+            n.value = v;
+            sink += v;
+
+            idx = n.next;
         }
+
+        // 明确的 idle window，避免 scheduler 噪声
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 }
-
 
 #ifdef __linux__
 void CPULoadGenerator::runIO()
 {
-    constexpr size_t BUF_SIZE = 4 * 1024 * 1024; // 4MB
-    std::vector<char> buffer(BUF_SIZE, 1);
+    const size_t map_size =
+        (cur_level == LoadLevel::Low)       ? 16  * 1024 * 1024 :
+        (cur_level == LoadLevel::Medium)    ? 64  * 1024 * 1024 :
+        (cur_level == LoadLevel::High)      ? 256 * 1024 * 1024 :
+        (cur_level == LoadLevel::Saturated) ? 1024 * 1024 * 1024 :
+                                              0;
 
-    int fd = open("cpu_io_tmp.bin", O_CREAT | O_RDWR | O_TRUNC, 0644);
-    if (fd < 0) return;
-
-    while (running) {
-        switch (cur_level) {
-        case LoadLevel::Idle:
+    if (map_size == 0) {
+        while (running)
             std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            break;
-        case LoadLevel::Low:
-            write(fd, buffer.data(), 512 * 1024);
-            fsync(fd);
-            break;
-        case LoadLevel::Medium:
-            write(fd, buffer.data(), 1 * 1024 * 1024);
-            fsync(fd);
-            break;
-        case LoadLevel::High:
-            write(fd, buffer.data(), 2 * 1024 * 1024);
-            fsync(fd);
-            break;
-        case LoadLevel::Saturated:
-            write(fd, buffer.data(), BUF_SIZE);
-            fsync(fd);
-            break;
-        }
+        return;
     }
 
+    int fd = open("/tmp/cpu_io_tmp.bin", O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (fd < 0) return;
+
+    ftruncate(fd, map_size);
+
+    char* p = static_cast<char*>(
+        mmap(nullptr, map_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
+
+    const size_t stride = 4096;
+
+    while (running) {
+        for (size_t i = 0; i < map_size; i += stride * 16)
+            p[i]++;
+
+        msync(p, map_size, MS_ASYNC);
+
+        // IO 场景必须给 CPU 明确 idle
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+
+    munmap(p, map_size);
     close(fd);
-    unlink("cpu_io_tmp.bin");
+    unlink("/tmp/cpu_io_tmp.bin");
 }
 #endif
 
