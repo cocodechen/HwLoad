@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Release/loadgen.exe"
+			"path" : "RelWithDebInfo/loadgen.exe"
 		},
 		{
-			"path" : "Release/loadgen.pdb"
+			"path" : "RelWithDebInfo/loadgen.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -56,7 +56,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 63,
+				"line" : 73,
 				"parent" : 0
 			},
 			{
@@ -91,7 +91,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++17 -MD"
+					"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -std:c++17 -MD"
 				}
 			],
 			"defines" : 
@@ -140,7 +140,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-D_WINDOWS -Xcompiler=\" /EHsc\" -Xcompiler=\"-O2 -Ob2\" -DNDEBUG -std=c++17 -arch=native -Xcompiler=-MD"
+					"fragment" : "-D_WINDOWS -Xcompiler=\" /EHsc\" -Xcompiler=\" -Zi -O2 -Ob1\" -DNDEBUG -std=c++17 -arch=native -Xcompiler=-MD"
 				}
 			],
 			"defines" : 
@@ -197,11 +197,11 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+				"fragment" : "/DWIN32 /D_WINDOWS /EHsc /Zi /O2 /Ob1 /DNDEBUG -MD",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console",
+				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console",
 				"role" : "flags"
 			},
 			{

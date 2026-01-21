@@ -58,6 +58,16 @@ if (HWLOAD_USE_NPU)
     message(STATUS "NPU load generator enabled")
 endif()
 
+# ===== NPU =====
+if (HWLOAD_USE_NPU)
+    message(STATUS "NPU load generator enabled")
+    target_sources(loadgen PRIVATE NPU/NPULoadGenerator.cpp)
+    target_compile_definitions(loadgen PRIVATE HWLOAD_USE_NPU)
+    target_compile_definitions(loadgen PRIVATE 
+    NPU_SCRIPT_DIR="${CMAKE_CURRENT_SOURCE_DIR}/NPU"
+)
+endif()
+
 # ===== Platform =====
 if (WIN32)
     target_compile_definitions(loadgen PRIVATE _CRT_SECURE_NO_WARNINGS)
