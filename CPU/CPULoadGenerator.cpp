@@ -241,92 +241,62 @@ void CPULoadGenerator::runIO()
 // --- 单个 CPU 核心的工作逻辑 ---
 void CPULoadGenerator::cpu_core_worker(int core_id)
 {
-    // 每个线程独立的随机偏移，避免波形完全同步
     double offset = static_cast<double>(core_id * 10);
     
-    // 构造临时文件路径 (Windows/Linux 通用)
-    fs::path temp_dir = fs::temp_directory_path();
-    fs::path file_path = temp_dir / ("stress_test_" + std::to_string(core_id) + ".dat");
+    // 使用 std::chrono 进行精确的时间片控制
+    using namespace std::chrono;
+    const int TIME_SLICE_MS = 100; // 每个周期总长 100ms
 
-    std::vector<char> mem_buffer; // 模拟内存占用
-    
-    std::mt19937 gen(std::random_device{}());
-    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    // 预分配计算资源，避免反复 new/delete 消耗系统时间而非 CPU 时间
+    const int MAT_SIZE = 1024;
+    std::vector<double> data_a(MAT_SIZE, 1.0);
+    std::vector<double> data_b(MAT_SIZE, 2.0);
 
     while (running) {
-        double target_load = get_wave_intensity(offset);
+        auto cycle_start = high_resolution_clock::now();
+        double target_load = get_wave_intensity(offset); // 0.0 - 1.0
 
-        // 1. 低负载休眠
-        if (target_load < 0.1) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-            continue;
-        }
+        // 设定本周期的工作时长
+        double work_ms = target_load * TIME_SLICE_MS;
+        double sleep_ms = (1.0 - target_load) * TIME_SLICE_MS;
 
-        // 2. 计算 (Compute) - 矩阵乘法模拟
-        if (running) {
-            int size = static_cast<int>(200 * target_load); // 动态大小
-            std::vector<double> a(size * size, 1.0);
-            std::vector<double> b(size * size, 2.0);
-            // 简单的防优化计算
-            volatile double res = 0;
-            // 做一部分乘法
-            int loops = std::max(1, static_cast<int>(size * target_load));
-            for(int i=0; i<loops; ++i) {
-                    res += a[i] * b[i];
-            }
-            (void)res;
-        }
+        // --- 阶段1: 暴力计算 (Burn CPU) ---
+        // 持续运算直到达到 work_ms 时长
+        // 这种方式能保证无论 CPU 多快，占用率都是准确的
+        if (work_ms > 0.5) { // 至少工作 0.5ms
+            while (running) {
+                // 检查是否超时
+                auto now = high_resolution_clock::now();
+                duration<double, std::milli> elapsed = now - cycle_start;
+                if (elapsed.count() >= work_ms) break;
 
-        // 3. 内存 (Memory) - 动态分配
-        if (running && target_load > 0.4) {
-            try {
-                // 目标: 0 ~ 50MB (每线程)
-                size_t target_size = static_cast<size_t>(50 * 1024 * 1024 * target_load);
-                if (mem_buffer.size() < target_size) {
-                    mem_buffer.resize(target_size);
-                    // 写入数据触发缺页中断，确保物理内存占用
-                    std::fill(mem_buffer.begin(), mem_buffer.end(), (char)dist(gen));
-                } else if (mem_buffer.size() > target_size + (1024*1024)) {
-                    mem_buffer.resize(target_size);
-                    mem_buffer.shrink_to_fit();
+                // 密集浮点运算 (简单的乘加运算，模拟 FPU 压力)
+                // 使用 volatile 防止编译器优化掉循环
+                volatile double val = 0;
+                for (int i = 0; i < 1000; ++i) {
+                    val += data_a[i] * data_b[i] + 0.001;
                 }
-            } catch (const std::bad_alloc&) {
-                // 忽略内存不足
+                (void)val;
             }
         }
 
-        // 4. 磁盘 (Disk IO) - 仅在高负载时触发
-        if (running && target_load > 0.6) {
-            try {
-                // 写文件
-                {
-                    std::ofstream ofs(file_path, std::ios::binary | std::ios::trunc);
-                    std::vector<char> buf(1024 * 1024, 'A'); // 1MB block
-                    int write_mb = static_cast<int>(5 * target_load);
-                    for(int k=0; k<write_mb && running; ++k) ofs.write(buf.data(), buf.size());
-                }
-                // 读文件
-                if (fs::exists(file_path)) {
-                    std::ifstream ifs(file_path, std::ios::binary);
-                    char temp[4096];
-                    while(ifs.read(temp, sizeof(temp)) && running);
-                }
-                // 删文件
-                if (fs::exists(file_path)) fs::remove(file_path);
-            } catch (...) {
-                // 忽略 IO 错误 (例如文件被占用)
-            }
+        // --- 阶段2: 偶尔的内存/IO 压力 (降低频率) ---
+        // 只有在负载很高时，且每 10 个周期(约1秒)触发一次，避免拖累 CPU%
+        static thread_local int counter = 0;
+        if (target_load > 0.7 && ++counter % 10 == 0) {
+            // 简单的内存带宽压力：快速写入
+            // 注意：这里不做分配，只做写操作
+            std::fill(data_a.begin(), data_a.end(), target_load);
         }
 
-        // 5. 动态休眠控制
-        // 负载越高，休眠越短。
-        // (1.0 - load) * factor. 
-        int sleep_ms = static_cast<int>((1.0 - target_load) * 50);
-        if (sleep_ms > 0) std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+        // --- 阶段3: 精确休眠 ---
+        if (sleep_ms > 1.0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long>(sleep_ms)));
+        } else {
+            // 极高负载时，让出时间片即可，不深度睡眠
+            std::this_thread::yield();
+        }
     }
-
-    // 清理残留文件
-    try { if (fs::exists(file_path)) fs::remove(file_path); } catch(...) {}
 }
 
 void CPULoadGenerator::runRandom()
