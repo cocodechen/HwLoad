@@ -18,3 +18,4 @@ enum class LoadLevel
     High,       // 高负载（接近瓶颈）
     Saturated   // 满载 / 压测极限
 };
+
