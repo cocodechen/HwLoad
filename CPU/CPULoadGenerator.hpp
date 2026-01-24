@@ -11,7 +11,8 @@ class CPULoadGenerator : public LoadGenerator
 {
 public:
     CPULoadGenerator();
-
+    ~CPULoadGenerator();
+    
     void start(ProfileType profile,LoadLevel level) override;
     void stop() override;
 
@@ -22,6 +23,9 @@ private:
 #ifdef __linux__
     void runIO();
 #endif
+    void cpu_core_worker(int core_id);
+    void runRandom();
+
     std::atomic<bool> running;
     std::thread worker;
 };

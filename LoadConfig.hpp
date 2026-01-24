@@ -1,21 +1,29 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 enum class ProfileType
 {
-    Compute,   // 计算密集：CPU、GPU、NPU
-    Memory,    // 内存/带宽密集：CPU、GPU
-    Data,      // 泛指大规模数据处理=Compute+Memory：CPU、GPU、NPU
-    IO         // 磁盘/网络 ：CPU
+    Compute,   // 计算密集
+    Memory,    // 内存/带宽密集
+    Data,      // 混合
+    IO,        // IO
+    Random     // [NEW] 随机模拟真实负载
 };
 
 enum class LoadLevel
 {
-    Idle,       // 空闲 / 几乎无负载
-    Low,        // 低负载（轻微扰动）
-    Medium,     // 中等负载（可观但不饱和）
-    High,       // 高负载（接近瓶颈）
-    Saturated   // 满载 / 压测极限
+    Idle,       
+    Low,        
+    Medium,     
+    High,       
+    Saturated   
 };
 
+struct LoadTask
+{
+    std::string device;
+    ProfileType profile;
+    LoadLevel level;
+};

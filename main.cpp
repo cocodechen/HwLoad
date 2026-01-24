@@ -1,138 +1,138 @@
 #include "LoadGenerator.hpp"
-
 #ifdef HWLOAD_USE_CPU
     #include "CPU/CPULoadGenerator.hpp"
 #endif
-
 #ifdef HWLOAD_USE_GPU
     #include "GPU/GPULoadGenerator.hpp"
 #endif
-
 #ifdef HWLOAD_USE_NPU
     #include "NPU/NPULoadGenerator.hpp"
 #endif
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <memory>
 #include <thread>
 #include <chrono>
 #include <csignal>
 #include <atomic>
+#include <sstream>
 
 std::atomic<bool> g_stop_requested{false};
-static void signal_handler(int signal)
-{
-    if (signal == SIGINT)
-    {
-        g_stop_requested.store(true, std::memory_order_relaxed);
-    }
+
+static void signal_handler(int signal) {
+    if (signal == SIGINT) g_stop_requested.store(true);
 }
 
-// ---------- parse helpers ----------
-ProfileType parseProfile(const std::string& s)
-{
+// 辅助解析函数
+ProfileType parseProfile(const std::string& s) {
     if (s == "compute") return ProfileType::Compute;
     if (s == "memory")  return ProfileType::Memory;
     if (s == "io")      return ProfileType::IO;
     if (s == "data")    return ProfileType::Data;
-    throw std::invalid_argument("unknown profile");
+    if (s == "random")  return ProfileType::Random; // [NEW]
+    throw std::invalid_argument("unknown profile: " + s);
 }
 
-LoadLevel parseLevel(const std::string& s)
-{
+LoadLevel parseLevel(const std::string& s) {
     if (s == "idle")       return LoadLevel::Idle;
     if (s == "low")        return LoadLevel::Low;
     if (s == "medium")     return LoadLevel::Medium;
     if (s == "high")       return LoadLevel::High;
     if (s == "saturated")  return LoadLevel::Saturated;
-    throw std::invalid_argument("unknown level");
+    throw std::invalid_argument("unknown level: " + s);
 }
 
-std::unique_ptr<LoadGenerator> parseDevice(const std::string& device)
-{
+std::unique_ptr<LoadGenerator> createGenerator(const std::string& device) {
     if (device == "cpu") {
 #ifdef HWLOAD_USE_CPU
         return std::make_unique<CPULoadGenerator>();
-#else
-        throw std::runtime_error("CPU support not enabled at compile time");
 #endif
-    }
-
-    if (device == "gpu") {
+    } else if (device == "gpu") {
 #ifdef HWLOAD_USE_GPU
         return std::make_unique<GPULoadGenerator>();
-#else
-        throw std::runtime_error("GPU support not enabled at compile time");
 #endif
-    }
-
-    if (device == "npu") {
+    } else if (device == "npu") {
 #ifdef HWLOAD_USE_NPU
         return std::make_unique<NPULoadGenerator>();
-#else
-        throw std::runtime_error("NPU support not enabled at compile time");
 #endif
     }
-
-    throw std::invalid_argument("Unknown device: " + device);
+    throw std::runtime_error("Device not supported or enabled: " + device);
 }
 
+// 解析格式: "cpu:compute:high"
+LoadTask parseArg(const std::string& arg)
+{
+    std::stringstream ss(arg);
+    std::string segment;
+    std::vector<std::string> parts;
+    while(std::getline(ss, segment, ':')) {
+        parts.push_back(segment);
+    }
+    // 格式 1: device:random (parts=2)
+    if (parts.size() == 2) {
+        ProfileType p = parseProfile(parts[1]);
+        if (p == ProfileType::Random) {
+            // Random 不需要 Level，给一个默认值即可
+            return {parts[0], p, LoadLevel::Medium}; 
+        } else {
+            throw std::invalid_argument("Profile '" + parts[1] + "' requires a level (e.g., :high)");
+        }
+    }
+    // 格式 2: device:compute:high (parts=3)
+    else if (parts.size() == 3) {
+        ProfileType p = parseProfile(parts[1]);
+        if (p == ProfileType::Random) {
+             // 如果用户非要写 cpu:random:high，也可以兼容，或者报错
+             // 这里选择兼容
+             return {parts[0], p, LoadLevel::Medium};
+        }
+        return {parts[0], p, parseLevel(parts[2])};
+    }
+
+    throw std::invalid_argument("Invalid format. Use 'device:random' or 'device:profile:level'");
+}
 
 int main(int argc, char* argv[])
 {
-    // ---------- Parameter parsing ----------
-    if (argc != 4) {
-        std::cerr << "Usage:\n"
-                  << "  loadgen <cpu|gpu|npu> <compute|memory|io|data> "
-                  << "<idle|low|medium|high|saturated>\n";
+    if (argc < 2) {
+        std::cerr << "Usage: loadgen <device:profile:level> [device:profile:level] ...\n"
+                  << "Example: loadgen cpu:compute:high gpu:random:medium\n";
         return 1;
     }
 
-    std::string device  = argv[1];
-    std::string profile = argv[2];
-    std::string level   = argv[3];
-
-    ProfileType profileType;
-    LoadLevel   loadLevel;
-    std::unique_ptr<LoadGenerator> generator;
+    std::vector<std::unique_ptr<LoadGenerator>> generators;
     try
     {
-        profileType = parseProfile(profile);
-        loadLevel   = parseLevel(level);
-        generator = parseDevice(device);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Argument error: " << e.what() << "\n";
+        for (int i = 1; i < argc; ++i) {
+            auto task = parseArg(argv[i]);
+            auto gen = createGenerator(task.device);
+            // 优化启动顺序：先放入 vector，再 start
+            // 这样即使 start 抛出异常，vector 析构时也能正确释放 gen
+            // 前提是 LoadGenerator 的析构函数必须安全 (见下文)
+            generators.push_back(std::move(gen));
+            generators.back()->start(task.profile, task.level);
+            std::cout << "Started " << task.device << " (" << argv[i] << ")\n";
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Init Error: " << e.what() << "\n";
+        // 发生错误时，停止已启动的
+        for (auto& g : generators) if(g) g->stop();
         return 1;
     }
 
-    // ---------- watch ----------
-    std::cout << "Press Ctrl+C to stop...\n";
+    std::cout << "Running... Press Ctrl+C to stop.\n";
     std::signal(SIGINT, signal_handler);
-    std::thread signal_watcher([&]{
-		while (!g_stop_requested.load(std::memory_order_relaxed))
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		}
-		std::cout << "Stop generator\n";
-		generator->stop();
-	});
 
-    // ---------- run ----------
-    std::cout << "Starting load: "<< device << " / " << profile << " / " << level << "\n";
-    try
-    {
-       generator->start(profileType, loadLevel);
+    while (!g_stop_requested.load()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    catch(const std::exception& e)
-    {
-        std::cerr <<"Run Error: "<< e.what() << '\n';
-        g_stop_requested.store(true, std::memory_order_relaxed);
+
+    std::cout << "Stopping all generators...\n";
+    for (auto& g : generators) {
+        if(g) g->stop();
     }
-    signal_watcher.join();
-	generator.reset();
+    
     return 0;
 }
-
