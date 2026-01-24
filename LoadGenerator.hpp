@@ -23,21 +23,29 @@ protected:
 };
 
 // --- 辅助函数：获取模拟波形负载强度 (0.0 - 1.0) ---
-// 对应 Python 中的 get_wave_intensity
-inline double get_wave_intensity(double offset_seed)
-{
+inline double get_wave_intensity(double offset_seed) {
     auto now = std::chrono::system_clock::now();
+    // 获取秒数
     double t = std::chrono::duration<double>(now.time_since_epoch()).count();
 
-    double slow = (std::sin(t / 60.0 + offset_seed) + 1.0) / 2.0;
-    double fast = (std::sin(t / 5.0 + offset_seed * 3.0) + 1.0) / 2.0;
-    
-    // 简单的随机噪声
-    static thread_local std::mt19937 gen(std::random_device{}());
-    std::uniform_real_distribution<> dis(0.0, 1.0);
-    double noise = dis(gen);
+    // 1. 基础趋势波 (周期很长，约 40秒)
+    // 范围 [-0.5, 0.5]
+    double slow_wave = 0.5 * std::sin(t / 20.0 + offset_seed);
 
-    double val = 0.5 * slow + 0.3 * fast + 0.2 * noise;
-    return std::max(0.0, std::min(val, 1.0));
+    // 2. 活跃波动波 (周期较短，约 5秒)
+    // 范围 [-0.2, 0.2]
+    double fast_wave = 0.2 * std::sin(t / 2.5 + offset_seed * 2.0);
+
+    // 3. 随机抖动 (让曲线看起来不那么平滑)
+    static thread_local std::mt19937 gen(std::random_device{}());
+    std::uniform_real_distribution<> noise_dist(-0.05, 0.05);
+    double noise = noise_dist(gen);
+
+    // 叠加: 基准值 0.5 + 慢波 + 快波 + 噪声
+    // 结果大概率落在 [0.1, 0.9] 之间，偶尔触顶或触底
+    double val = 0.5 + slow_wave + fast_wave + noise;
+
+    // 钳制在 [0.0, 1.0] 安全范围
+    return std::max(0.01, std::min(val, 1.0));
 }
 

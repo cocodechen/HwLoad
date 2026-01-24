@@ -241,62 +241,86 @@ void CPULoadGenerator::runIO()
 // --- 单个 CPU 核心的工作逻辑 ---
 void CPULoadGenerator::cpu_core_worker(int core_id)
 {
-    double offset = static_cast<double>(core_id * 10);
+    // 稍微错开不同核的相位，但不要错太远，否则总负载会被平均成一条直线
+    double offset = static_cast<double>(core_id) * 0.5; 
     
-    // 使用 std::chrono 进行精确的时间片控制
-    using namespace std::chrono;
-    const int TIME_SLICE_MS = 100; // 每个周期总长 100ms
+    fs::path temp_dir = fs::temp_directory_path();
+    fs::path file_path = temp_dir / ("stress_cpu_" + std::to_string(core_id) + ".dat");
 
-    // 预分配计算资源，避免反复 new/delete 消耗系统时间而非 CPU 时间
-    const int MAT_SIZE = 1024;
-    std::vector<double> data_a(MAT_SIZE, 1.0);
-    std::vector<double> data_b(MAT_SIZE, 2.0);
+    // 预分配一块内存 (比如 32MB) 用于反复擦写，制造内存带宽压力
+    const size_t MEM_SIZE = 32 * 1024 * 1024;
+    std::vector<char> mem_block(MEM_SIZE, 0);
+    
+    // 预分配计算数组
+    const size_t CALC_SIZE = 4096;
+    std::vector<double> calc_vec(CALC_SIZE, 1.0);
+
+    // 定义一个时间片长度，比如 200ms
+    // 这意味着每秒钟会调整 5 次负载状态，足够平滑
+    const int TIME_SLICE_MS = 200;
 
     while (running) {
-        auto cycle_start = high_resolution_clock::now();
-        double target_load = get_wave_intensity(offset); // 0.0 - 1.0
+        auto start_time = std::chrono::high_resolution_clock::now();
+        
+        // 1. 获取当前时刻的目标负载 (0.0 - 1.0)
+        double target_load = get_wave_intensity(offset);
 
-        // 设定本周期的工作时长
-        double work_ms = target_load * TIME_SLICE_MS;
-        double sleep_ms = (1.0 - target_load) * TIME_SLICE_MS;
+        // 计算这一轮应该工作多久，休息多久
+        long work_ms = static_cast<long>(target_load * TIME_SLICE_MS);
+        
+        // --- 工作阶段 ---
+        while (running) {
+            // 检查是否工作够时间了
+            auto now = std::chrono::high_resolution_clock::now();
+            long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count();
+            if (elapsed >= work_ms) break;
 
-        // --- 阶段1: 暴力计算 (Burn CPU) ---
-        // 持续运算直到达到 work_ms 时长
-        // 这种方式能保证无论 CPU 多快，占用率都是准确的
-        if (work_ms > 0.5) { // 至少工作 0.5ms
-            while (running) {
-                // 检查是否超时
-                auto now = high_resolution_clock::now();
-                duration<double, std::milli> elapsed = now - cycle_start;
-                if (elapsed.count() >= work_ms) break;
+            // --- 任务混合区 ---
+            
+            // A. 基础计算 (始终执行，保证 User 利用率基底)
+            volatile double val = 0;
+            for(int i=0; i<1000; ++i) {
+                val += calc_vec[i] * calc_vec[CALC_SIZE - 1 - i];
+            }
+            (void)val;
 
-                // 密集浮点运算 (简单的乘加运算，模拟 FPU 压力)
-                // 使用 volatile 防止编译器优化掉循环
-                volatile double val = 0;
-                for (int i = 0; i < 1000; ++i) {
-                    val += data_a[i] * data_b[i] + 0.001;
-                }
-                (void)val;
+            // B. 内存带宽压力 (Memory Bandwidth)
+            // 当目标负载较高 (>0.3) 时，插入 memset
+            // Memset 是 CPU 密集型操作，同时也消耗内存带宽
+            if (target_load > 0.3) {
+                // 每次刷 1MB，位置随机或轮询
+                size_t pos = (elapsed * 1024 * 1024) % (MEM_SIZE - 1024*1024);
+                // 写入当前时间戳作为垃圾数据
+                std::memset(mem_block.data() + pos, (int)elapsed, 1024 * 1024); 
+            }
+
+            // C. 磁盘 IO (Disk IO)
+            // 当目标负载很高 (>0.6) 时，偶尔写一点文件
+            // 用简单的计数器控制频率，不要每次循环都写，否则 CPU 会变成 IO Wait
+            static int io_counter = 0;
+            if (target_load > 0.6 && (++io_counter % 50 == 0)) {
+                // 追加写入 256KB，触发一下脏页回写即可
+                std::ofstream ofs(file_path, std::ios::binary | std::ios::app);
+                ofs.write(mem_block.data(), 256 * 1024);
             }
         }
 
-        // --- 阶段2: 偶尔的内存/IO 压力 (降低频率) ---
-        // 只有在负载很高时，且每 10 个周期(约1秒)触发一次，避免拖累 CPU%
-        static thread_local int counter = 0;
-        if (target_load > 0.7 && ++counter % 10 == 0) {
-            // 简单的内存带宽压力：快速写入
-            // 注意：这里不做分配，只做写操作
-            std::fill(data_a.begin(), data_a.end(), target_load);
-        }
-
-        // --- 阶段3: 精确休眠 ---
-        if (sleep_ms > 1.0) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long>(sleep_ms)));
+        // --- 休息阶段 ---
+        auto end_work_time = std::chrono::high_resolution_clock::now();
+        long actual_work_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_work_time - start_time).count();
+        
+        long sleep_ms = TIME_SLICE_MS - actual_work_ms;
+        
+        // 只有当需要休息超过 1ms 时才真的 sleep，否则 yield 让出即可
+        if (sleep_ms > 1) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
         } else {
-            // 极高负载时，让出时间片即可，不深度睡眠
-            std::this_thread::yield();
+            std::this_thread::yield(); 
         }
     }
+
+    // 清理临时文件
+    try { if (fs::exists(file_path)) fs::remove(file_path); } catch(...) {}
 }
 
 void CPULoadGenerator::runRandom()

@@ -231,91 +231,129 @@ void GPULoadGenerator::gpu_device_worker(int device_id)
 {
     CUDA_CHECK(cudaSetDevice(device_id));
     
-    // 获取设备属性，了解最大线程块等信息
-    cudaDeviceProp prop;
-    cudaGetDeviceProperties(&prop, device_id);
-
-    // 预分配 Host 内存 (用于 PCIe 传输)
-    // 增加 Host 数据量，提高 PCIe 压力
-    const int MAX_N = 8192; // 增大矩阵上限
+    // 获取显存总量
+    size_t free_mem = 0, total_mem = 0;
+    cudaMemGetInfo(&free_mem, &total_mem);
+    
+    // 预分配 Host 内存 (加大到 8192*8192，约 256MB)
+    const int MAX_N = 8192;
     std::vector<float> host_data(MAX_N * MAX_N);
-    // 简单的初始化，避免全0
-    std::fill(host_data.begin(), host_data.begin() + 10000, 1.0f);
+    // 填充一点数据，避免全是0
+    std::fill(host_data.begin(), host_data.begin() + 10240, 1.23f);
+
+    // 时间片 200ms
+    const int TIME_SLICE_MS = 200;
+
+    // 显存占位指针
+    void* d_vram_holder = nullptr;
+    size_t current_holder_size = 0;
 
     while (running) {
-        double target_load = get_wave_intensity(device_id * 20.0);
+        auto start_time = std::chrono::high_resolution_clock::now();
+        
+        double target_load = get_wave_intensity(device_id * 10.0);
 
-        if (target_load < 0.05) {
-            cudaDeviceSynchronize();
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-            continue;
-        }
-
-        // 1. 显存压力策略 (Memory Pressure)
-        // 获取当前可用显存
-        size_t free_mem = 0, total_mem = 0;
+        // ============================
+        // 1. 显存波动控制 (VRAM)
+        // ============================
+        
+        // 重新获取一下当前 Free，因为系统或其他进程可能也在用
         cudaMemGetInfo(&free_mem, &total_mem);
         
-        // 目标：占用 "target_load" 比例的空闲显存
-        // 留 500MB 给系统和矩阵计算，防止 OOM
-        size_t reserve_mem = 500 * 1024 * 1024;
-        void* d_vram_holder = nullptr;
-        size_t alloc_size = 0;
-
-        if (free_mem > reserve_mem) {
-            // 比如 load=0.5, free=10GB. 分配 10 * 0.5 = 5GB
-            alloc_size = static_cast<size_t>((free_mem - reserve_mem) * target_load);
-            // 尝试分配大块显存 (仅分配，不一定写，用于占用额度)
-            cudaMalloc(&d_vram_holder, alloc_size);
-            // 如果想增加带宽压力，可以加一句 cudaMemset(d_vram_holder, 0, alloc_size);
-            // 但这会非常耗时，可能导致计算频率下降，视情况而定。
-            // 这里建议仅每隔几次 memset 一部分，或者不做。
-        }
-
-        // 2. 计算压力 (Compute Pressure)
-        // 动态计算矩阵大小: 2000 ~ 8000
-        int N = 2000 + static_cast<int>(6000 * target_load);
-        if (N > MAX_N) N = MAX_N;
+        // 计算我们想要占用的显存量 (target_load * 可用显存)
+        // 预留 500MB 给矩阵计算用
+        size_t available_for_grab = (free_mem + current_holder_size > 500 * 1024 * 1024) 
+                                    ? (free_mem + current_holder_size - 500 * 1024 * 1024) 
+                                    : 0;
         
-        size_t matrix_bytes = N * N * sizeof(float);
-        float *d_A = nullptr, *d_B = nullptr, *d_C = nullptr;
+        size_t target_size = static_cast<size_t>(available_for_grab * target_load);
 
-        // 分配矩阵显存
-        bool malloc_success = true;
-        if (cudaMalloc(&d_A, matrix_bytes) != cudaSuccess) malloc_success = false;
-        if (malloc_success && cudaMalloc(&d_B, matrix_bytes) != cudaSuccess) malloc_success = false;
-        if (malloc_success && cudaMalloc(&d_C, matrix_bytes) != cudaSuccess) malloc_success = false;
-
-        if (malloc_success) {
-            // PCIe 传输压力
-            cudaMemcpy(d_A, host_data.data(), matrix_bytes, cudaMemcpyHostToDevice);
-            cudaMemcpy(d_B, host_data.data(), matrix_bytes, cudaMemcpyHostToDevice);
-
-            dim3 threads(16, 16);
-            dim3 blocks((N + 15) / 16, (N + 15) / 16);
-
-            // 循环计算
-            // 负载越高，Kernel 跑的次数越多，Kernel 间隙越小
-            int loops = std::max(1, static_cast<int>(5 * target_load));
-            for (int i = 0; i < loops && running; ++i) {
-                matrixMulKernel<<<blocks, threads>>>(d_C, d_A, d_B, N);
+        // 【防抖动】只有当目标大小和当前大小差异超过 100MB 时，才进行重新分配
+        // 避免每一帧都 Malloc/Free 造成卡顿
+        if (std::abs((long long)target_size - (long long)current_holder_size) > 100 * 1024 * 1024) {
+            // 释放旧的
+            if (d_vram_holder) {
+                cudaFree(d_vram_holder);
+                d_vram_holder = nullptr;
+                current_holder_size = 0;
             }
-            cudaDeviceSynchronize();
+            // 分配新的
+            if (target_size > 0) {
+                if (cudaMalloc(&d_vram_holder, target_size) == cudaSuccess) {
+                    current_holder_size = target_size;
+                    // 可选：在高负载时 async memset 一小部分，制造 copy engine 负载
+                    if (target_load > 0.7) {
+                        cudaMemsetAsync(d_vram_holder, 0, std::min(target_size, (size_t)10 * 1024 * 1024), 0);
+                    }
+                }
+            }
         }
 
-        // 3. 清理
-        if (d_A) cudaFree(d_A);
-        if (d_B) cudaFree(d_B);
-        if (d_C) cudaFree(d_C);
-        if (d_vram_holder) cudaFree(d_vram_holder); // 释放大块占位显存
+        // ============================
+        // 2. 计算波动控制 (Compute)
+        // ============================
+        
+        long work_ms = static_cast<long>(target_load * TIME_SLICE_MS);
+        
+        // 如果需要工作
+        if (work_ms > 5) {
+            // 矩阵大小固定大一点，或者随负载微调
+            // 既然要波动，不妨让矩阵大小也随负载变：负载大->矩阵大->单次Kernel久
+            int N = 2048 + static_cast<int>((MAX_N - 2048) * target_load);
+            size_t bytes = N * N * sizeof(float);
+            
+            float *d_A = nullptr, *d_B = nullptr, *d_C = nullptr;
+            
+            // 尝试分配计算用的矩阵
+            bool success = true;
+            if (cudaMalloc(&d_A, bytes) != cudaSuccess) success = false;
+            if (success && cudaMalloc(&d_B, bytes) != cudaSuccess) success = false;
+            if (success && cudaMalloc(&d_C, bytes) != cudaSuccess) success = false;
 
-        // 4. 休眠控制
-        // 计算和大块Malloc本身很耗时，所以休眠时间要大大缩短
-        int sleep_ms = static_cast<int>((1.0 - target_load) * 50);
-        if (sleep_ms > 0) std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+            if (success) {
+                // 拷贝 (PCIe 负载)
+                cudaMemcpyAsync(d_A, host_data.data(), bytes, cudaMemcpyHostToDevice, 0);
+                cudaMemcpyAsync(d_B, host_data.data(), bytes, cudaMemcpyHostToDevice, 0);
+                
+                dim3 threads(16, 16);
+                dim3 blocks((N + 15) / 16, (N + 15) / 16);
+
+                // 循环执行 Kernel 直到时间片用完
+                while (running) {
+                    // 发射 Kernel
+                    matrixMulKernel<<<blocks, threads, 0, 0>>>(d_C, d_A, d_B, N);
+                    
+                    // 【关键点】同步！
+                    // 只有同步了，CPU 才知道 GPU 真的跑完了，才能判断时间是否到了
+                    // 否则 CPU 会瞬间发射几百个 Kernel，然后直接去 sleep，
+                    // 导致 GPU 还在跑刚才那几百个 Kernel (Load 100%)，而 CPU 以为已经在休息了。
+                    cudaStreamSynchronize(0);
+
+                    auto now = std::chrono::high_resolution_clock::now();
+                    long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count();
+                    if (elapsed >= work_ms) break;
+                }
+            }
+            
+            if (d_A) cudaFree(d_A);
+            if (d_B) cudaFree(d_B);
+            if (d_C) cudaFree(d_C);
+        }
+
+        // ============================
+        // 3. 休息
+        // ============================
+        auto end_work_time = std::chrono::high_resolution_clock::now();
+        long actual_work_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_work_time - start_time).count();
+        long sleep_ms = TIME_SLICE_MS - actual_work_ms;
+
+        if (sleep_ms > 1) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+        }
     }
-}
 
+    if (d_vram_holder) cudaFree(d_vram_holder);
+}
 // --- GPU 管理器函数 ---
 // 这个函数会被外部的一个线程调用
 // 它负责检测 GPU 数量并为每个 GPU 启动子线程
