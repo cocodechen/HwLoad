@@ -1,33 +1,23 @@
 #ifdef HWLOAD_USE_GPU
 
 #include "GPULoadGenerator.hpp"
-
 #include <stdexcept>
 #include <cuda_runtime.h>
 #include <chrono>
 #include <iostream>
+#include <thread>
+#include <algorithm>
 
-#define CUDA_CHECK(call)                                      \
-do {                                                          \
-    cudaError_t err = call;                                   \
-    if (err != cudaSuccess) {                                 \
-        std::cerr << "CUDA error: "                            \
-                  << cudaGetErrorString(err)                  \
-                  << " at " << __FILE__ << ":" << __LINE__    \
-                  << std::endl;                                \
-        std::abort();                                         \
-    }                                                         \
+// 简化的错误检查宏
+#define CUDA_CHECK(call) \
+do { \
+    cudaError_t err = call; \
+    if (err != cudaSuccess) { \
+        std::cerr << "[GPULoad] CUDA error: " << cudaGetErrorString(err) \
+                  << " at " << __FILE__ << ":" << __LINE__ << std::endl; \
+        return; /* 发生错误直接返回，避免 abort 导致整个程序崩溃 */ \
+    } \
 } while (0)
-
-inline void CUDA_CHECK_LAUNCH(const char* stage)
-{
-    cudaError_t err = cudaGetLastError();
-    if (err != cudaSuccess) {
-        std::cerr << "CUDA launch error at " << stage << ": "
-                  << cudaGetErrorString(err) << std::endl;
-        std::abort();
-    }
-}
 
 GPULoadGenerator::GPULoadGenerator(): running(false){}
 
@@ -46,86 +36,139 @@ void GPULoadGenerator::start(ProfileType profile, LoadLevel level)
         worker = std::thread(&GPULoadGenerator::runData, this);
     }
     else if(profile == ProfileType::IO){
-        throw std::runtime_error("GPU is not supported on Profile IO");
+        // GPU IO 一般指 GPUDirectStorage，这里暂不支持，打印警告即可
+        throw std::runtime_error("[GPULoad] Warning: GPU IO profile not supported yet.");
     }
 }
 
 void GPULoadGenerator::stop()
 {
     running = false;
-    if (worker.joinable())worker.join();
+    if (worker.joinable()) worker.join();
 }
 
-__global__ void gpu_compute_kernel(float* data, int iters)
+// ==========================================
+// Kernels
+// ==========================================
+
+// 计算密集型 Kernel
+// 增加循环次数，确保 SM 忙碌
+__global__ void k_compute(float* data, int intensity)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    float x = idx * 0.001f;
+    float val = idx * 0.0001f;
 
+    // 避免编译器优化掉循环
     #pragma unroll 4
-    for (int i = 0; i < iters * 1000; ++i) {   // ★ 放大计算强度
-        x = x * 1.0000001f + 0.0000001f;
+    for (int i = 0; i < intensity; ++i) {
+        val = val * 1.000001f + 0.000001f;
+        // 添加一些超越函数计算，利用 SFU (Special Function Unit)
+        if (i % 100 == 0) val = __sinf(val); 
     }
-
-    if (idx < (1 << 20))
-        data[idx] = x;   // ★ 防止编译器优化掉
+    
+    data[idx] = val;
 }
 
-__global__ void gpu_memory_kernel(float* dst, float* src)
+// 访存密集型 Kernel
+// 简单的 Copy，主要看带宽
+__global__ void k_memory(float* dst, const float* src, int n)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    dst[idx] = src[idx];
-}
-
-static inline std::chrono::milliseconds level_to_time(LoadLevel lv)
-{
-    switch (lv) {
-        case LoadLevel::Idle:      return std::chrono::milliseconds(200);
-        case LoadLevel::Low:       return std::chrono::milliseconds(50);
-        case LoadLevel::Medium:    return std::chrono::milliseconds(10);
-        case LoadLevel::High:      return std::chrono::milliseconds(1);
-        case LoadLevel::Saturated: return std::chrono::milliseconds(0);
-        default:                   return std::chrono::milliseconds(20);
+    if (idx < n) {
+        dst[idx] = src[idx] + 1.0f; // Read + Write
     }
 }
 
-static inline int level_to_iters(LoadLevel lv)
-{
-    switch (lv) {
-        case LoadLevel::Idle:      return 1;
-        case LoadLevel::Low:       return 2;
-        case LoadLevel::Medium:    return 6;
-        case LoadLevel::High:      return 16;
-        case LoadLevel::Saturated: return 32;
-        default:                   return 6;
+// ==========================================
+// Helpers
+// ==========================================
+
+struct GPUConfig {
+    int blocks;
+    int threads;
+    int kernel_loops; // 一个 launch 里的计算强度
+    int sleep_ms;     // launch 之间的间隔
+};
+
+static GPUConfig get_gpu_config(LoadLevel level, ProfileType type) {
+    // 默认配置 (Medium/High/Saturated 基准)
+    int threads = 256; 
+    int blocks = 2048; 
+
+    int k_loops = 0;
+    int sleep = 0;
+
+    switch (level) {
+        case LoadLevel::Idle:
+            // 心跳模式：最小 Kernel，长睡眠
+            // 1 Block, 32 Threads (1 Warp) 是最小执行粒度
+            blocks = 1; threads = 32; k_loops = 1; sleep = 500; 
+            break;
+
+        case LoadLevel::Low:       
+            k_loops = 500; sleep = 30; 
+            break;
+
+        case LoadLevel::Medium:    
+            k_loops = 2000; sleep = 10; 
+            break;
+
+        case LoadLevel::High:      
+            k_loops = 10000; sleep = 0; 
+            break;
+
+        case LoadLevel::Saturated: 
+            // 饱和模式：撑满 GPU 调度队列
+            blocks = 8192; k_loops = 50000; sleep = 0; 
+            break;
     }
+
+    // Memory Profile 特殊处理
+    if (type == ProfileType::Memory) {
+        // Memory 主要靠数据量(blocks数量)，k_loops 影响重复拷贝次数
+        if (level == LoadLevel::Idle) {
+            k_loops = 1; // 拷一次就行
+        } else if (level == LoadLevel::Saturated) {
+            k_loops = 50;
+        } else {
+            k_loops = 10;
+        }
+    }
+
+    return {blocks, threads, k_loops, sleep};
 }
+
+// ==========================================
+// Implementations
+// ==========================================
 
 void GPULoadGenerator::runCompute()
 {
     CUDA_CHECK(cudaSetDevice(0));
 
-    constexpr int N = 1 << 20;
+    // 只需要少量的显存来存结果
+    const int N = 1024 * 1024 * 32; // 32M floats = 128MB
     float* d_data = nullptr;
     CUDA_CHECK(cudaMalloc(&d_data, N * sizeof(float)));
 
-    int blocks  = 256;
-    int threads = 256;
+    while (running) {
+        auto cfg = get_gpu_config(cur_level, ProfileType::Compute);
 
-    int iters = level_to_iters(cur_level);
-    auto idle = level_to_time(cur_level);
-
-    while (running)
-    {
         if (cur_level != LoadLevel::Idle) {
-            gpu_compute_kernel<<<blocks, threads>>>(d_data, iters);
-            CUDA_CHECK_LAUNCH("gpu_compute_kernel");
+            // Compute Kernel
+            k_compute<<<cfg.blocks, cfg.threads>>>(d_data, cfg.kernel_loops);
+            // 异步 Launch，不需要立即 Sync
         }
 
-        if (idle.count() > 0)
-            std::this_thread::sleep_for(idle);
+        // 只有 Saturated 不 Sync，保持队列充满
+        if (cur_level != LoadLevel::Saturated) {
+            cudaDeviceSynchronize();
+        }
+
+        if (cfg.sleep_ms > 0)
+            std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
     }
 
-    CUDA_CHECK(cudaDeviceSynchronize());
     CUDA_CHECK(cudaFree(d_data));
 }
 
@@ -133,67 +176,74 @@ void GPULoadGenerator::runMemory()
 {
     CUDA_CHECK(cudaSetDevice(0));
 
-    constexpr int N = 1 << 22;
-    float *src = nullptr, *dst = nullptr;
+    // 数据量必须大，击穿 L2 Cache (通常 40-80MB)
+    // 128MB floats = 512MB 显存占用 x 2 (src+dst) = 1GB
+    // 这个大小对大多数显卡安全，且足够击穿 Cache
+    const int N = 1024 * 1024 * 128; 
+    float *d_src = nullptr, *d_dst = nullptr;
 
-    CUDA_CHECK(cudaMalloc(&src, N * sizeof(float)));
-    CUDA_CHECK(cudaMalloc(&dst, N * sizeof(float)));
+    CUDA_CHECK(cudaMalloc(&d_src, N * sizeof(float)));
+    CUDA_CHECK(cudaMalloc(&d_dst, N * sizeof(float)));
+    
+    // 初始化一下数据，避免 page fault 干扰（虽然 GPU 上影响较小）
+    cudaMemset(d_src, 0, N * sizeof(float));
 
-    int threads = 256;
-    int blocks  = (N + threads - 1) / threads;
+    while (running) {
+        auto cfg = get_gpu_config(cur_level, ProfileType::Memory);
+        
+        // 调整 block 数量以覆盖数据
+        int min_blocks = (N + cfg.threads - 1) / cfg.threads;
+        int actual_blocks = std::max(cfg.blocks, min_blocks);
 
-    auto idle = level_to_time(cur_level);
-
-    while (running)
-    {
         if (cur_level != LoadLevel::Idle) {
-            gpu_memory_kernel<<<blocks, threads>>>(dst, src);
-            CUDA_CHECK_LAUNCH("gpu_memory_kernel");
+            // 反复拷贝
+            for(int i=0; i< std::max(1, cfg.kernel_loops / 10); ++i) {
+                k_memory<<<actual_blocks, cfg.threads>>>(d_dst, d_src, N);
+            }
         }
 
-        if (idle.count() > 0)
-            std::this_thread::sleep_for(idle);
+        cudaDeviceSynchronize(); // Memory 测试必须 Sync，否则测不出带宽瓶颈
+
+        if (cfg.sleep_ms > 0)
+            std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
     }
 
-    CUDA_CHECK(cudaDeviceSynchronize());
-    CUDA_CHECK(cudaFree(src));
-    CUDA_CHECK(cudaFree(dst));
+    CUDA_CHECK(cudaFree(d_src));
+    CUDA_CHECK(cudaFree(d_dst));
 }
 
 void GPULoadGenerator::runData()
 {
+    // Data Profile: 混合 Compute 和 Memory
     CUDA_CHECK(cudaSetDevice(0));
 
-    constexpr int N = 1 << 22;
-    float *src = nullptr, *dst = nullptr;
+    const int N = 1024 * 1024 * 64; // 64M floats = 256MB
+    float *d_src = nullptr, *d_dst = nullptr;
 
-    CUDA_CHECK(cudaMalloc(&src, N * sizeof(float)));
-    CUDA_CHECK(cudaMalloc(&dst, N * sizeof(float)));
+    CUDA_CHECK(cudaMalloc(&d_src, N * sizeof(float)));
+    CUDA_CHECK(cudaMalloc(&d_dst, N * sizeof(float)));
 
-    int threads = 256;
-    int blocks  = (N + threads - 1) / threads;
+    while (running) {
+        auto cfg = get_gpu_config(cur_level, ProfileType::Data); // 这里的 loop 参数偏向 Compute
+        
+        int min_blocks = (N + cfg.threads - 1) / cfg.threads;
 
-    int iters = level_to_iters(cur_level);
-    auto idle = level_to_time(cur_level);
-
-    while (running)
-    {
         if (cur_level != LoadLevel::Idle) {
-            gpu_compute_kernel<<<blocks, threads>>>(dst, iters);
-            CUDA_CHECK_LAUNCH("gpu_compute_kernel");
-
-            gpu_memory_kernel<<<blocks, threads>>>(dst, src);
-            CUDA_CHECK_LAUNCH("gpu_memory_kernel");
+            // 1. 先做计算
+            k_compute<<<cfg.blocks, cfg.threads>>>(d_src, cfg.kernel_loops);
+            
+            // 2. 再做搬运 (数据依赖)
+            k_memory<<<min_blocks, cfg.threads>>>(d_dst, d_src, N);
         }
+        
+        cudaDeviceSynchronize();
 
-        if (idle.count() > 0)
-            std::this_thread::sleep_for(idle);
+        if (cfg.sleep_ms > 0)
+            std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
     }
 
-    CUDA_CHECK(cudaDeviceSynchronize());
-    CUDA_CHECK(cudaFree(src));
-    CUDA_CHECK(cudaFree(dst));
+    CUDA_CHECK(cudaFree(d_src));
+    CUDA_CHECK(cudaFree(d_dst));
 }
-
 
 #endif

@@ -1,11 +1,14 @@
 #ifdef HWLOAD_USE_CPU
 
 #include "CPULoadGenerator.hpp"
-
 #include <chrono>
 #include <cmath>
 #include <vector>
-#include <stdexcept>
+#include <atomic>
+#include <thread>
+#include <algorithm>
+#include <random>
+#include <cstring> // for memset
 
 #ifdef __linux__
     #include <unistd.h>
@@ -16,10 +19,13 @@
 
 CPULoadGenerator::CPULoadGenerator(): running(false){}
 
-void CPULoadGenerator::start(ProfileType profile,LoadLevel level)
+void CPULoadGenerator::start(ProfileType profile, LoadLevel level)
 {
-    cur_level=level;
+    cur_level = level;
     running = true;
+    
+    // 统一在这里创建线程，避免在 runXXX 内部重复逻辑
+    // 根据 Profile 选择具体的 worker 函数
     if (profile == ProfileType::Compute) {
         worker = std::thread(&CPULoadGenerator::runCompute, this);
     }
@@ -42,195 +48,228 @@ void CPULoadGenerator::start(ProfileType profile,LoadLevel level)
 void CPULoadGenerator::stop()
 {
     running = false;
-    if (worker.joinable())worker.join();
+    if (worker.joinable()) worker.join();
+}
+
+// 辅助：获取不同 Level 的休眠时间 (Duty Cycle 控制)
+// 返回值: (work_loops, sleep_ms)
+static std::pair<int, int> get_cpu_duty_cycle(LoadLevel level, ProfileType type) {
+    // 基础参数
+    int sleep_ms = 0;
+    int loops = 1;
+
+    switch (level) {
+        case LoadLevel::Idle:      
+            // 心跳模式：极微小的负载，长睡眠。证明线程活着，但几乎不占 CPU
+            sleep_ms = 500; loops = 1; break; 
+            
+        case LoadLevel::Low:       
+            sleep_ms = 20;  loops = 100;  break; // ~20% load
+            
+        case LoadLevel::Medium:    
+            sleep_ms = 5;   loops = 500;  break; // ~60% load
+            
+        case LoadLevel::High:      
+            sleep_ms = 0;   loops = 1000; break; // ~100% load
+            
+        case LoadLevel::Saturated: 
+            sleep_ms = 0;   loops = 5000; break; // Max
+    }
+    
+    // 针对 Memory Profile 微调
+    // 内存操作比纯计算慢得多，Idle 时保持 loops=1 测一下延迟即可，不需要减半
+    if (type == ProfileType::Memory && level != LoadLevel::Idle) {
+        loops /= 2; 
+    }
+    
+    return {loops, sleep_ms};
 }
 
 void CPULoadGenerator::runCompute()
 {
-    const unsigned cores = std::max(1u, std::thread::hardware_concurrency());
+    unsigned num_threads = std::thread::hardware_concurrency();
+    if (num_threads == 0) num_threads = 2;
 
-    static std::atomic<uint64_t> sink{0};
+    std::vector<std::thread> pool;
+    std::atomic<uint64_t> global_sink{0};
 
-    auto worker = [&](int intensity) {
-        double x = 1.0;
-        while (running) {
-            for (int i = 0; i < intensity; ++i) {
-                x = x * 1.0000001
-                + std::sin(x)
-                - std::log(x + 1.0)
-                + std::sqrt(x + 0.5);
+    for (unsigned t = 0; t < num_threads; ++t) {
+        pool.emplace_back([&]() {
+            while (running) {
+                auto [loops, sleep_ms] = get_cpu_duty_cycle(cur_level, ProfileType::Compute);
 
-                if ((i & 15) == 0)
-                    x *= 0.999;
+                if (loops == 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+                    continue;
+                }
+
+                // 计算核心
+                double x = 1.0;
+                for (int i = 0; i < loops * 1000; ++i) {
+                    x = x * 1.0000001 + std::sin(x) * 0.001;
+                    // 简单的分支，增加流水线压力
+                    if (x > 1000.0) x = 1.0;
+                }
+                
+                // 防止优化
+                global_sink.fetch_add(static_cast<uint64_t>(x), std::memory_order_relaxed);
+
+                if (sleep_ms > 0)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
             }
-            // 防止编译器消除整个循环
-            sink.fetch_add(static_cast<uint64_t>(x),std::memory_order_relaxed);
-        }
-    };
-
-    int intensity = 0;
-    switch (cur_level) {
-    case LoadLevel::Idle:      intensity = 0; break;
-    case LoadLevel::Low:       intensity = 2'000; break;
-    case LoadLevel::Medium:    intensity = 10'000; break;
-    case LoadLevel::High:      intensity = 50'000; break;
-    case LoadLevel::Saturated: intensity = 200'000; break;
+        });
     }
 
-    if (intensity == 0) {
-        while (running)
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        return;
-    }
-
-    std::vector<std::thread> threads;
-    for (unsigned i = 0; i < cores; ++i)
-        threads.emplace_back(worker, intensity);
-
-    for (auto& t : threads)
-        t.join();
+    for (auto& t : pool) t.join();
 }
 
 void CPULoadGenerator::runMemory()
 {
-    const unsigned threads = std::max(1u, std::thread::hardware_concurrency());
+    unsigned num_threads = std::thread::hardware_concurrency();
+    if (num_threads == 0) num_threads = 2;
 
-    const size_t total_size =
-        (cur_level == LoadLevel::Low)       ? 32  * 1024 * 1024 :
-        (cur_level == LoadLevel::Medium)    ? 128 * 1024 * 1024 :
-        (cur_level == LoadLevel::High)      ? 512 * 1024 * 1024 :
-        (cur_level == LoadLevel::Saturated) ? 1024 * 1024 * 1024 :
-                                              0;
+    // 固定 buffer 大小：256MB
+    // 这足以击穿绝大多数 CPU 的 L3 Cache (通常 20-64MB)
+    // 又不至于让小内存机器 OOM
+    const size_t TOTAL_SIZE = 256 * 1024 * 1024;
+    const size_t CHUNK_SIZE = TOTAL_SIZE / num_threads;
 
-    if (total_size == 0) {
-        while (running)
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        return;
+    std::vector<char> buffer(TOTAL_SIZE, 0);
+    std::vector<std::thread> pool;
+
+    for (unsigned t = 0; t < num_threads; ++t) {
+        pool.emplace_back([&, t]() {
+            size_t start = t * CHUNK_SIZE;
+            size_t end = (t == num_threads - 1) ? TOTAL_SIZE : start + CHUNK_SIZE;
+            
+            // 步长设置为 64 字节 (Typical Cache Line Size)
+            // 保证每次访问都命中不同的 Cache Line
+            const size_t STRIDE = 64; 
+
+            while (running) {
+                auto [loops, sleep_ms] = get_cpu_duty_cycle(cur_level, ProfileType::Memory);
+
+                if (loops == 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+                    continue;
+                }
+
+                for (int l = 0; l < loops; ++l) {
+                    // 顺序写：对预取器友好，主要测带宽上限
+                    for (size_t i = start; i < end; i += STRIDE) {
+                        buffer[i]++;
+                    }
+                }
+                
+                // 防止 buffer 被优化掉（虽然有副作用操作通常不会）
+                std::atomic_thread_fence(std::memory_order_release);
+
+                if (sleep_ms > 0)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+            }
+        });
     }
 
-    std::vector<char> buffer(total_size);
-    const size_t chunk = total_size / threads;
-
-    const size_t seq_stride = 64;
-    const size_t rnd_stride = 4096; // page 粒度扰动
-
-    auto worker = [&](size_t begin, size_t end) {
-        while (running) {
-            // 顺序访问（主体）
-            for (size_t i = begin; i < end; i += seq_stride)
-                buffer[i]++;
-
-            // 固定比例随机扰动（不 shuffle）
-            for (size_t i = begin; i < end; i += rnd_stride)
-                buffer[i ^ 0x5a5a]++;
-        }
-    };
-
-    std::vector<std::thread> ts;
-    for (unsigned i = 0; i < threads; ++i) {
-        size_t b = i * chunk;
-        size_t e = (i == threads - 1) ? total_size : b + chunk;
-        ts.emplace_back(worker, b, e);
-    }
-
-    for (auto& t : ts)
-        t.join();
+    for (auto& t : pool) t.join();
 }
 
 void CPULoadGenerator::runData()
 {
-    const size_t N =
-        (cur_level == LoadLevel::Low)       ? 1  * 1024 * 1024 :
-        (cur_level == LoadLevel::Medium)    ? 8  * 1024 * 1024 :
-        (cur_level == LoadLevel::High)      ? 32 * 1024 * 1024 :
-        (cur_level == LoadLevel::Saturated) ? 128 * 1024 * 1024 :
-                                              0;
-
-    if (N == 0) {
-        while (running)
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        return;
-    }
-
+    // Data Profile: 混合计算与访存，使用指针追逐 (Pointer Chasing)
+    // 这是一个单线程或少线程的测试，主要看延迟
+    // 为了制造负载，我们还是开多线程
+    unsigned num_threads = std::thread::hardware_concurrency();
+    
+    // 数据集大小：64MB (足够大，击穿 L3)
+    const size_t NUM_ELEMENTS = 16 * 1024 * 1024; // 16M ints * 4 = 64MB
+    
     struct Node {
-        int value;
         int next;
-        char pad[64 - 8]; // cache line sized
+        int padding[15]; // 64 bytes total (cache line)
     };
-
-    std::vector<Node> data(N);
-    for (size_t i = 0; i < N; ++i) {
-        data[i].value = static_cast<int>(i);
-        data[i].next  = (i * 1315423911u) % N; // pseudo-random chain
+    
+    std::vector<Node> data(NUM_ELEMENTS);
+    
+    // 初始化随机链表 (Fisher-Yates shuffle)
+    std::vector<int> indices(NUM_ELEMENTS);
+    for(size_t i=0; i<NUM_ELEMENTS; ++i) indices[i] = i;
+    
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(indices.begin(), indices.end(), g);
+    
+    for(size_t i=0; i<NUM_ELEMENTS - 1; ++i) {
+        data[indices[i]].next = indices[i+1];
     }
+    data[indices[NUM_ELEMENTS-1]].next = indices[0]; // 闭环
 
-    int idx = 0;
-    volatile int sink = 0;
+    std::vector<std::thread> pool;
 
-    using clock = std::chrono::steady_clock;
+    for (unsigned t = 0; t < num_threads; ++t) {
+        pool.emplace_back([&, t]() {
+            // 每个线程从不同的起点开始跑，减少 False Sharing
+            int cur_idx = indices[(t * 1000) % NUM_ELEMENTS];
+            
+            while (running) {
+                auto [loops, sleep_ms] = get_cpu_duty_cycle(cur_level, ProfileType::Data);
 
-    while (running) {
-        auto start = clock::now();
+                if (loops == 0) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+                    continue;
+                }
 
-        while (clock::now() - start < std::chrono::milliseconds(20)) {
-            Node& n = data[idx];
+                // 指针追逐核心
+                for (int i = 0; i < loops * 1000; ++i) {
+                    cur_idx = data[cur_idx].next;
+                    // 稍微加一点计算，模拟混合负载
+                    data[cur_idx].padding[0]++; 
+                }
 
-            // -------- memory part --------
-            int v = n.value;
-
-            // -------- compute part --------
-            // 小 compute kernel，防止被优化掉
-            for (int k = 0; k < 8; ++k) {
-                v = v * 31 + (v >> 3) + k;
-                v ^= (v << 7);
+                if (sleep_ms > 0)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
             }
-
-            // -------- write-back --------
-            n.value = v;
-            sink += v;
-
-            idx = n.next;
-        }
-
-        // 明确的 idle window，避免 scheduler 噪声
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        });
     }
+
+    for (auto& t : pool) t.join();
 }
 
 #ifdef __linux__
 void CPULoadGenerator::runIO()
 {
-    const size_t map_size =
-        (cur_level == LoadLevel::Low)       ? 16  * 1024 * 1024 :
-        (cur_level == LoadLevel::Medium)    ? 64  * 1024 * 1024 :
-        (cur_level == LoadLevel::High)      ? 256 * 1024 * 1024 :
-        (cur_level == LoadLevel::Saturated) ? 1024 * 1024 * 1024 :
-                                              0;
-
-    if (map_size == 0) {
-        while (running)
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        return;
-    }
+    // 保持你原有的 IO 逻辑，稍微调整大小和 Sleep
+    const size_t map_size = 256 * 1024 * 1024; // 固定 256MB，避免 Level 间差异过大
 
     int fd = open("/tmp/cpu_io_tmp.bin", O_CREAT | O_RDWR | O_TRUNC, 0644);
     if (fd < 0) return;
 
-    ftruncate(fd, map_size);
+    if (ftruncate(fd, map_size) != 0) { close(fd); return; }
 
     char* p = static_cast<char*>(
         mmap(nullptr, map_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0));
+    
+    if (p == MAP_FAILED) { close(fd); return; }
 
-    const size_t stride = 4096;
+    const size_t stride = 4096; // Page size
 
     while (running) {
-        for (size_t i = 0; i < map_size; i += stride * 16)
-            p[i]++;
+        auto [loops, sleep_ms] = get_cpu_duty_cycle(cur_level, ProfileType::IO);
+        if (loops == 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
+            continue;
+        }
 
-        msync(p, map_size, MS_ASYNC);
+        // 模拟脏页回写压力
+        for (int l = 0; l < loops / 10 + 1; ++l) { // IO 很慢，loop 缩小
+            for (size_t i = 0; i < map_size; i += stride) {
+                p[i]++; 
+            }
+            // 异步刷盘，触发内核 IO 线程负载
+            msync(p, map_size, MS_ASYNC);
+        }
 
-        // IO 场景必须给 CPU 明确 idle
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        if (sleep_ms > 0)
+            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
     }
 
     munmap(p, map_size);
@@ -240,4 +279,3 @@ void CPULoadGenerator::runIO()
 #endif
 
 #endif
-

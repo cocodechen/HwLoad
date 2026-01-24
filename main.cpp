@@ -8,12 +8,17 @@
     #include "GPU/GPULoadGenerator.hpp"
 #endif
 
+#ifdef HWLOAD_USE_NPU
+    #include "NPU/NPULoadGenerator.hpp"
+#endif
+
 #include <iostream>
 #include <string>
 #include <memory>
 #include <thread>
 #include <chrono>
 #include <csignal>
+#include <atomic>
 
 std::atomic<bool> g_stop_requested{false};
 static void signal_handler(int signal)
@@ -116,8 +121,7 @@ int main(int argc, char* argv[])
 	});
 
     // ---------- run ----------
-    std::cout << "Starting load: "
-              << device << " / " << profile << " / " << level << "\n";
+    std::cout << "Starting load: "<< device << " / " << profile << " / " << level << "\n";
     try
     {
        generator->start(profileType, loadLevel);
