@@ -1,3 +1,0 @@
-/users/xc/HwLoad/build/CMakeFiles/loadgen.dir
-/users/xc/HwLoad/build/CMakeFiles/edit_cache.dir
-/users/xc/HwLoad/build/CMakeFiles/rebuild_cache.dir
