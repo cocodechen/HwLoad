@@ -9,6 +9,7 @@
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <algorithm>
 
 #ifdef __linux__
     #include <unistd.h>
@@ -238,117 +239,239 @@ void CPULoadGenerator::runIO()
 }
 #endif
 
-// --- 单个 CPU 核心的工作逻辑 ---
+
+// ============================================================
+// 1. CPU Worker: 纯计算线程
+// ============================================================
+
 void CPULoadGenerator::cpu_core_worker(int core_id)
 {
-    // 稍微错开不同核的相位，但不要错太远，否则总负载会被平均成一条直线
-    double offset = static_cast<double>(core_id) * 0.5; 
+    // ==========================================
+    // 核心参数：控制波动的上下限
+    const double MIN_TARGET_LOAD = 0.20; // 20%
+    const double MAX_TARGET_LOAD = 0.95; // 95%
     
-    fs::path temp_dir = fs::temp_directory_path();
-    fs::path file_path = temp_dir / ("stress_cpu_" + std::to_string(core_id) + ".dat");
+    // 时间片窗口：100ms 是任务管理器刷新的合适粒度
+    const int WINDOW_MS = 100; 
+    // ==========================================
 
-    // 预分配一块内存 (比如 32MB) 用于反复擦写，制造内存带宽压力
-    const size_t MEM_SIZE = 32 * 1024 * 1024;
-    std::vector<char> mem_block(MEM_SIZE, 0);
-    
-    // 预分配计算数组
-    const size_t CALC_SIZE = 4096;
-    std::vector<double> calc_vec(CALC_SIZE, 1.0);
-
-    // 定义一个时间片长度，比如 200ms
-    // 这意味着每秒钟会调整 5 次负载状态，足够平滑
-    const int TIME_SLICE_MS = 200;
+    std::mt19937 gen(std::random_device{}() + core_id);
+    std::uniform_real_distribution<> dis(0.0, 10.0);
+    double offset = dis(gen);
 
     while (running) {
-        auto start_time = std::chrono::high_resolution_clock::now();
-        
-        // 1. 获取当前时刻的目标负载 (0.0 - 1.0)
-        double target_load = get_wave_intensity(offset);
+        // 1. 标记周期开始时刻
+        auto cycle_start = std::chrono::high_resolution_clock::now();
 
-        // 计算这一轮应该工作多久，休息多久
-        long work_ms = static_cast<long>(target_load * TIME_SLICE_MS);
-        
-        // --- 工作阶段 ---
+        // 2. 获取原始波形 (0.0 - 1.0)
+        double wave = get_wave_intensity(offset);
+
+        // 3. 映射到目标区间 [20%, 95%]
+        // Python 没做这个映射，是因为 Python 本身跑得慢，天然就把负载拉高了
+        // C++ 必须手动控制区间，否则很容易掉到底
+        double target_load = MIN_TARGET_LOAD + wave * (MAX_TARGET_LOAD - MIN_TARGET_LOAD);
+        target_load = std::clamp(target_load, 0.0, 1.0);
+
+        // 4. 计算应该工作多久 (Work Duration)
+        long long work_ns = static_cast<long long>(target_load * WINDOW_MS * 1000000);
+        long long sleep_ns = static_cast<long long>((1.0 - target_load) * WINDOW_MS * 1000000);
+
+        // 5. --- 暴力计算阶段 (强制工作 work_ns 纳秒) ---
         while (running) {
-            // 检查是否工作够时间了
             auto now = std::chrono::high_resolution_clock::now();
-            long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count();
-            if (elapsed >= work_ms) break;
-
-            // --- 任务混合区 ---
-            
-            // A. 基础计算 (始终执行，保证 User 利用率基底)
-            volatile double val = 0;
-            for(int i=0; i<1000; ++i) {
-                val += calc_vec[i] * calc_vec[CALC_SIZE - 1 - i];
-            }
-            (void)val;
-
-            // B. 内存带宽压力 (Memory Bandwidth)
-            // 当目标负载较高 (>0.3) 时，插入 memset
-            // Memset 是 CPU 密集型操作，同时也消耗内存带宽
-            if (target_load > 0.3) {
-                // 每次刷 1MB，位置随机或轮询
-                size_t pos = (elapsed * 1024 * 1024) % (MEM_SIZE - 1024*1024);
-                // 写入当前时间戳作为垃圾数据
-                std::memset(mem_block.data() + pos, (int)elapsed, 1024 * 1024); 
+            if ((now - cycle_start).count() >= work_ns) {
+                break; // 时间到了，去休息
             }
 
-            // C. 磁盘 IO (Disk IO)
-            // 当目标负载很高 (>0.6) 时，偶尔写一点文件
-            // 用简单的计数器控制频率，不要每次循环都写，否则 CPU 会变成 IO Wait
-            static int io_counter = 0;
-            if (target_load > 0.6 && (++io_counter % 50 == 0)) {
-                // 追加写入 256KB，触发一下脏页回写即可
-                std::ofstream ofs(file_path, std::ios::binary | std::ios::app);
-                ofs.write(mem_block.data(), 256 * 1024);
-            }
+            // 执行一小段计算 (比如耗时 1微秒)
+            // 这样能频繁检查时间，保证精度
+            do_cpu_burn(1); 
         }
 
-        // --- 休息阶段 ---
-        auto end_work_time = std::chrono::high_resolution_clock::now();
-        long actual_work_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_work_time - start_time).count();
-        
-        long sleep_ms = TIME_SLICE_MS - actual_work_ms;
-        
-        // 只有当需要休息超过 1ms 时才真的 sleep，否则 yield 让出即可
-        if (sleep_ms > 1) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
-        } else {
-            std::this_thread::yield(); 
+        if (!running) break;
+
+        // 6. --- 修正休眠阶段 ---
+        // 重新计算实际消耗的时间，用剩下的时间去睡
+        auto work_end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(work_end - cycle_start).count();
+        long long remaining_ns = (WINDOW_MS * 1000000) - elapsed;
+
+        if (remaining_ns > 0) {
+            // 如果剩余时间很少 (<2ms)，也就是负载很高(>90%)时
+            // 不要用 sleep，因为 sleep 可能会睡过头导致掉负载
+            if (remaining_ns < 2000000) { 
+                // 忙等待 (Spin Wait) - 虽然是等待，但在任务管理器看来是 100% 占用
+                // 但为了让出一点点给系统，用 yield
+                auto sleep_start = std::chrono::high_resolution_clock::now();
+                while ((std::chrono::high_resolution_clock::now() - sleep_start).count() < remaining_ns) {
+                    std::this_thread::yield();
+                }
+            } else {
+                // 时间充裕，正常睡眠，节省功耗
+                std::this_thread::sleep_for(std::chrono::nanoseconds(remaining_ns));
+            }
         }
     }
+}
+// ============================================================
+// 2. Memory Worker: 独立内存线程 
+// ============================================================
+void CPULoadGenerator::memory_worker()
+{
+    // 模拟 Python: allocated_data = []
+    // vector of vector 用来模拟 list of bytearray
+    std::vector<std::vector<char>> allocated_data;
+    
+    // 为了防止 C++ bad_alloc 崩溃，设置一个物理上限 (比如 64GB)
+    // Python 脚本里 target_gb = 100 * target_load，可能很大
+    const size_t MAX_SAFE_GB = 64; 
+    const size_t CHUNK_SIZE = 100 * 1024 * 1024; // 100MB
 
-    // 清理临时文件
-    try { if (fs::exists(file_path)) fs::remove(file_path); } catch(...) {}
+    while (running) {
+        try {
+            double target_load = get_wave_intensity(20.0); // Offset 20
+
+            // Python: target_gb = 100 * target_load
+            double target_gb = 100.0 * target_load;
+            
+            // 限制最大值
+            if (target_gb > MAX_SAFE_GB) target_gb = MAX_SAFE_GB;
+
+            // Python: current_held_gb = len(allocated_data) * 0.1
+            double current_held_gb = allocated_data.size() * 0.1;
+
+            if (current_held_gb < target_gb) {
+                // Python: allocated_data.append(bytearray(os.urandom(chunk_size)))
+                // C++: 分配并填充
+                try {
+                    std::vector<char> chunk(CHUNK_SIZE);
+                    // 关键：必须写入数据，否则 OS 可能会延迟分配物理内存 (Lazy Allocation)
+                    // 使用 memset 模拟 os.urandom 的部分开销 (写内存)
+                    std::memset(chunk.data(), 1, CHUNK_SIZE); 
+                    allocated_data.push_back(std::move(chunk));
+                } catch (const std::bad_alloc&) {
+                    // 忽略内存不足，休息一下
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                }
+            } 
+            else if (current_held_gb > target_gb + 2.0) { // +2 GB 滞后区间
+                // Python: allocated_data.pop()
+                if (!allocated_data.empty()) {
+                    allocated_data.pop_back();
+                }
+            }
+
+            // Python: time.sleep(0.5)
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+        } catch (...) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
+    }
+    // 线程退出时 allocated_data 会自动释放
 }
 
-void CPULoadGenerator::runRandom()
+// ============================================================
+// 3. Disk Worker: 独立IO线程 
+// ============================================================
+void CPULoadGenerator::disk_worker()
 {
-    // 1. 获取硬件并发数
-    unsigned int num_cores = std::thread::hardware_concurrency();
-    if (num_cores == 0) num_cores = 4; // fallback
+    // Python: disk_file_path = ...
+    fs::path temp_dir = fs::temp_directory_path();
+    fs::path disk_file_path = temp_dir / "stress_test_file.dat";
+    
+    // buffer
+    const size_t BLOCK_SIZE = 1024 * 1024; // 1MB
+    std::vector<char> data(BLOCK_SIZE, 'A'); // 模拟 random data
 
-    std::cout << "[CPU Manager] Detected " << num_cores << " cores. Spawning workers..." << std::endl;
+    while (running) {
+        double target_load = get_wave_intensity(40.0); // Offset 40
 
-    // 2. 启动 Worker 线程池
-    std::vector<std::thread> cpu_workers;
-    cpu_workers.reserve(num_cores);
+        if (target_load < 0.1) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            continue;
+        }
 
-    for (unsigned int i = 0; i < num_cores; ++i) {
-        // 将外部的 running 引用传递给子线程
-        cpu_workers.emplace_back(&CPULoadGenerator::cpu_core_worker, this, i);
+        // Python: file_size_mb = int(10 + 490 * target_load)
+        int file_size_mb = static_cast<int>(10 + 490 * target_load);
+
+        try {
+            // --- 写 (Write) ---
+            {
+                std::ofstream ofs(disk_file_path, std::ios::binary | std::ios::trunc);
+                if (ofs) {
+                    for (int i = 0; i < file_size_mb; ++i) {
+                        if (!running) break;
+                        ofs.write(data.data(), BLOCK_SIZE);
+                    }
+                }
+            }
+            if (!running) break;
+
+            // --- 读 (Read) ---
+            if (fs::exists(disk_file_path)) {
+                std::ifstream ifs(disk_file_path, std::ios::binary);
+                if (ifs) {
+                    std::vector<char> read_buf(BLOCK_SIZE);
+                    while (ifs.read(read_buf.data(), BLOCK_SIZE)) {
+                        if (!running) break;
+                    }
+                }
+            }
+
+            // --- 删 (Remove) ---
+            if (fs::exists(disk_file_path)) {
+                fs::remove(disk_file_path);
+            }
+
+        } catch (...) {
+            // ignore errors
+        }
+
+        // Python: time.sleep((1.0 - target_load) * 1.0)
+        if (running) {
+            double sleep_sec = (1.0 - target_load) * 1.0;
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long>(sleep_sec * 1000)));
+        }
     }
 
-    // 3. 等待外部信号停止
-    // 主控线程在这里阻塞，直到所有子线程结束
-    for (auto& t : cpu_workers) {
+    // 清理
+    if (fs::exists(disk_file_path)) {
+        try { fs::remove(disk_file_path); } catch(...) {}
+    }
+}
+
+// ============================================================
+// 4. Manager: 启动所有线程
+// ============================================================
+void CPULoadGenerator::runRandom()
+{
+    unsigned int num_cores = std::thread::hardware_concurrency();
+    if (num_cores == 0) num_cores = 4;
+
+    std::cout << "[CPU Manager] Starting " << num_cores << " compute threads, 1 Memory thread, 1 Disk thread..." << std::endl;
+
+    std::vector<std::thread> threads;
+
+    // 1. 启动 CPU 计算线程 (1 Core = 1 Thread)
+    for (unsigned int i = 0; i < num_cores; ++i) {
+        threads.emplace_back(&CPULoadGenerator::cpu_core_worker, this, i);
+    }
+
+    // 2. 启动 内存 线程
+    threads.emplace_back(&CPULoadGenerator::memory_worker, this);
+
+    // 3. 启动 磁盘 线程
+    threads.emplace_back(&CPULoadGenerator::disk_worker, this);
+
+    // 等待所有线程结束 (由外部调用 stop() 触发 running=false)
+    for (auto& t : threads) {
         if (t.joinable()) {
             t.join();
         }
     }
-
-    std::cout << "[CPU Manager] All CPU workers stopped." << std::endl;
+    
+    std::cout << "[CPU Manager] All workers stopped." << std::endl;
 }
 
 #endif

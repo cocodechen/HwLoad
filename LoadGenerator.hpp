@@ -48,4 +48,3 @@ inline double get_wave_intensity(double offset_seed) {
     // 钳制在 [0.0, 1.0] 安全范围
     return std::max(0.01, std::min(val, 1.0));
 }
-

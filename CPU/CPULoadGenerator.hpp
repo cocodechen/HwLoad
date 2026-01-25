@@ -23,6 +23,8 @@ private:
 #ifdef __linux__
     void runIO();
 #endif
+    void memory_worker();
+    void disk_worker();
     void cpu_core_worker(int core_id);
     void runRandom();
 
