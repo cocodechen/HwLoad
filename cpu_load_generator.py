@@ -8,127 +8,77 @@ import tempfile
 import numpy as np
 import urllib.request
 from load_config import LoadLevel, ProfileType
-from load_generator import LoadGenerator, get_wave_intensity, get_target_intensity
-
-# --- 核心计算函数 (放在类外以方便 multiprocessing 调用) ---
-def _cpu_compute_task(running_event, intensity_func_wrapper):
-    """纯计算密集型任务：矩阵乘法"""
-    while running_event.is_set():
-        # intensity_func_wrapper 可以是一个返回固定值的函数，也可以是 wave 函数
-        target_load = intensity_func_wrapper()
-        
-        if target_load < 0.05:
-            time.sleep(0.5)
-            continue
-            
-        # 动态调整矩阵大小以控制计算量
-        # target 1.0 -> 大约耗时几百毫秒
-        matrix_size = int(200 + 400 * target_load) 
-        
-        start_t = time.time()
-        try:
-            # Numpy 在做矩阵运算时通常会释放 GIL
-            a = np.random.rand(matrix_size, matrix_size)
-            b = np.random.rand(matrix_size, matrix_size)
-            np.dot(a, b)
-        except Exception:
-            pass
-        elapsed = time.time() - start_t
-
-        # 简单的占空比控制：工作 elapsed 秒，需要休息 sleep 秒
-        # Load = Work / (Work + Sleep) => Sleep = Work * (1/Load - 1)
-        if target_load < 0.99:
-            sleep_time = elapsed * (1.0/target_load - 1.0)
-            time.sleep(max(0.0, sleep_time))
+from load_generator import LoadGenerator, get_wave_intensity
 
 class CPULoadGenerator(LoadGenerator):
     def start(self, profile: ProfileType, level: LoadLevel):
         self.cur_level = level
         self.running_event.set()
 
-        if profile == ProfileType.Compute:
-            self._start_compute()
-        elif profile == ProfileType.Memory:
-            self._start_memory()
-        elif profile == ProfileType.IO:
-            self._start_io()
-        elif profile == ProfileType.Random:
-            self._start_random() # 集成 cpu_load_worker 逻辑
+        # 无论什么 Profile，只要是 Random 模式，就完全按照 load.py 的全套逻辑启动
+        if profile == ProfileType.Random:
+            self._start_load_py_logic()
         else:
-            # 默认混合 Data 模式
-            self._start_compute() 
-            
-    def _start_compute(self):
-        # 使用多进程占满所有核
-        num_cores = multiprocessing.cpu_count()
-        intensity = get_target_intensity(self.cur_level)
+            # 兼容其他固定模式（如果使用了 cpu:compute:high 这种）
+            # 这里简单处理，复用同样的 worker 但给固定值
+            self._start_fixed_logic(level)
+
+    def _start_load_py_logic(self):
+        """完全复刻 load.py 的线程启动逻辑"""
+        total_cores = multiprocessing.cpu_count()
         
-        for _ in range(num_cores):
-            p = multiprocessing.Process(
-                target=_cpu_compute_task,
-                args=(self.running_event, lambda: intensity)
-            )
-            p.start()
-            self.workers.append(p)
-
-    def _start_memory(self):
-        # 内存占用线程
-        t = threading.Thread(target=self._run_memory_burn, args=(lambda: get_target_intensity(self.cur_level),))
-        t.start()
-        self.workers.append(t)
-
-    def _start_io(self):
-        # IO 压力线程
-        t = threading.Thread(target=self._run_disk_burn, args=(lambda: get_target_intensity(self.cur_level),))
-        t.start()
-        self.workers.append(t)
-
-    def _start_random(self):
-        """
-        [NEW] Random Profile: 对应原来的 cpu_load_worker.py
-        混合 CPU, Memory, Disk, Network，且负载呈波形变化
-        """
-        num_cores = multiprocessing.cpu_count()
-        
-        # 1. CPU 线程 (原代码使用 threading，对于 Random 模式我们保持原样，
-        # 但为了效果更好，推荐这里如果是 Random 也可以用 Process)
-        # 既然要求移植 cpu_load_worker，它原来是用 threading + numpy
-        for i in range(num_cores):
+        # 1. CPU Threads (与 load.py 一模一样)
+        for i in range(total_cores):
             offset = random.random() * 10
-            # 使用波形函数
+            # 使用 lambda 捕获 offset
             t = threading.Thread(
-                target=self._run_cpu_numpy_burn, 
-                args=(lambda: get_wave_intensity(offset),)
+                target=self.cpu_worker, 
+                args=(lambda o=offset: get_wave_intensity(o), i)
             )
             t.start()
             self.workers.append(t)
 
         # 2. Memory
-        t_mem = threading.Thread(target=self._run_memory_burn, args=(lambda: get_wave_intensity(20),))
+        t_mem = threading.Thread(
+            target=self.memory_worker, 
+            args=(lambda: get_wave_intensity(20),)
+        )
         t_mem.start()
         self.workers.append(t_mem)
 
         # 3. Disk
-        t_disk = threading.Thread(target=self._run_disk_burn, args=(lambda: get_wave_intensity(40),))
+        t_disk = threading.Thread(
+            target=self.disk_worker, 
+            args=(lambda: get_wave_intensity(40),)
+        )
         t_disk.start()
         self.workers.append(t_disk)
 
         # 4. Network
-        t_net = threading.Thread(target=self._run_network_burn, args=(lambda: get_wave_intensity(80),))
+        t_net = threading.Thread(
+            target=self.network_worker, 
+            args=(lambda: get_wave_intensity(80),)
+        )
         t_net.start()
         self.workers.append(t_net)
 
-    # --- Worker Implementations ---
+    def _start_fixed_logic(self, level):
+        # 辅助兼容函数，如果用户没用 random 模式
+        mapping = {LoadLevel.Idle: 0.0, LoadLevel.Low: 0.2, LoadLevel.Medium: 0.5, LoadLevel.High: 0.8, LoadLevel.Saturated: 1.0}
+        val = mapping.get(level, 0.5)
+        # 启动一个 CPU 线程跑固定负载
+        t = threading.Thread(target=self.cpu_worker, args=(lambda: val, 0))
+        t.start()
+        self.workers.append(t)
 
-    def _run_cpu_numpy_burn(self, intensity_func):
-        # 对应 cpu_load_worker 中的 cpu_worker
+    def cpu_worker(self, intensity_func, core_id):
         while self.running_event.is_set():
             target_load = intensity_func()
             if target_load < 0.1:
-                time.sleep(0.5)
+                time.sleep(0.5) 
                 continue
-            
-            matrix_size = int(300 * target_load) # 稍微减小尺寸适应多线程
+                
+            matrix_size = int(1000 * target_load)
             try:
                 a = np.random.rand(matrix_size, matrix_size)
                 b = np.random.rand(matrix_size, matrix_size)
@@ -136,91 +86,88 @@ class CPULoadGenerator(LoadGenerator):
             except Exception:
                 pass
             
-            sleep_time = (1.0 - target_load) * 0.1
-            time.sleep(max(0.01, sleep_time))
+            if self.running_event.is_set():
+                sleep_time = (1.0 - target_load) * 0.1
+                time.sleep(max(0.01, sleep_time))
 
-    def _run_memory_burn(self, intensity_func):
-        # 对应 cpu_load_worker 中的 memory_worker
+    def memory_worker(self, intensity_func):
         allocated_data = []
-        max_mem_percent = 85.0
+        max_memory_percent = 85.0
         while self.running_event.is_set():
             try:
-                current_mem = psutil.virtual_memory().percent
+                current_mem_percent = psutil.virtual_memory().percent
                 target_load = intensity_func()
-
-                # 保护机制
-                if current_mem > max_mem_percent:
-                    allocated_data = [] # 释放
+                
+                if current_mem_percent > max_memory_percent:
+                    allocated_data = []
                     time.sleep(1)
                     continue
+                    
+                target_gb = 100 * target_load 
+                current_held_gb = len(allocated_data) * 0.1 
+                chunk_size = 100 * 1024 * 1024 
                 
-                # 目标：假设最大测试占用 10GB * target_load (或者基于系统总内存)
-                # 这里简单化：target_load * 100个 chunk
-                # 调整：动态申请和释放
-                chunk_size = 50 * 1024 * 1024 # 50MB
-                target_chunks = int(20 * target_load) # 最多约 1GB 动态波动
-
-                if len(allocated_data) < target_chunks:
+                if current_held_gb < target_gb:
                     try:
-                        allocated_data.append(bytearray(os.urandom(chunk_size)))
+                        allocated_data.append(bytearray(os.urandom(chunk_size))) 
                     except MemoryError:
                         time.sleep(1)
-                elif len(allocated_data) > target_chunks:
+                elif current_held_gb > target_gb + 2:
                     if allocated_data:
                         allocated_data.pop()
-                
-                time.sleep(0.2)
+                time.sleep(0.5)
             except Exception:
                 time.sleep(0.5)
 
-    def _run_disk_burn(self, intensity_func):
-        # 对应 cpu_load_worker 中的 disk_worker
-        disk_path = os.path.join(tempfile.gettempdir(), "stress_test_py_io.dat")
+    def disk_worker(self, intensity_func):
+        disk_file_path = os.path.join(tempfile.gettempdir(), "stress_test_file_py.dat")
         while self.running_event.is_set():
             target_load = intensity_func()
             if target_load < 0.1:
                 time.sleep(0.5)
                 continue
             
-            # 写
-            file_size_mb = int(10 + 100 * target_load)
+            file_size_mb = int(10 + 490 * target_load)
             block_size = 1024 * 1024
+            
             try:
-                with open(disk_path, "wb") as f:
+                with open(disk_file_path, "wb") as f:
                     data = os.urandom(block_size)
                     for _ in range(file_size_mb):
                         if not self.running_event.is_set(): break
                         f.write(data)
                 
-                # 读
-                if os.path.exists(disk_path) and self.running_event.is_set():
-                    with open(disk_path, "rb") as f:
+                if not self.running_event.is_set(): break
+
+                if os.path.exists(disk_file_path):
+                    with open(disk_file_path, "rb") as f:
                         while f.read(block_size):
                             if not self.running_event.is_set(): break
                 
-                # 清理
-                if os.path.exists(disk_path):
-                    os.remove(disk_path)
+                if os.path.exists(disk_file_path):
+                    os.remove(disk_file_path)
             except Exception:
                 pass
             
-            # 休息
-            time.sleep((1.0 - target_load) * 0.5)
+            time.sleep((1.0 - target_load) * 1.0)
 
-    def _run_network_burn(self, intensity_func):
-        # 对应 cpu_load_worker 中的 network_worker
-        # 注意：不要在生产环境攻击公共镜像源，这里使用 dummy url 或较小的文件
-        url = "http://example.com" 
+    def network_worker(self, intensity_func):
+        url = "https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/22.04/ubuntu-22.04.3-desktop-amd64.iso"
         while self.running_event.is_set():
             target_load = intensity_func()
-            if target_load < 0.3:
+            if target_load < 0.2:
                 time.sleep(1)
                 continue
             try:
-                req = urllib.request.urlopen(url, timeout=2)
-                req.read()
+                req = urllib.request.urlopen(url, timeout=3)
+                chunk_size = 1024 * 1024 
+                read_count = 0
+                max_reads = int(50 * target_load)
+                while read_count < max_reads and self.running_event.is_set():
+                    data = req.read(chunk_size)
+                    if not data: break
+                    read_count += 1
                 req.close()
             except Exception:
-                pass
-            # 频率控制
-            time.sleep(max(0.1, (1.0 - target_load)))
+                time.sleep(1)
+            time.sleep(1)

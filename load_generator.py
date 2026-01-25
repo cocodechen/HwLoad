@@ -27,18 +27,14 @@ class LoadGenerator(ABC):
         self.workers.clear()
 
 # --- 辅助函数：获取模拟波形负载强度 (0.0 - 1.0) ---
-def get_wave_intensity(offset_seed: float = 0.0) -> float:
+def get_wave_intensity(offset):
+    import math
     t = time.time()
-    # 1. 基础趋势波 (周期约 60秒)
-    slow_wave = 0.5 * math.sin(t / 20.0 + offset_seed)
-    # 2. 活跃波动波 (周期约 5秒)
-    fast_wave = 0.2 * math.sin(t / 2.5 + offset_seed * 2.0)
-    # 3. 随机抖动
-    noise = random.uniform(-0.05, 0.05)
-
-    # 结果 [0.1, 0.9]
-    val = 0.5 + slow_wave + fast_wave + noise
-    return max(0.01, min(val, 1.0))
+    slow = (math.sin(t / 60.0 + offset) + 1) / 2 
+    fast = (math.sin(t / 5.0 + offset * 3) + 1) / 2
+    noise = random.random()
+    val = 0.5 * slow + 0.3 * fast + 0.2 * noise
+    return min(max(val, 0.0), 1.0)
 
 # --- 辅助函数：根据 Level 获取目标占空比/强度 ---
 def get_target_intensity(level: LoadLevel) -> float:

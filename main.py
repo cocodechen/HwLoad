@@ -1,19 +1,17 @@
 import sys
 import time
 import signal
-import argparse
+import multiprocessing
 from typing import List
 
 from load_config import ProfileType, LoadLevel, LoadTask
 from load_generator import LoadGenerator
-# 根据条件导入，避免没有安装 PyTorch 时报错
 from cpu_load_generator import CPULoadGenerator
 try:
     from gpu_load_generator import GPULoadGenerator
 except ImportError:
     GPULoadGenerator = None
 
-# 全局变量控制退出
 stop_requested = False
 
 def signal_handler(signum, frame):
@@ -55,12 +53,13 @@ def parse_arg(arg: str) -> LoadTask:
         # device:random
         profile = parse_profile(parts[1])
         if profile == ProfileType.Random:
+            # Random 模式下 Level 不重要，给个默认值，但在打印时我们会特殊处理
             return LoadTask(device, profile, LoadLevel.Medium)
         else:
             raise ValueError(f"Profile '{parts[1]}' requires a level.")
     elif len(parts) == 3:
-        # device:profile:level
         profile = parse_profile(parts[1])
+        # 如果用户显式指定 random:high，我们也接受，但实际上内部逻辑是波动的
         level = parse_level(parts[2])
         return LoadTask(device, profile, level)
     else:
@@ -86,11 +85,9 @@ def main():
     
     if len(sys.argv) < 2:
         print("Usage: python main.py <device:profile:level> ...")
-        print("Example: python main.py cpu:compute:high gpu:random")
         sys.exit(1)
 
     generators: List[LoadGenerator] = []
-    
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
@@ -99,7 +96,10 @@ def main():
             task = parse_arg(arg)
             gen = create_generator(task.device)
             if gen:
-                print(f"Starting {task.device} | Profile: {task.profile.name} | Level: {task.level.name}")
+                # 优化显示逻辑：Random 模式显示为 Dynamic
+                level_display = "Dynamic (Wave)" if task.profile == ProfileType.Random else task.level.name
+                print(f"Starting {task.device} | Profile: {task.profile.name} | Level: {level_display}")
+                
                 gen.start(task.profile, task.level)
                 generators.append(gen)
     except Exception as e:
@@ -121,6 +121,5 @@ def main():
         print("Done.")
 
 if __name__ == "__main__":
-    # Windows/macOS 下 multiprocessing 需要这个保护
-    multiprocessing.freeze_support()
+    # multiprocessing.freeze_support()
     main()
