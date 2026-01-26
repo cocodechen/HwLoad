@@ -247,72 +247,87 @@ void CPULoadGenerator::runIO()
 void CPULoadGenerator::cpu_core_worker(int core_id)
 {
     // ==========================================
-    // 核心参数：控制波动的上下限
-    const double MIN_TARGET_LOAD = 0.20; // 20%
-    const double MAX_TARGET_LOAD = 0.95; // 95%
+    // 【参数调优区】 - 修改这里来控制负载行为
+    // ==========================================
     
-    // 时间片窗口：100ms 是任务管理器刷新的合适粒度
+    // 1. 负载区间映射
+    // 如果觉得整体偏低，把 MIN 调高 (比如 0.50)，MAX 调成 1.0
+    const double MIN_TARGET_LOAD = 0.20; 
+    const double MAX_TARGET_LOAD = 0.95; 
+
+    // 2. 刷新窗口 (100ms 通常是比较平衡的值)
     const int WINDOW_MS = 100; 
+
+    // 3. 计算粒度 (关键优化变量)
+    // 这个值越大，查时间的频率越低，利用率越高。
+    // 如果你的 CPU 很快，建议设为 50000 或 100000。
+    // 如果太小（比如 1000），CPU 都在忙着获取系统时间，利用率上不去。
+    const int loops = 10; 
+
+    // 4. 忙等待阈值 (单位：微秒)
+    // 如果剩余休眠时间小于这个值，就不睡了，直接空转死循环。
+    // Windows 建议 16000 (16ms)，Linux 建议 2000 (2ms)。
+    // 设得越大，CPU 占用越高（因为这部分时间被算作工作了）。
+#ifdef __linux__
+    const long long SPIN_THRESHOLD_US = 2000; 
+#else
+    const long long SPIN_THRESHOLD_US = 16000; 
+#endif
     // ==========================================
 
     std::mt19937 gen(std::random_device{}() + core_id);
     std::uniform_real_distribution<> dis(0.0, 10.0);
     double offset = dis(gen);
 
+    // 防优化变量
+    volatile double dummy = 0.0; 
+
     while (running) {
-        // 1. 标记周期开始时刻
         auto cycle_start = std::chrono::high_resolution_clock::now();
 
-        // 2. 获取原始波形 (0.0 - 1.0)
-        double wave = get_wave_intensity(offset);
-
-        // 3. 映射到目标区间 [20%, 95%]
-        // Python 没做这个映射，是因为 Python 本身跑得慢，天然就把负载拉高了
-        // C++ 必须手动控制区间，否则很容易掉到底
+        // 计算目标负载
+        double wave = get_wave_intensity(offset); 
+        // 映射波形到 [MIN, MAX]
         double target_load = MIN_TARGET_LOAD + wave * (MAX_TARGET_LOAD - MIN_TARGET_LOAD);
         target_load = std::clamp(target_load, 0.0, 1.0);
 
-        // 4. 计算应该工作多久 (Work Duration)
         long long work_ns = static_cast<long long>(target_load * WINDOW_MS * 1000000);
-        long long sleep_ns = static_cast<long long>((1.0 - target_load) * WINDOW_MS * 1000000);
 
-        // 5. --- 暴力计算阶段 (强制工作 work_ns 纳秒) ---
+        // --- 暴力计算阶段 ---
         while (running) {
             auto now = std::chrono::high_resolution_clock::now();
             if ((now - cycle_start).count() >= work_ns) {
-                break; // 时间到了，去休息
+                break;
             }
 
-            // 执行一小段计算 (比如耗时 1微秒)
+             // 执行一小段计算 (比如耗时 1微秒)
             // 这样能频繁检查时间，保证精度
-            do_cpu_burn(1); 
+            do_cpu_burn(loops); 
         }
 
         if (!running) break;
 
-        // 6. --- 修正休眠阶段 ---
-        // 重新计算实际消耗的时间，用剩下的时间去睡
+        // --- 修正休眠阶段 ---
         auto work_end = std::chrono::high_resolution_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(work_end - cycle_start).count();
-        long long remaining_ns = (WINDOW_MS * 1000000) - elapsed;
+        long long elapsed = (work_end - cycle_start).count();
+        long long total_window_ns = WINDOW_MS * 1000000;
+        long long remaining_ns = total_window_ns - elapsed;
 
         if (remaining_ns > 0) {
-            // 如果剩余时间很少 (<2ms)，也就是负载很高(>90%)时
-            // 不要用 sleep，因为 sleep 可能会睡过头导致掉负载
-            if (remaining_ns < 2000000) { 
-                // 忙等待 (Spin Wait) - 虽然是等待，但在任务管理器看来是 100% 占用
-                // 但为了让出一点点给系统，用 yield
-                auto sleep_start = std::chrono::high_resolution_clock::now();
-                while ((std::chrono::high_resolution_clock::now() - sleep_start).count() < remaining_ns) {
-                    std::this_thread::yield();
+            // 如果剩余时间小于阈值，直接忙等待 (视为 100% 负载)
+            if (remaining_ns < SPIN_THRESHOLD_US * 1000) { 
+                auto spin_start = std::chrono::high_resolution_clock::now();
+                while ((std::chrono::high_resolution_clock::now() - spin_start).count() < remaining_ns) {
+                    // 空转，死死占住 CPU
                 }
             } else {
-                // 时间充裕，正常睡眠，节省功耗
+                // 时间充裕，真正睡眠 (CPU 占用率为 0%)
                 std::this_thread::sleep_for(std::chrono::nanoseconds(remaining_ns));
             }
         }
     }
 }
+
 // ============================================================
 // 2. Memory Worker: 独立内存线程 
 // ============================================================

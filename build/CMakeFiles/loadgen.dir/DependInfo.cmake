@@ -8,7 +8,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/users/xc/HwLoad/GPU/GPULoadGenerator.cu" "CMakeFiles/loadgen.dir/GPU/GPULoadGenerator.cu.o" "gcc" "CMakeFiles/loadgen.dir/GPU/GPULoadGenerator.cu.o.d"
   "/users/xc/HwLoad/CPU/CPULoadGenerator.cpp" "CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o" "gcc" "CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o.d"
   "/users/xc/HwLoad/main.cpp" "CMakeFiles/loadgen.dir/main.cpp.o" "gcc" "CMakeFiles/loadgen.dir/main.cpp.o.d"
   )

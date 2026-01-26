@@ -81,12 +81,12 @@ clean: CMakeFiles/loadgen.dir/clean
 CMakeFiles/loadgen.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/loadgen.dir/build.make CMakeFiles/loadgen.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/loadgen.dir/build.make CMakeFiles/loadgen.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwLoad/build/CMakeFiles --progress-num=1,2,3,4 "Built target loadgen"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/users/xc/HwLoad/build/CMakeFiles --progress-num=1,2,3 "Built target loadgen"
 .PHONY : CMakeFiles/loadgen.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/loadgen.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwLoad/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwLoad/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/loadgen.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /users/xc/HwLoad/build/CMakeFiles 0
 .PHONY : CMakeFiles/loadgen.dir/rule

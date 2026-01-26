@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 {
     if (argc < 2) {
         std::cerr << "Usage: loadgen <device:profile:level> [device:profile:level] ...\n"
-                  << "Example: loadgen cpu:compute:high gpu:random:medium\n";
+                  << "Example: loadgen cpu:compute:high gpu:random\n";
         return 1;
     }
 

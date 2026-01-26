@@ -153,30 +153,6 @@ CPU/CPULoadGenerator.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/loadgen.dir/build.make CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.s
 .PHONY : CPU/CPULoadGenerator.cpp.s
 
-GPU/GPULoadGenerator.o: GPU/GPULoadGenerator.cu.o
-.PHONY : GPU/GPULoadGenerator.o
-
-# target to build an object file
-GPU/GPULoadGenerator.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/loadgen.dir/build.make CMakeFiles/loadgen.dir/GPU/GPULoadGenerator.cu.o
-.PHONY : GPU/GPULoadGenerator.cu.o
-
-GPU/GPULoadGenerator.i: GPU/GPULoadGenerator.cu.i
-.PHONY : GPU/GPULoadGenerator.i
-
-# target to preprocess a source file
-GPU/GPULoadGenerator.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/loadgen.dir/build.make CMakeFiles/loadgen.dir/GPU/GPULoadGenerator.cu.i
-.PHONY : GPU/GPULoadGenerator.cu.i
-
-GPU/GPULoadGenerator.s: GPU/GPULoadGenerator.cu.s
-.PHONY : GPU/GPULoadGenerator.s
-
-# target to generate assembly for a file
-GPU/GPULoadGenerator.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/loadgen.dir/build.make CMakeFiles/loadgen.dir/GPU/GPULoadGenerator.cu.s
-.PHONY : GPU/GPULoadGenerator.cu.s
-
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -213,9 +189,6 @@ help:
 	@echo "... CPU/CPULoadGenerator.o"
 	@echo "... CPU/CPULoadGenerator.i"
 	@echo "... CPU/CPULoadGenerator.s"
-	@echo "... GPU/GPULoadGenerator.o"
-	@echo "... GPU/GPULoadGenerator.i"
-	@echo "... GPU/GPULoadGenerator.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
