@@ -28,6 +28,7 @@ std::string NPULoadGenerator::profileToString(ProfileType profile)
         case ProfileType::Memory:  return "memory";
         case ProfileType::Data:    return "data";
         case ProfileType::IO:      throw std::runtime_error("NPU does not support IO load profile. Please use Compute, Memory, or Data.");
+        case ProfileType::Random:   return "random";
         default: return "compute";
     }
 }

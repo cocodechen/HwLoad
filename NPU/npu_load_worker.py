@@ -20,32 +20,33 @@ def signal_handler(sig, frame):
 # 配置管理
 # =========================
 def get_config(profile, level):
-    # === 基础参数 ===
+    # === 1. Random 模式 (波动负载) ===
+    if profile == 'random':
+        # 去除 Level 的影响，统一为固定参数
+        # N=1024 保证计算强度，Steps=15 保证单次执行时间适中
+        return 1024, 15, 0.0
+
+    # === 2. Memory 模式 (显存带宽) ===
+    if profile == 'memory':
+        # [暴力升级] 之前的 2048 太小，不足以拉满带宽
+        if level == 'saturated':
+            return 8192, 20, 0.0 # 单块 256MB，极致大块读写
+        elif level == 'high':
+            return 4096, 40, 0.0 # 单块 64MB
+        else:
+            return 2048, 50, 0.05
+
+    # === 3. Compute 模式 (算力) ===
     if profile == 'compute':
+        if level == 'saturated':
+            return 8192, 100, 0.0 # 巨大的矩阵乘法
         base_n = 4096
         base_steps = 200 
-    elif profile == 'memory':
-        base_n = 2048 
-        base_steps = 50 
-    elif profile == 'random':
-        # N 控制通道数，1024 算是中等偏大负载
-        base_n = 1024
-        # 步数适中，模拟一个深层网络的推理耗时
-        base_steps = 15 
-    else: 
+    else: # data / default
         base_n = 2048
         base_steps = 50
 
-    # === Level 调节 ===
-    if profile == 'random':
-        # [修改点1] Random 模式下，Level 决定波动的剧烈程度，不再返回固定 sleep
-        # 这里返回的 sleep_interval 将作为一个“基准值”或者“最大值”
-        if level == 'low': return base_n, base_steps, 0.5   # 波动稀疏
-        if level == 'medium': return base_n, base_steps, 0.1 # 波动频繁
-        if level == 'high': return base_n, base_steps, 0.01  # 极其剧烈
-        return base_n, base_steps, 0.2
-        
-    # 其他模式保持固定逻辑
+    # === 通用 Level 调节 (仅对非 Random 生效) ===
     if level == 'idle':
         return 64, 1, 1.0
     elif level == 'low':
@@ -55,9 +56,8 @@ def get_config(profile, level):
     elif level == 'high':
         return int(base_n * 1.0), base_steps, 0.0
     elif level == 'saturated':
-        scale = 1.5
-        if profile == 'memory': scale = 1.0 
-        return int(base_n * scale), int(base_steps * 1.5), 0.0
+        return int(base_n * 1.5), int(base_steps * 1.5), 0.0
+    
     return 1024, 10, 0.1
 
 # =========================
@@ -99,7 +99,18 @@ class MemoryCell(LoadBase):
         self.assign = ops.Assign()
         self.depend = ops.Depend()
         
-        self.buffer_count = 16 
+        # [策略调整] 
+        # 如果 N 很大(8192, 256MB)，Buffer 少一点 (8个=2GB) 防止 OOM
+        # 如果 N 较小(2048, 16MB)，Buffer 多一点 (32个=512MB) 击穿 Cache
+        if N >= 8192:
+            self.buffer_count = 8
+        elif N >= 4096:
+            self.buffer_count = 16
+        else:
+            self.buffer_count = 32
+            
+        print(f"Memory Load: Allocating {self.buffer_count} blocks of {N}x{N} FP32 (Total: ~{self.buffer_count * N * N * 4 / 1024 / 1024:.2f} MB)")
+        
         self.buffers = ParameterTuple([
             Parameter(Tensor(np.ones((N, N)), self.dtype), name=f"buf_{i}")
             for i in range(self.buffer_count)
@@ -108,6 +119,7 @@ class MemoryCell(LoadBase):
 
     def construct(self, _=None):
         last_op = self.val 
+        # 为了让流水线更紧凑，不再 Unroll 太多，而是依赖算子本身的大数据量
         for i in range(self.buffer_count):
             buf = self.buffers[i]
             current_buf = self.depend(buf, last_op)
@@ -137,107 +149,82 @@ class DataCell(LoadBase):
         return self.finish_op(x)
 
 # =========================
-# 4. Random Load (真实波动模拟 - 增强版)
+# 4. Random Load (MobileNet Block)
 # =========================
 class RandomCell(LoadBase):
     def __init__(self, N, steps):
         super().__init__(N, steps, ms.float16)
         in_channel = N
-        # 扩展系数，MobileNetV2通常是6，这里用4保证不过载
+        # 增大 N 或者分辨率以增加计算密度
+        # 如果 N=1024 负载仍不满，可以加大到 2048
+        
+        # === [优化] 1. 输入直接定义在 Device 上 ===
+        # 模拟 batch_size=32, h=32, w=32 (加大分辨率以增加计算密度)
+        self.input_data = Parameter(Tensor(np.random.normal(0, 1, (32, N, 32, 32)), ms.float16), name="fixed_input")
+        
         expand_ratio = 4 
         hidden_dim = in_channel * expand_ratio
         
-        # [修改点2] 完整的 Inverted Residual Block 结构
-        # 1. Expand (1x1 Conv): 升维，高计算密度 -> Cube
         self.conv_pw = nn.Conv2d(in_channel, hidden_dim, kernel_size=1, has_bias=False)
         self.bn1 = nn.BatchNorm2d(hidden_dim)
         
-        # 2. Depthwise (3x3 Conv): 特征提取，高访存 -> Vector/Memory
         self.conv_dw = nn.Conv2d(hidden_dim, hidden_dim, kernel_size=3, stride=1, 
                                  group=hidden_dim, pad_mode='same', has_bias=False)
         self.bn2 = nn.BatchNorm2d(hidden_dim)
         
-        # 3. Project (1x1 Conv): 降维 -> Cube
         self.conv_proj = nn.Conv2d(hidden_dim, in_channel, kernel_size=1, has_bias=False)
         self.bn3 = nn.BatchNorm2d(in_channel)
         
         self.relu = nn.ReLU()
-        # Residual add 需要 Vector core
-        self.add = ops.Add() 
+        self.add = ops.Add()
+        
+        self.to_float(ms.float16)
 
-    def construct(self, x):
-        out = x
+    def construct(self, _=None): # 忽略外部输入
+        # === [优化] 直接使用内部 Parameter ===
+        out = self.input_data 
+        
         for _ in range(self.steps):
             identity = out
-            
-            # Phase 1: Expand
             out = self.conv_pw(out)
             out = self.bn1(out)
             out = self.relu(out)
-            
-            # Phase 2: Depthwise
             out = self.conv_dw(out)
             out = self.bn2(out)
             out = self.relu(out)
-            
-            # Phase 3: Project
             out = self.conv_proj(out)
             out = self.bn3(out)
-            
-            # Phase 4: Residual Connection
             out = self.add(out, identity)
-            
         return self.finish_op(out)
 
 # =========================
-# 数据生成器
+# 辅助函数
 # =========================
 def create_random_input(profile, N):
     if profile != 'random':
         return None
-    # 模拟输入 Feature Map (Batch=32, C=N, H=14, W=14)
+    # FP16 Input
     return Tensor(np.random.randn(32, N, 14, 14).astype(np.float16))
 
-# =========================
-# 主循环
-# =========================
 def run_loop(net, sleep_interval, profile, N):
     print("Warmup (Compiling graph)...")
-    warmup_input = create_random_input(profile, N)
     try:
-        if warmup_input is not None:
-            net(warmup_input)
-        else:
-            net(None)
+        # 不需要传参数，或者传个 None 占位
+        net(None)
     except Exception as e:
         print(f"Error during warmup: {e}")
-        import traceback
-        traceback.print_exc()
         sys.exit(1)
     
-    print(f"Load started. Base Sleep: {sleep_interval}s")
+    print(f"Load started. Profile: {profile} (Running FULL SPEED)")
     
     while True:
-        # 1. 准备数据
-        current_input = create_random_input(profile, N)
+        # === [优化] 2. 移除 CPU 端的数据生成 ===
+        # === [优化] 3. 移除 .asnumpy() 同步 ===
+        # 仅仅下发任务，不做结果回传，让 NPU 跑死
+        net(None)
         
-        # 2. 执行计算
-        if current_input is not None:
-            scalar_tensor = net(current_input)
-        else:
-            scalar_tensor = net(None)
-        
-        # 3. 同步
-        _ = scalar_tensor.asnumpy()
-        
-        # 4. 休眠控制 (核心修改点)
-        if profile == 'random':
-            # [修改点3] 真正的随机波动逻辑
-            # 在 0 到 sleep_interval * 2 之间随机，模拟负载的不确定性
-            # 有时候是 0 (连续高负载)，有时候是 2倍 (长等待)
-            wait_time = random.uniform(0, sleep_interval * 2)
-            time.sleep(wait_time)
-        elif sleep_interval > 0:
+        # 仅在需要波动的模式下加入 sleep，否则全速运行
+        if profile != 'random' and sleep_interval > 0:
             time.sleep(sleep_interval)
 
 def main():
@@ -253,16 +240,19 @@ def main():
         sys.exit(1)
 
     N, steps, sleep_interval = get_config(args.profile, args.level)
-    print(f"Config: Profile={args.profile}, Level={args.level} -> N={N}, Steps={steps}, Sleep={sleep_interval}s")
+    
+    # [修改点] UI 显示优化
+    display_level = "Fluctuation" if args.profile == 'random' else args.level
+    print(f"Config: Profile={args.profile}, Level={display_level} -> N={N}, Steps={steps}")
 
     if args.profile == 'compute':
         net = ComputeCell(N, steps)
     elif args.profile == 'memory':
         net = MemoryCell(N, steps)
-    elif args.profile == 'data':
-        net = DataCell(N, steps)
     elif args.profile == 'random':
         net = RandomCell(N, steps)
+    elif args.profile == 'data':
+        net = DataCell(N, steps)
     else:
         net = ComputeCell(N, steps)
     
