@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o"
-  "CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o.d"
+  "CMakeFiles/loadgen.dir/NPU/NPULoadGenerator.cpp.o"
+  "CMakeFiles/loadgen.dir/NPU/NPULoadGenerator.cpp.o.d"
   "CMakeFiles/loadgen.dir/main.cpp.o"
   "CMakeFiles/loadgen.dir/main.cpp.o.d"
   "loadgen"
