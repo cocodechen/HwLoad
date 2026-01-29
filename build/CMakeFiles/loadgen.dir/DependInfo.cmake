@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/users/xc/HwLoad/CPU/CPULoadGenerator.cpp" "CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o" "gcc" "CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o.d"
-  "/users/xc/HwLoad/main.cpp" "CMakeFiles/loadgen.dir/main.cpp.o" "gcc" "CMakeFiles/loadgen.dir/main.cpp.o.d"
+  "/mnt/xc/HwLoad/NPU/NPULoadGenerator.cpp" "CMakeFiles/loadgen.dir/NPU/NPULoadGenerator.cpp.o" "gcc" "CMakeFiles/loadgen.dir/NPU/NPULoadGenerator.cpp.o.d"
+  "/mnt/xc/HwLoad/main.cpp" "CMakeFiles/loadgen.dir/main.cpp.o" "gcc" "CMakeFiles/loadgen.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

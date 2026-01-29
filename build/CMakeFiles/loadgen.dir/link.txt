@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/loadgen.dir/main.cpp.o CMakeFiles/loadgen.dir/CPU/CPULoadGenerator.cpp.o -o loadgen 
+/usr/bin/c++ CMakeFiles/loadgen.dir/main.cpp.o CMakeFiles/loadgen.dir/NPU/NPULoadGenerator.cpp.o -o loadgen 

@@ -8,6 +8,11 @@ import mindspore as ms
 import mindspore.ops as ops
 import mindspore.nn as nn
 from mindspore import Tensor, context, Parameter, ParameterTuple
+try:
+    from npu_train import run_simulation_loop
+except ImportError:
+    print("Error: 'npu_train.py' not found. Please make sure it exists.")
+    sys.exit(1)
 
 # =========================
 # 信号处理
@@ -148,63 +153,6 @@ class DataCell(LoadBase):
             x = self.cast(res, ms.float32)
         return self.finish_op(x)
 
-# =========================
-# 4. Random Load (MobileNet Block)
-# =========================
-class RandomCell(LoadBase):
-    def __init__(self, N, steps):
-        super().__init__(N, steps, ms.float16)
-        in_channel = N
-        # 增大 N 或者分辨率以增加计算密度
-        # 如果 N=1024 负载仍不满，可以加大到 2048
-        
-        # === [优化] 1. 输入直接定义在 Device 上 ===
-        # 模拟 batch_size=32, h=32, w=32 (加大分辨率以增加计算密度)
-        self.input_data = Parameter(Tensor(np.random.normal(0, 1, (32, N, 32, 32)), ms.float16), name="fixed_input")
-        
-        expand_ratio = 4 
-        hidden_dim = in_channel * expand_ratio
-        
-        self.conv_pw = nn.Conv2d(in_channel, hidden_dim, kernel_size=1, has_bias=False)
-        self.bn1 = nn.BatchNorm2d(hidden_dim)
-        
-        self.conv_dw = nn.Conv2d(hidden_dim, hidden_dim, kernel_size=3, stride=1, 
-                                 group=hidden_dim, pad_mode='same', has_bias=False)
-        self.bn2 = nn.BatchNorm2d(hidden_dim)
-        
-        self.conv_proj = nn.Conv2d(hidden_dim, in_channel, kernel_size=1, has_bias=False)
-        self.bn3 = nn.BatchNorm2d(in_channel)
-        
-        self.relu = nn.ReLU()
-        self.add = ops.Add()
-        
-        self.to_float(ms.float16)
-
-    def construct(self, _=None): # 忽略外部输入
-        # === [优化] 直接使用内部 Parameter ===
-        out = self.input_data 
-        
-        for _ in range(self.steps):
-            identity = out
-            out = self.conv_pw(out)
-            out = self.bn1(out)
-            out = self.relu(out)
-            out = self.conv_dw(out)
-            out = self.bn2(out)
-            out = self.relu(out)
-            out = self.conv_proj(out)
-            out = self.bn3(out)
-            out = self.add(out, identity)
-        return self.finish_op(out)
-
-# =========================
-# 辅助函数
-# =========================
-def create_random_input(profile, N):
-    if profile != 'random':
-        return None
-    # FP16 Input
-    return Tensor(np.random.randn(32, N, 14, 14).astype(np.float16))
 
 def run_loop(net, sleep_interval, profile, N):
     print("Warmup (Compiling graph)...")
@@ -229,8 +177,10 @@ def run_loop(net, sleep_interval, profile, N):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--profile', type=str, default='compute', help='compute/memory/data/random')
-    parser.add_argument('--level', type=str, default='low', help='idle/low/medium/high/saturated')
+    # 增加提示：推荐使用 random 模式
+    parser.add_argument('--profile', type=str, default='random', 
+                        help='random (REAL TRAINING SIMULATION), compute, memory')
+    parser.add_argument('--level', type=str, default='high', help='(Legacy) idle/low/medium/high')
     args = parser.parse_args()
 
     try:
@@ -239,25 +189,23 @@ def main():
         print(f"Init Context Failed: {e}")
         sys.exit(1)
 
-    N, steps, sleep_interval = get_config(args.profile, args.level)
-    
-    # [修改点] UI 显示优化
-    display_level = "Fluctuation" if args.profile == 'random' else args.level
-    print(f"Config: Profile={args.profile}, Level={display_level} -> N={N}, Steps={steps}")
-
-    if args.profile == 'compute':
-        net = ComputeCell(N, steps)
-    elif args.profile == 'memory':
-        net = MemoryCell(N, steps)
-    elif args.profile == 'random':
-        net = RandomCell(N, steps)
-    elif args.profile == 'data':
-        net = DataCell(N, steps)
+    if args.profile == 'random':
+        # 调用新的模拟器，忽略 level 参数，使用 SIM_CONFIG
+        run_simulation_loop()
     else:
-        net = ComputeCell(N, steps)
-    
-    net.set_train(False)
-    run_loop(net, sleep_interval, args.profile, N)
+        N, steps, sleep_interval = get_config(args.profile, args.level)
+        print(f"Config: Profile={args.profile}, Level={args.level} -> N={N}, Steps={steps}")
+
+        if args.profile == 'compute':
+            net = ComputeCell(N, steps)
+        elif args.profile == 'memory':
+            net = MemoryCell(N, steps)
+        elif args.profile == 'data':
+            net = DataCell(N, steps)
+        else:
+            net = ComputeCell(N, steps)
+        net.set_train(False)
+        run_loop(net, sleep_interval, args.profile, N)
 
 if __name__ == "__main__":
     signal.signal(signal.SIGTERM, signal_handler)
