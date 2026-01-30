@@ -2,7 +2,6 @@
 
 #include "NPULoadGenerator.hpp"
 #include <iostream>
-#include <stdexcept>
 #include <vector>
 #include <cstring>
 #include <csignal>
@@ -29,6 +28,7 @@ std::string NPULoadGenerator::profileToString(ProfileType profile)
         case ProfileType::Data:    return "data";
         case ProfileType::IO:      throw std::runtime_error("NPU does not support IO load profile. Please use Compute, Memory, or Data.");
         case ProfileType::Random:   return "random";
+        case ProfileType::Real:     return "real";
         default: return "compute";
     }
 }

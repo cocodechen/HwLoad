@@ -17,16 +17,17 @@ public:
     void stop() override;
 
 private:
-    void runCompute();
-    void runMemory();
-    void runData();
+    void runCompute(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
+    void runMemory(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
+    void runData(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
 #ifdef __linux__
-    void runIO();
+    void runIO(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
 #endif
-    void memory_worker();
-    void disk_worker();
-    void cpu_core_worker(int core_id);
+    // 统一判断是否继续运行的辅助函数
+    bool shouldContinue(std::chrono::steady_clock::time_point start_time, std::chrono::milliseconds duration);
     void runRandom();
+
+    void runReal();
 
     std::atomic<bool> running;
     std::thread worker;

@@ -1,7 +1,8 @@
 #ifdef HWLOAD_USE_GPU
 
 #include "GPULoadGenerator.hpp"
-#include <stdexcept>
+#include "GPUReal.cu"
+
 #include <cuda_runtime.h>
 #include <iostream>
 #include <thread>
@@ -101,16 +102,19 @@ void GPULoadGenerator::start(ProfileType profile, LoadLevel level)
     running.store(true);
 
     if (profile == ProfileType::Compute) {
-        worker = std::thread(&GPULoadGenerator::runCompute, this);
+        worker = std::thread(&GPULoadGenerator::runCompute, this, std::chrono::milliseconds(0));
     }
     else if (profile == ProfileType::Memory) {
-        worker = std::thread(&GPULoadGenerator::runMemory, this);
+        worker = std::thread(&GPULoadGenerator::runMemory, this, std::chrono::milliseconds(0));
     }
     else if(profile == ProfileType::Data){
-        worker = std::thread(&GPULoadGenerator::runData, this);
+        worker = std::thread(&GPULoadGenerator::runData, this, std::chrono::milliseconds(0));
     }
     else if(profile == ProfileType::Random){
         worker = std::thread(&GPULoadGenerator::runRandom, this);
+    }
+    else if(profile==ProfileType::Real){
+        worker = std::thread(&GPULoadGenerator::runReal, this);
     }
     else throw std::runtime_error("[GPULoad] No support profile");
 }
@@ -121,15 +125,32 @@ void GPULoadGenerator::stop()
     if (worker.joinable()) worker.join();
 }
 
-void GPULoadGenerator::runCompute()
+bool GPULoadGenerator::shouldContinue(std::chrono::steady_clock::time_point start_time, std::chrono::milliseconds duration)
+{
+    // 1. 检查全局开关 (使用 relaxed 即可，性能敏感度低)
+    if (!running.load(std::memory_order_relaxed)) return false;
+
+    // 2. duration <= 0 代表无限运行
+    if (duration.count() <= 0) return true;
+
+    // 3. 检查是否超时
+    return (std::chrono::steady_clock::now() - start_time) < duration;
+}
+
+void GPULoadGenerator::runCompute(std::chrono::milliseconds duration)
 {
     CUDA_CHECK(cudaSetDevice(0));
     float* d_data = nullptr;
     CUDA_CHECK(cudaMalloc(&d_data, 1024 * 1024 * 32 * sizeof(float)));
-    auto cfg = get_gpu_config(cur_level, ProfileType::Compute);
 
-    while (running.load(std::memory_order_relaxed))
+    // 记录开始时间
+    auto start_time = std::chrono::steady_clock::now();
+    
+    while (shouldContinue(start_time, duration))
     {
+        // 获取配置 (每次循环都获取，允许外部动态调整 level，虽然这里 level 由 random 控制)
+        auto cfg = get_gpu_config(cur_level, ProfileType::Compute);
+
         k_compute<<<cfg.blocks, cfg.threads>>>(d_data, cfg.kernel_loops); 
         if (cur_level != LoadLevel::Saturated)cudaDeviceSynchronize();
         if (cfg.sleep_ms > 0)std::this_thread::sleep_for(std::chrono::milliseconds(cfg.sleep_ms));
@@ -137,23 +158,19 @@ void GPULoadGenerator::runCompute()
     CUDA_CHECK(cudaFree(d_data));
 }
 
-void GPULoadGenerator::runMemory()
+void GPULoadGenerator::runMemory(std::chrono::milliseconds duration)
 {
     CUDA_CHECK(cudaSetDevice(0));
-
-    // 数据量必须大，击穿 L2 Cache (通常 40-80MB)
-    // 128MB floats = 512MB 显存占用 x 2 (src+dst) = 1GB
-    // 这个大小对大多数显卡安全，且足够击穿 Cache
     const int N = 1024 * 1024 * 128; 
     float *d_src = nullptr, *d_dst = nullptr;
 
     CUDA_CHECK(cudaMalloc(&d_src, N * sizeof(float)));
     CUDA_CHECK(cudaMalloc(&d_dst, N * sizeof(float)));
-    
-    // 初始化一下数据，避免 page fault 干扰（虽然 GPU 上影响较小）
     cudaMemset(d_src, 0, N * sizeof(float));
 
-    while (running) {
+    auto start_time = std::chrono::steady_clock::now();
+
+    while (shouldContinue(start_time, duration)) {
         auto cfg = get_gpu_config(cur_level, ProfileType::Memory);
         
         // 调整 block 数量以覆盖数据
@@ -177,18 +194,20 @@ void GPULoadGenerator::runMemory()
     CUDA_CHECK(cudaFree(d_dst));
 }
 
-void GPULoadGenerator::runData()
+void GPULoadGenerator::runData(std::chrono::milliseconds duration)
 {
     // Data Profile: 混合 Compute 和 Memory
     CUDA_CHECK(cudaSetDevice(0));
-
     const int N = 1024 * 1024 * 64; // 64M floats = 256MB
     float *d_src = nullptr, *d_dst = nullptr;
 
     CUDA_CHECK(cudaMalloc(&d_src, N * sizeof(float)));
     CUDA_CHECK(cudaMalloc(&d_dst, N * sizeof(float)));
 
-    while (running) {
+    auto start_time = std::chrono::steady_clock::now();
+
+    while (shouldContinue(start_time, duration))
+    {
         auto cfg = get_gpu_config(cur_level, ProfileType::Data); // 这里的 loop 参数偏向 Compute
         
         int min_blocks = (N + cfg.threads - 1) / cfg.threads;
@@ -211,179 +230,66 @@ void GPULoadGenerator::runData()
     CUDA_CHECK(cudaFree(d_dst));
 }
 
-// --- CUDA Kernel ---
-// 简单的矩阵乘法核心，用于产生 GPU 热量
-static __global__ void matrixMulKernel(float* C, const float* A, const float* B, int N)
-{
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    if (row < N && col < N) {
-        float sum = 0.0f;
-        for (int k = 0; k < N; ++k) {
-            sum += A[row * N + k] * B[k * N + col];
-        }
-        C[row * N + col] = sum;
-    }
-}
-
-// --- 单个 GPU 的工作逻辑 ---
-void GPULoadGenerator::gpu_device_worker(int device_id)
-{
-    CUDA_CHECK(cudaSetDevice(device_id));
-    
-    // 获取显存总量
-    size_t free_mem = 0, total_mem = 0;
-    cudaMemGetInfo(&free_mem, &total_mem);
-    
-    // 预分配 Host 内存 (加大到 8192*8192，约 256MB)
-    const int MAX_N = 8192;
-    std::vector<float> host_data(MAX_N * MAX_N);
-    // 填充一点数据，避免全是0
-    std::fill(host_data.begin(), host_data.begin() + 10240, 1.23f);
-
-    // 时间片 200ms
-    const int TIME_SLICE_MS = 200;
-
-    // 显存占位指针
-    void* d_vram_holder = nullptr;
-    size_t current_holder_size = 0;
-
-    while (running) {
-        auto start_time = std::chrono::high_resolution_clock::now();
-        
-        double target_load = get_wave_intensity(device_id * 10.0);
-
-        // ============================
-        // 1. 显存波动控制 (VRAM)
-        // ============================
-        
-        // 重新获取一下当前 Free，因为系统或其他进程可能也在用
-        cudaMemGetInfo(&free_mem, &total_mem);
-        
-        // 计算我们想要占用的显存量 (target_load * 可用显存)
-        // 预留 500MB 给矩阵计算用
-        size_t available_for_grab = (free_mem + current_holder_size > 500 * 1024 * 1024) 
-                                    ? (free_mem + current_holder_size - 500 * 1024 * 1024) 
-                                    : 0;
-        
-        size_t target_size = static_cast<size_t>(available_for_grab * target_load);
-
-        // 【防抖动】只有当目标大小和当前大小差异超过 100MB 时，才进行重新分配
-        // 避免每一帧都 Malloc/Free 造成卡顿
-        if (std::abs((long long)target_size - (long long)current_holder_size) > 100 * 1024 * 1024) {
-            // 释放旧的
-            if (d_vram_holder) {
-                cudaFree(d_vram_holder);
-                d_vram_holder = nullptr;
-                current_holder_size = 0;
-            }
-            // 分配新的
-            if (target_size > 0) {
-                if (cudaMalloc(&d_vram_holder, target_size) == cudaSuccess) {
-                    current_holder_size = target_size;
-                    // 可选：在高负载时 async memset 一小部分，制造 copy engine 负载
-                    if (target_load > 0.7) {
-                        cudaMemsetAsync(d_vram_holder, 0, std::min(target_size, (size_t)10 * 1024 * 1024), 0);
-                    }
-                }
-            }
-        }
-
-        // ============================
-        // 2. 计算波动控制 (Compute)
-        // ============================
-        
-        long work_ms = static_cast<long>(target_load * TIME_SLICE_MS);
-        
-        // 如果需要工作
-        if (work_ms > 5) {
-            // 矩阵大小固定大一点，或者随负载微调
-            // 既然要波动，不妨让矩阵大小也随负载变：负载大->矩阵大->单次Kernel久
-            int N = 2048 + static_cast<int>((MAX_N - 2048) * target_load);
-            size_t bytes = N * N * sizeof(float);
-            
-            float *d_A = nullptr, *d_B = nullptr, *d_C = nullptr;
-            
-            // 尝试分配计算用的矩阵
-            bool success = true;
-            if (cudaMalloc(&d_A, bytes) != cudaSuccess) success = false;
-            if (success && cudaMalloc(&d_B, bytes) != cudaSuccess) success = false;
-            if (success && cudaMalloc(&d_C, bytes) != cudaSuccess) success = false;
-
-            if (success) {
-                // 拷贝 (PCIe 负载)
-                cudaMemcpyAsync(d_A, host_data.data(), bytes, cudaMemcpyHostToDevice, 0);
-                cudaMemcpyAsync(d_B, host_data.data(), bytes, cudaMemcpyHostToDevice, 0);
-                
-                dim3 threads(16, 16);
-                dim3 blocks((N + 15) / 16, (N + 15) / 16);
-
-                // 循环执行 Kernel 直到时间片用完
-                while (running) {
-                    // 发射 Kernel
-                    matrixMulKernel<<<blocks, threads, 0, 0>>>(d_C, d_A, d_B, N);
-                    
-                    // 【关键点】同步！
-                    // 只有同步了，CPU 才知道 GPU 真的跑完了，才能判断时间是否到了
-                    // 否则 CPU 会瞬间发射几百个 Kernel，然后直接去 sleep，
-                    // 导致 GPU 还在跑刚才那几百个 Kernel (Load 100%)，而 CPU 以为已经在休息了。
-                    cudaStreamSynchronize(0);
-
-                    auto now = std::chrono::high_resolution_clock::now();
-                    long elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time).count();
-                    if (elapsed >= work_ms) break;
-                }
-            }
-            
-            if (d_A) cudaFree(d_A);
-            if (d_B) cudaFree(d_B);
-            if (d_C) cudaFree(d_C);
-        }
-
-        // ============================
-        // 3. 休息
-        // ============================
-        auto end_work_time = std::chrono::high_resolution_clock::now();
-        long actual_work_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_work_time - start_time).count();
-        long sleep_ms = TIME_SLICE_MS - actual_work_ms;
-
-        if (sleep_ms > 1) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(sleep_ms));
-        }
-    }
-
-    if (d_vram_holder) cudaFree(d_vram_holder);
-}
-// --- GPU 管理器函数 ---
-// 这个函数会被外部的一个线程调用
-// 它负责检测 GPU 数量并为每个 GPU 启动子线程
 void GPULoadGenerator::runRandom()
 {
-    int deviceCount = 0;
-    cudaError_t err = cudaGetDeviceCount(&deviceCount);
-    
-    if (err != cudaSuccess || deviceCount == 0) {
-        std::cerr << "[GPU Manager] No CUDA devices found or CUDA not installed." << std::endl;
-        return;
-    }
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
-    std::cout << "[GPU Manager] Detected " << deviceCount << " GPU(s). Spawning workers..." << std::endl;
+    std::vector<ProfileType> profiles = {
+        ProfileType::Compute, 
+        ProfileType::Memory, 
+        ProfileType::Data
+    };
 
-    std::vector<std::thread> workers;
-    workers.reserve(deviceCount);
+    std::vector<LoadLevel> levels = {
+        LoadLevel::Idle, LoadLevel::Low, LoadLevel::Medium, 
+        LoadLevel::High, LoadLevel::Saturated
+    };
 
-    for (int i = 0; i < deviceCount; ++i) {
-        workers.emplace_back(&GPULoadGenerator::gpu_device_worker, this, i);
-    }
+    while (running)
+    {
+        // 1. 随机生成持续时间 (10s - 20s)
+        std::uniform_int_distribution<> dur_dist(10000, 20000); 
+        auto duration = std::chrono::milliseconds(dur_dist(gen));
 
-    // 等待所有 GPU 线程结束
-    for (auto& t : workers) {
-        if (t.joinable()) {
-            t.join();
+        // 2. 随机选择 Profile 和 Level
+        std::uniform_int_distribution<> prof_dist(0, profiles.size() - 1);
+        std::uniform_int_distribution<> lvl_dist(0, levels.size() - 1);
+
+        ProfileType p = profiles[prof_dist(gen)];
+        cur_level = levels[lvl_dist(gen)]; // 更新当前 Level，get_gpu_config 会读取它
+
+        std::cout
+            << "[LoadGen] "
+            << "Profile=" << profile2Str(p)
+            << ", Level=" << level2Str(cur_level)
+            << ", Duration=" << duration.count() << " ms ("
+            << duration.count() / 1000.0 << " s)"
+            << std::endl;
+
+        // 3. 执行对应的负载函数 (运行指定时长)
+        if (p == ProfileType::Compute) {
+            runCompute(duration);
+        }
+        else if (p == ProfileType::Memory) {
+            runMemory(duration);
+        }
+        else if (p == ProfileType::Data) {
+            runData(duration);
+        }
+
+        // 4. 短暂休眠，模拟任务切换间隙
+        if (running) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
+}
 
-    std::cout << "[GPU Manager] All GPU workers stopped." << std::endl;
+void GPULoadGenerator::runReal()
+{
+    // 调用外部文件的函数，传入当前的运行状态标志位
+    // 这里的 this->running 是 std::atomic<bool> 类型
+    execute_real_gpu_simulation(this->running);
 }
 
 #endif

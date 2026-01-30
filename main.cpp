@@ -25,24 +25,6 @@ static void signal_handler(int signal) {
     if (signal == SIGINT) g_stop_requested.store(true);
 }
 
-// 辅助解析函数
-ProfileType parseProfile(const std::string& s) {
-    if (s == "compute") return ProfileType::Compute;
-    if (s == "memory")  return ProfileType::Memory;
-    if (s == "io")      return ProfileType::IO;
-    if (s == "data")    return ProfileType::Data;
-    if (s == "random")  return ProfileType::Random; // [NEW]
-    throw std::invalid_argument("unknown profile: " + s);
-}
-
-LoadLevel parseLevel(const std::string& s) {
-    if (s == "idle")       return LoadLevel::Idle;
-    if (s == "low")        return LoadLevel::Low;
-    if (s == "medium")     return LoadLevel::Medium;
-    if (s == "high")       return LoadLevel::High;
-    if (s == "saturated")  return LoadLevel::Saturated;
-    throw std::invalid_argument("unknown level: " + s);
-}
 
 std::unique_ptr<LoadGenerator> createGenerator(const std::string& device) {
     if (device == "cpu") {
@@ -72,9 +54,10 @@ LoadTask parseArg(const std::string& arg)
     }
     // 格式 1: device:random (parts=2)
     if (parts.size() == 2) {
-        ProfileType p = parseProfile(parts[1]);
-        if (p == ProfileType::Random) {
-            // Random 不需要 Level，给一个默认值即可
+        ProfileType p = str2Profile(parts[1]);
+        if (p == ProfileType::Random || p == ProfileType::Real)
+        {
+            // Random/Real 不需要 Level，给一个默认值即可
             return {parts[0], p, LoadLevel::Medium}; 
         } else {
             throw std::invalid_argument("Profile '" + parts[1] + "' requires a level (e.g., :high)");
@@ -82,13 +65,13 @@ LoadTask parseArg(const std::string& arg)
     }
     // 格式 2: device:compute:high (parts=3)
     else if (parts.size() == 3) {
-        ProfileType p = parseProfile(parts[1]);
+        ProfileType p = str2Profile(parts[1]);
         if (p == ProfileType::Random) {
              // 如果用户非要写 cpu:random:high，也可以兼容，或者报错
              // 这里选择兼容
              return {parts[0], p, LoadLevel::Medium};
         }
-        return {parts[0], p, parseLevel(parts[2])};
+        return {parts[0], p, str2Level(parts[2])};
     }
 
     throw std::invalid_argument("Invalid format. Use 'device:random' or 'device:profile:level'");

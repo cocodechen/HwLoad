@@ -17,12 +17,15 @@ public:
     void stop() override;
 
 private:
-    void runCompute();
-    void runMemory();
-    void runData();
+    void runCompute(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
+    void runMemory(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
+    void runData(std::chrono::milliseconds duration = std::chrono::milliseconds(0));
 
-    void gpu_device_worker(int device_id);
+    // 辅助函数
+    bool shouldContinue(std::chrono::steady_clock::time_point start_time, std::chrono::milliseconds duration);
     void runRandom();
+
+    void runReal();
 
     std::atomic<bool> running;
     std::thread worker;

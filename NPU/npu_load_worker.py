@@ -3,72 +3,98 @@ import time
 import signal
 import sys
 import random
+import gc
 import numpy as np
+
 import mindspore as ms
 import mindspore.ops as ops
 import mindspore.nn as nn
 from mindspore import Tensor, context, Parameter, ParameterTuple
+
+# 尝试导入真实训练模拟器
 try:
     from npu_train import run_simulation_loop
 except ImportError:
-    print("Error: 'npu_train.py' not found. Please make sure it exists.")
-    sys.exit(1)
+    run_simulation_loop = None
 
-# =========================
-# 信号处理
-# =========================
+# ============================================================================
+# 系统信号处理
+# ============================================================================
 def signal_handler(sig, frame):
-    print("Received SIGTERM, exiting...")
+    print("\n[System] Received stop signal, exiting gracefully...")
     sys.exit(0)
 
-# =========================
-# 配置管理
-# =========================
-def get_config(profile, level):
-    # === 1. Random 模式 (波动负载) ===
-    if profile == 'random':
-        # 去除 Level 的影响，统一为固定参数
-        # N=1024 保证计算强度，Steps=15 保证单次执行时间适中
-        return 1024, 15, 0.0
-
-    # === 2. Memory 模式 (显存带宽) ===
-    if profile == 'memory':
-        # [暴力升级] 之前的 2048 太小，不足以拉满带宽
-        if level == 'saturated':
-            return 8192, 20, 0.0 # 单块 256MB，极致大块读写
-        elif level == 'high':
-            return 4096, 40, 0.0 # 单块 64MB
-        else:
-            return 2048, 50, 0.05
-
-    # === 3. Compute 模式 (算力) ===
-    if profile == 'compute':
-        if level == 'saturated':
-            return 8192, 100, 0.0 # 巨大的矩阵乘法
-        base_n = 4096
-        base_steps = 200 
-    else: # data / default
-        base_n = 2048
-        base_steps = 50
-
-    # === 通用 Level 调节 (仅对非 Random 生效) ===
-    if level == 'idle':
-        return 64, 1, 1.0
-    elif level == 'low':
-        return base_n, int(base_steps * 0.2), 0.05
-    elif level == 'medium':
-        return base_n, int(base_steps * 0.5), 0.01
-    elif level == 'high':
-        return int(base_n * 1.0), base_steps, 0.0
-    elif level == 'saturated':
-        return int(base_n * 1.5), int(base_steps * 1.5), 0.0
+# ============================================================================
+# 配置管理 (Refactored)
+# ============================================================================
+def get_config(profile: str, level: str):
+    """
+    根据负载类型(profile)和压力等级(level)返回具体参数。
+    使用字典查表方式，方便手动微调特定档位的参数。
     
-    return 1024, 10, 0.1
+    Returns:
+        tuple: (Matrix_Size_N, Steps_Per_Loop, Sleep_Interval)
+    """
+    
+    # 基础参数配置表
+    # 格式: 'Level': (N, Steps, Sleep)
+    
+    # 1. Compute: 算力密集型 (侧重矩阵乘法计算量)
+    #    Base: 4096, Steps: 200
+    compute_configs = {
+        'saturated': (8192, 100, 0.0),   # 极致压力：超大矩阵，无休眠
+        'high':      (4096, 200, 0.0),   # 高压力：标准大矩阵，长步数
+        'medium':    (4096, 100, 0.01),  # 中等：步数减半，微量休眠
+        'low':       (4096, 40,  0.05),  # 低压：短步数，明显休眠
+        'idle':      (64,   1,   1.0),   # 空转：极小计算，长休眠
+    }
 
-# =========================
-# 负载基类
-# =========================
+    # 2. Memory: 带宽密集型 (侧重显存块读写)
+    #    注意：N在此处决定了显存块的大小 (8192=256MB, 4096=64MB, 2048=16MB)
+    memory_configs = {
+        'saturated': (8192, 20, 0.0),    # 极致带宽：256MB大块拷贝
+        'high':      (4096, 40, 0.0),    # 高带宽：64MB块
+        'medium':    (2048, 50, 0.05),   # 中等：16MB块，带间歇
+        'low':       (2048, 20, 0.1),    # 低压
+        'idle':      (64,   1,  1.0),
+    }
+
+    # 3. Data: 数据搬运型 (侧重类型转换 Cast 和数据流动)
+    #    Base: 2048, Steps: 50
+    data_configs = {
+        'saturated': (3072, 75, 0.0),    # 1.5x Base
+        'high':      (2048, 50, 0.0),    # 1.0x Base
+        'medium':    (2048, 25, 0.01),   # 0.5x Base
+        'low':       (2048, 10, 0.05),   # 0.2x Base
+        'idle':      (64,   1,  1.0),
+    }
+
+    # 4. Train: 模拟真实训练 (参数固定，波动由内部控制)
+    train_config = (1024, 15, 0.0)
+
+    # --- 查表逻辑 ---
+    
+    if profile == 'train':
+        return train_config
+    
+    # 默认回退配置
+    default_config = (1024, 10, 0.1)
+    
+    if profile == 'compute':
+        return compute_configs.get(level, default_config)
+    elif profile == 'memory':
+        return memory_configs.get(level, default_config)
+    elif profile == 'data':
+        return data_configs.get(level, default_config)
+    else:
+        # 如果传入未知的 profile，默认使用 compute 的配置
+        return compute_configs.get(level, default_config)
+
+# ============================================================================
+# 负载单元定义 (MindSpore Cells)
+# ============================================================================
 class LoadBase(nn.Cell):
+    """负载基类，处理通用的结果规约"""
     def __init__(self, N, steps, dtype):
         super().__init__()
         self.steps = steps
@@ -78,13 +104,12 @@ class LoadBase(nn.Cell):
     def finish_op(self, x):
         return self.reduce(x)
 
-# =========================
-# 1. Compute Load (Cube 密集)
-# =========================
 class ComputeCell(LoadBase):
+    """计算密集型 (FP16 MatMul) - 压测 Cube Core"""
     def __init__(self, N, steps):
         super().__init__(N, steps, ms.float16)
         self.matmul = ops.MatMul()
+        # 初始化随机矩阵
         self.x = Parameter(Tensor(np.random.normal(0, 0.01, (N, N)), self.dtype), name="x")
         self.y = Parameter(Tensor(np.random.normal(0, 0.01, (N, N)), self.dtype), name="y")
 
@@ -94,27 +119,24 @@ class ComputeCell(LoadBase):
             out = self.matmul(out, self.y)
         return self.finish_op(out)
 
-# =========================
-# 2. Memory Load (HBM 带宽密集)
-# =========================
 class MemoryCell(LoadBase):
+    """显存带宽密集型 (FP32 Copy/Add) - 压测 HBM"""
     def __init__(self, N, steps):
         super().__init__(N, steps, ms.float32)
         self.add = ops.Add()
         self.assign = ops.Assign()
         self.depend = ops.Depend()
         
-        # [策略调整] 
-        # 如果 N 很大(8192, 256MB)，Buffer 少一点 (8个=2GB) 防止 OOM
-        # 如果 N 较小(2048, 16MB)，Buffer 多一点 (32个=512MB) 击穿 Cache
+        # 根据矩阵大小动态调整 Buffer 数量，防止 OOM 同时保证压力
         if N >= 8192:
-            self.buffer_count = 8
+            self.buffer_count = 8   # ~2GB (8 * 256MB)
         elif N >= 4096:
-            self.buffer_count = 16
+            self.buffer_count = 16  # ~1GB (16 * 64MB)
         else:
-            self.buffer_count = 32
+            self.buffer_count = 32  # ~512MB
             
-        print(f"Memory Load: Allocating {self.buffer_count} blocks of {N}x{N} FP32 (Total: ~{self.buffer_count * N * N * 4 / 1024 / 1024:.2f} MB)")
+        mem_usage = self.buffer_count * N * N * 4 / (1024**2)
+        print(f"[Memory Load] Allocating {self.buffer_count} blocks of {N}x{N} FP32 (Total: ~{mem_usage:.2f} MB)")
         
         self.buffers = ParameterTuple([
             Parameter(Tensor(np.ones((N, N)), self.dtype), name=f"buf_{i}")
@@ -124,19 +146,16 @@ class MemoryCell(LoadBase):
 
     def construct(self, _=None):
         last_op = self.val 
-        # 为了让流水线更紧凑，不再 Unroll 太多，而是依赖算子本身的大数据量
+        # 链式依赖，强制串行读写
         for i in range(self.buffer_count):
             buf = self.buffers[i]
             current_buf = self.depend(buf, last_op)
             res = self.add(current_buf, self.val)
-            assign_op = self.assign(buf, res)
-            last_op = assign_op
+            last_op = self.assign(buf, res)
         return self.finish_op(self.buffers[0])
 
-# =========================
-# 3. Data Load
-# =========================
 class DataCell(LoadBase):
+    """数据搬运模拟 (FP32 <-> FP16 Cast) - 混合压力"""
     def __init__(self, N, steps):
         super().__init__(N, steps, ms.float32)
         self.matmul = ops.MatMul()
@@ -153,12 +172,26 @@ class DataCell(LoadBase):
             x = self.cast(res, ms.float32)
         return self.finish_op(x)
 
+# ============================================================================
+# 执行逻辑
+# ============================================================================
 
-def run_loop(net, sleep_interval, profile, N):
-    print("Warmup (Compiling graph)...")
+def create_net(profile, N, steps):
+    """工厂方法：创建负载网络"""
+    if profile == 'compute':
+        return ComputeCell(N, steps)
+    elif profile == 'memory':
+        return MemoryCell(N, steps)
+    elif profile == 'data':
+        return DataCell(N, steps)
+    else:
+        return ComputeCell(N, steps)
+
+def run_fixed_loop(net, sleep_interval, profile):
+    """固定配置运行循环"""
+    print(f"Warmup (Compiling graph)...")
     try:
-        # 不需要传参数，或者传个 None 占位
-        net(None)
+        net(None) # 触发图编译
     except Exception as e:
         print(f"Error during warmup: {e}")
         sys.exit(1)
@@ -166,48 +199,98 @@ def run_loop(net, sleep_interval, profile, N):
     print(f"Load started. Profile: {profile} (Running FULL SPEED)")
     
     while True:
-        # === [优化] 2. 移除 CPU 端的数据生成 ===
-        # === [优化] 3. 移除 .asnumpy() 同步 ===
-        # 仅仅下发任务，不做结果回传，让 NPU 跑死
         net(None)
-        
-        # 仅在需要波动的模式下加入 sleep，否则全速运行
-        if profile != 'random' and sleep_interval > 0:
+        if sleep_interval > 0:
             time.sleep(sleep_interval)
 
+def run_random_schedule():
+    """
+    随机混合调度模式：
+    周期性地在不同负载类型和压力等级之间切换，模拟无规律的集群环境。
+    """
+    available_profiles = ['compute', 'memory', 'data']
+    available_levels = ['low', 'medium', 'high', 'saturated']
+    
+    print(">>> Starting RANDOM schedule mode (Mixed Workload) <<<")
+    
+    while True:
+        # 1. 随机决策
+        curr_profile = random.choice(available_profiles)
+        curr_level = random.choice(available_levels)
+        duration = random.randint(10, 30) # 保持 10~30秒
+        
+        print(f"\n[Scheduler] Switch -> {curr_profile.upper()} - {curr_level.upper()} (Duration: {duration}s)")
+        
+        # 2. 获取配置
+        N, steps, sleep_interval = get_config(curr_profile, curr_level)
+        
+        # 3. 构建网络 (重建 Net 会触发 MindSpore 重新编译图)
+        net = create_net(curr_profile, N, steps)
+        net.set_train(False)
+        
+        # 4. 执行阶段
+        seg_start = time.time()
+        iter_count = 0
+        
+        try:
+            # 首次运行触发编译
+            net(None) 
+            
+            while time.time() - seg_start < duration:
+                net(None)
+                iter_count += 1
+                if sleep_interval > 0:
+                    time.sleep(sleep_interval)
+                    
+        except Exception as e:
+            print(f"  [Error] Execution failed: {e}")
+        
+        print(f"  -> Done. Executed {iter_count} iters.")
+        
+        # 5. 清理资源
+        del net
+        gc.collect() # 显式 GC，确保显存及时释放
+
 def main():
-    parser = argparse.ArgumentParser()
-    # 增加提示：推荐使用 random 模式
-    parser.add_argument('--profile', type=str, default='random', 
-                        help='random (REAL TRAINING SIMULATION), compute, memory')
-    parser.add_argument('--level', type=str, default='high', help='(Legacy) idle/low/medium/high')
+    parser = argparse.ArgumentParser(description="NPU Load Generator")
+    parser.add_argument('--profile', type=str, default='train', 
+                        help='train (SIMULATION), random (MIXED SCHEDULE), compute, memory, data')
+    parser.add_argument('--level', type=str, default='high', 
+                        help='idle/low/medium/high/saturated')
     args = parser.parse_args()
 
+    # 初始化 Context
     try:
         context.set_context(mode=context.GRAPH_MODE, device_target="Ascend")
     except Exception as e:
         print(f"Init Context Failed: {e}")
         sys.exit(1)
 
-    if args.profile == 'random':
-        # 调用新的模拟器，忽略 level 参数，使用 SIM_CONFIG
+    # 注册信号
+    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGINT, signal_handler)
+
+    # --- 模式分发 ---
+    
+    # 1. Train 模式: 调用外部 npu_train 模块
+    if args.profile == 'real':
+        if run_simulation_loop is None:
+            print("Error: 'npu_train.py' not found.")
+            sys.exit(1)
         run_simulation_loop()
+        
+    # 2. Random 模式: 内部混合调度
+    elif args.profile == 'random':
+        run_random_schedule()
+        
+    # 3. Fixed 模式: 单一负载持续运行
     else:
         N, steps, sleep_interval = get_config(args.profile, args.level)
         print(f"Config: Profile={args.profile}, Level={args.level} -> N={N}, Steps={steps}")
 
-        if args.profile == 'compute':
-            net = ComputeCell(N, steps)
-        elif args.profile == 'memory':
-            net = MemoryCell(N, steps)
-        elif args.profile == 'data':
-            net = DataCell(N, steps)
-        else:
-            net = ComputeCell(N, steps)
+        net = create_net(args.profile, N, steps)
         net.set_train(False)
-        run_loop(net, sleep_interval, args.profile, N)
+        run_fixed_loop(net, sleep_interval, args.profile)
 
 if __name__ == "__main__":
-    signal.signal(signal.SIGTERM, signal_handler)
-    signal.signal(signal.SIGINT, signal_handler)
     main()
