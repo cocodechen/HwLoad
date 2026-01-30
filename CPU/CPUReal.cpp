@@ -318,7 +318,7 @@ void execute_real_simulation(std::atomic<bool>& running)
     unsigned int num_cores = std::thread::hardware_concurrency();
     if (num_cores == 0) num_cores = 4;
 
-    std::cout << "[CPU Manager] Starting " << num_cores << " compute threads, 1 Memory thread, 1 Disk thread..." << std::endl;
+    std::cout << "[CPUReal] Starting " << num_cores << " compute threads, 1 Memory thread, 1 Disk thread..." << std::endl;
 
     std::vector<std::thread> threads;
 
@@ -345,5 +345,5 @@ void execute_real_simulation(std::atomic<bool>& running)
         if (t.joinable()) t.join();
     }
     
-    std::cout << "[CPU Manager] All workers stopped." << std::endl;
+    std::cout << "[CPUReal] All CPU workers stopped." << std::endl;
 }

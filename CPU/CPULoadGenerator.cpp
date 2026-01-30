@@ -292,7 +292,7 @@ void CPULoadGenerator::runRandom()
         ProfileType p = profiles[prof_dist(gen)];
 
         std::cout
-            << "[LoadGen] "
+            << "[LoadGen_CPU] "
             << "Profile=" << profile2Str(p)
             << ", Level=" << level2Str(cur_level)
             << ", Duration=" << duration.count() << " ms ("

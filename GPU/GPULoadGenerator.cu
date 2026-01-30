@@ -260,7 +260,7 @@ void GPULoadGenerator::runRandom()
         cur_level = levels[lvl_dist(gen)]; // 更新当前 Level，get_gpu_config 会读取它
 
         std::cout
-            << "[LoadGen] "
+            << "[LoadGen_GPU] "
             << "Profile=" << profile2Str(p)
             << ", Level=" << level2Str(cur_level)
             << ", Duration=" << duration.count() << " ms ("

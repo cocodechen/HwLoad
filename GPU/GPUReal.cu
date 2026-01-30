@@ -13,7 +13,7 @@
 do { \
     cudaError_t err = call; \
     if (err != cudaSuccess) { \
-        std::cerr << "[RealGpuLoad] CUDA error: " << cudaGetErrorString(err) \
+        std::cerr << "[GPULoad] CUDA error: " << cudaGetErrorString(err) \
                   << " at " << __FILE__ << ":" << __LINE__ << std::endl; \
     } \
 } while (0)
@@ -199,11 +199,11 @@ void execute_real_gpu_simulation(std::atomic<bool>& running)
     cudaError_t err = cudaGetDeviceCount(&deviceCount);
     
     if (err != cudaSuccess || deviceCount == 0) {
-        std::cerr << "[RealGpuLoad] No CUDA devices found or CUDA not installed." << std::endl;
+        std::cerr << "[GPULoad] No CUDA devices found or CUDA not installed." << std::endl;
         return;
     }
 
-    std::cout << "[RealGpuLoad] Detected " << deviceCount << " GPU(s). Spawning real-world simulation workers..." << std::endl;
+    std::cout << "[GPULoad] Detected " << deviceCount << " GPU(s). Spawning real-world simulation workers..." << std::endl;
 
     std::vector<std::thread> workers;
     workers.reserve(deviceCount);
@@ -221,5 +221,5 @@ void execute_real_gpu_simulation(std::atomic<bool>& running)
         }
     }
 
-    std::cout << "[RealGpuLoad] All GPU workers stopped." << std::endl;
+    std::cout << "[GPUReal] All GPU workers stopped." << std::endl;
 }

@@ -85,6 +85,9 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    std::cout << "Running... Press Ctrl+C to stop.\n";
+    std::signal(SIGINT, signal_handler);
+
     std::vector<std::unique_ptr<LoadGenerator>> generators;
     try
     {
@@ -105,8 +108,6 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    std::cout << "Running... Press Ctrl+C to stop.\n";
-    std::signal(SIGINT, signal_handler);
 
     while (!g_stop_requested.load()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
